@@ -5,7 +5,7 @@ DISTVERSION=	22.0.0
 PORTREVISION=	2
 CATEGORIES=	x11-drivers
 
-PATCH_SITES=	https://gitlab.freedesktop.org/xorg/driver/${PORTNAME}/-/commit/
+PATCH_SITES=	https://gitlab.freedesktop.org/xorg/driver/${PORTNAME:C/xlibre-//}/-/commit/
 PATCHFILES+=	77b13493.patch:-p1 # https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu/-/merge_requests/77
 
 MAINTAINER=	b-aazbsd@proton.me
