@@ -27,7 +27,7 @@ USE_GL=		gbm
 
 CONFIGURE_ARGS+=--disable-udev
 
-PLIST_FILES=	lib/xorg/modules/drivers/amdgpu_drv.so \
+PLIST_FILES=	lib/xorg/modules/xlibre-25.0/drivers/amdgpu_drv.so \
 		share/man/man4/amdgpu.4x.gz \
 		share/X11/xorg.conf.d/10-amdgpu.conf
 

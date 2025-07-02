@@ -14,6 +14,6 @@ GH_TAGNAME=	e86afcc
 USES=		xlibre-cat:driver
 INSTALL_TARGET=	install-strip
 
-PLIST_FILES=	lib/xorg/modules/drivers/ast_drv.so
+PLIST_FILES=	lib/xorg/modules/xlibre-25.0/drivers/ast_drv.so
 
 .include <bsd.port.mk>

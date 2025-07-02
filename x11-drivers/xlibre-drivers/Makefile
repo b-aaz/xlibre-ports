@@ -5,10 +5,11 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre drivers meta-port
-WWW=		https://github.com/XLibre
+WWW=		https://github.com/X11Libre
 
-VIDEODIR=	${LOCALBASE}/lib/xorg/modules/drivers
-INPUTDIR=	${LOCALBASE}/lib/xorg/modules/input
+MODULEDIR=	${LOCALBASE}/lib/xorg/modules/xlibre-25.0/
+VIDEODIR=	${MODULEDIR}/drivers
+INPUTDIR=	${MODULEDIR}/input
 
 USES=		metaport
 
