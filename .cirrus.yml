@@ -1,0 +1,75 @@
+task:
+    alias: buildpkg
+    freebsd_instance:
+      cpu: 4
+      memory: 16G
+      matrix:
+        - image: freebsd-14-2-release-amd64-ufs
+
+    env:
+      CIRRUS_CLONE_DEPTH: 1
+      BATCH: 1
+      CCACHE_DIR: "/tmp/.ccache"
+      CCACHE_COMPRESS: 1
+      CCACHE_SIZE: "200M"
+      CCACHE_STATIC_PREFIX: "/usr/local"
+      CCACHE_NOSTATS: 1
+      CCACHE_TEMPDIR: "/tmp"
+      WITH_CCACHE_BUILD: "YES"
+      PORTS_BRANCH: "2025Q2"
+
+    portstree_cache:
+      folder: /usr/ports/
+    ccache_cache:
+      folder: ${CCACHE_DIR}
+    pkg_cache:
+      folder: /var/cache/pkg/
+    timeout_in: 90m
+
+    prerequisites_script:
+      - ASSUME_ALWAYS_YES=yes pkg bootstrap -f
+      - pkg install -y git-lite
+
+    portstree_setup_script:
+      - if [ ! -f "/usr/ports/${PORTS_BRANCH}" ] ; then mkdir -p /usr/ports && fetch "https://github.com/freebsd/freebsd-ports/archive/refs/heads/${PORTS_BRANCH}.tar.gz" -o - | tar xf - -C /usr/ports --strip-components=1 && touch "/usr/ports/${PORTS_BRANCH}" ; fi
+
+    ccache_setup_script:
+      - env IGNORE_OSVERSION=yes pkg install -y ccache-static
+      - ccache --max-size=${CCACHE_SIZE}
+      - echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+      
+    patch_setup_script:
+      - |
+       {
+       {
+       patch -N /usr/ports/Mk/bsd.port.subdir.mk << EOF
+       @@ -173,6 +173,8 @@
+        TARGETS+=	realinstall
+        TARGETS+=	reinstall
+        TARGETS+=	tags
+       +TARGETS+=	run-depends-list
+       +TARGETS+=	build-depends-list
+       
+        .for __target in ${TARGETS}
+        .  if !target(${__target})
+       EOF
+       } || true
+       }
+
+    overlay_setup_script:
+      - echo 'OVERLAYS=/'"$(pwd)"'/' >> /etc/make.conf
+      - cat /etc/make.conf
+
+    build_script:
+      - |
+       ls
+       make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+       make build-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+       export PACKAGES="$(pwd)/pkgs/"
+       mkdir $PACKAGES
+       env
+       make package
+       find $PACKAGES
+      
+    packages_artifacts:
+      path: "./pkgs/**/*"
