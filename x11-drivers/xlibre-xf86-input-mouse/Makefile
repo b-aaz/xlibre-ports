@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-input-mouse
 PORTVERSION=	1.9.3
-PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me

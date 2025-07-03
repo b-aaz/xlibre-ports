@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-input-joystick
 PORTVERSION=	1.6.3
-PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me

@@ -11,13 +11,14 @@ LICENSE=	MIT
 FLAVORS=	xorg xnest xephyr xvfb
 FLAVOR?=	${FLAVORS:[1]}
 
+USES=		compiler:c11 cpe gl meson pkgconfig tar:xz xorg pathfix
+USE_GL=		gl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	x11libre
 GH_PROJECT=	xserver
 GH_TAGNAME=	xlibre-xserver-${PORTVERSION}
 
-USES=		compiler:c11 cpe gl meson pkgconfig tar:xz xorg
-USE_GL=		gl
 # TODO: XLibre seams to depend on libepoll-shim, it should be added here.
 
 .if ${FLAVOR} == xephyr
@@ -25,7 +26,7 @@ PORTNAME=	xephyr
 .elif  ${FLAVOR} == xorg
 PKGNAMESUFFIX=	-server
 .elif ${FLAVOR} == xnest
-PKGNAMESUFFIX= -nestserver
+PKGNAMESUFFIX=	-nestserver
 .elif ${FLAVOR} == xvfb
 PKGNAMESUFFIX=	-vfbserver
 .endif
@@ -87,7 +88,7 @@ LIB_DEPENDS+=	libxcb-render-util.so:x11/xcb-util-renderutil \
 
 FONTPATH_ROOT?=	${LOCALBASE}/share/fonts
 FONTPATHD?=	${PREFIX}/etc/X11/fontpath.d
-DEFAULT_FONTPATH_LIST= \
+DEFAULT_FONTPATH_LIST=	\
 	${FONTPATH_ROOT}/misc/	\
 	${FONTPATH_ROOT}/TTF/ \
 	${FONTPATH_ROOT}/OTF/ \

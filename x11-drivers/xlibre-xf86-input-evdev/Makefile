@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-input-evdev
 PORTVERSION=	2.10.6
-PORTREVISION=	8
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me

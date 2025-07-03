@@ -131,16 +131,16 @@ USE_XLIBRE+=      xorg-macros
 #####.  elif ${_XLIBRE_CAT} == driver
 
 .  if ${_XLIBRE_CAT} == driver
-MODULEDIR=/usr/local/lib/xorg/modules/xlibre-25.0/
+MODULEDIR=lib/xorg/modules/xlibre-25.0
 USE_XLIBRE+=	xi xlibre-server xorgproto
 CFLAGS+=	-Werror=uninitialized
 .    if ${_XLIBRE_BUILDSYS} == meson
 # Put special stuff for meson here
 #FIXME: This is a hack until the upstream fixes the default module folder!
-MESON_ARGS+= -Dxorg-module-dir='${MODULEDIR}'
+MESON_ARGS+= -Dxorg-module-dir='${LOCALBASE}/${MODULEDIR}'
 .    else
 #FIXME: This is a hack until the upstream fixes the default module folder!
-CONFIGURE_ARGS+= --with-xorg-module-dir='${MODULEDIR}'
+CONFIGURE_ARGS+= --with-xorg-module-dir='${LOCALBASE}/${MODULEDIR}'
 CONFIGURE_ENV+=	DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
 libtool_ARGS?=	# empty
 .include "${USESDIR}/libtool.mk"

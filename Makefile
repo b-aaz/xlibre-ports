@@ -12,6 +12,6 @@ update:
 	@echo "--------------------------------------------------------------"
 	@echo ">>> Updating ${.CURDIR} from git repository"
 	@echo "--------------------------------------------------------------"
-	cd ${.CURDIR}; ${GIT} pull 
+	cd ${.CURDIR}; ${GIT} pull
 .endif
 .endif

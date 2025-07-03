@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-input-wacom
 PORTVERSION=	0.39.0
-PORTREVISION=	4
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -8,6 +7,7 @@ COMMENT=	XLibre legacy Wacom tablet driver
 WWW=		https://linuxwacom.github.io/
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/GPL
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd

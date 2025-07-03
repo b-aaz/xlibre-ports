@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-video-qxl
 DISTVERSION=	0.1.6
-PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -8,6 +7,7 @@ COMMENT=	XLibre X server -- QXL display driver
 WWW=		https://github.com/X11Libre/
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		spice-protocol>=0.12.10:devel/spice-protocol

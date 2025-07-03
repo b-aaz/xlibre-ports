@@ -1,18 +1,17 @@
 PORTNAME=	xlibre-drivers
 PORTVERSION=	7.7
-PORTREVISION=	7
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre drivers meta-port
 WWW=		https://github.com/X11Libre
 
+LICENSE=	none
+
+USES=		metaport
 MODULEDIR=	${LOCALBASE}/lib/xorg/modules/xlibre-25.0/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input
-
-USES=		metaport
-
 
 INPUT_DRIVERS=		elographics \
 			evdev \
@@ -37,8 +36,8 @@ VIDEO_DRIVERS=		ast \
 
 OPTIONS_DEFAULT=	KEYBOARD \
 			LIBINPUT \
-			MOUSE 
-			
+			MOUSE
+
 #			SCFB
 # Upstream is not XLibre
 
@@ -70,7 +69,7 @@ QUIRKS=		keyboard:kbd
 
 # Manual add arch specific drivers so they be added to depend lines.
 .if ${ARCH}==i386 || ${ARCH}==amd64
-INPUT_DRIVERS+= vmmouse
+INPUT_DRIVERS+=	vmmouse
 VIDEO_DRIVERS+=	amdgpu ati intel vmware
 .endif
 

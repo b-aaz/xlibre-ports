@@ -2,7 +2,6 @@
 
 PORTNAME=	xlibre-xf86-video-amdgpu
 DISTVERSION=	22.0.0
-PORTREVISION=	2
 CATEGORIES=	x11-drivers
 
 PATCH_SITES=	https://gitlab.freedesktop.org/xorg/driver/${PORTNAME:C/xlibre-//}/-/commit/
