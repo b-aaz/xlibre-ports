@@ -26,6 +26,8 @@ CONFIGURE_ARGS+=	--enable-xspice
 
 OPTIONS_DEFINE=	DOCS
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:C/xlibre-//}
+
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d
 
