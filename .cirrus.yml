@@ -60,16 +60,31 @@ task:
       - echo 'OVERLAYS=/'"$(pwd)"'/' >> /etc/make.conf
       - cat /etc/make.conf
 
+    install-run-deps_setup_script:
+      - |
+       make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+
+    install-build-deps_setup_script:
+      - |
+       make build-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+
     build_script:
       - |
        ls
-       make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
-       make build-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
        export PACKAGES="$(pwd)/pkgs/"
        mkdir $PACKAGES
-       env
        make package
-       find $PACKAGES
+       ABI="$(pkg config abi)"
+       mv $PACKAGES/All $PACKAGES/$ABI
+       pkg repo -l $PACKAGES/$ABI
+
+    build_postup_script:
+      - |
+       ABI="$(pkg config abi)"
+       mv $PACKAGES/All $PACKAGES/$ABI
+       pkg repo -l $PACKAGES/$ABI
+       pkg install -y tree
+       tree -C -H -./ $PACKAGES/$ABI > ./$PACKAGES/$ABI/index.html
       
     packages_artifacts:
       path: "./pkgs/**/*"
