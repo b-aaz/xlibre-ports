@@ -78,8 +78,9 @@ task:
        mv $PACKAGES/All $PACKAGES/$ABI
        pkg repo -l $PACKAGES/$ABI
 
-    build_postup_script:
+    build_postsetup_script:
       - |
+       export PACKAGES="$(pwd)/pkgs/"
        ABI="$(pkg config abi)"
        mv $PACKAGES/All $PACKAGES/$ABI
        pkg repo -l $PACKAGES/$ABI
