@@ -82,7 +82,8 @@ task:
        mv $PACKAGES/All $PACKAGES/$ABI
        pkg repo -l $PACKAGES/$ABI
        pkg install -y tree
-       tree -C -H -./ $PACKAGES/$ABI > $PACKAGES/$ABI/index.html
+       cd $PACKAGES/$ABI 
+       tree -h -D -C -H -./ --houtro=/dev/null -T 'XLibre binaries for FreeBSD' ./ > ./index.html
       
     packages_artifacts:
       path: "./pkgs/**/*"
