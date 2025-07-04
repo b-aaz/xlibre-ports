@@ -82,7 +82,7 @@ task:
        mv $PACKAGES/All $PACKAGES/$ABI
        pkg repo -l $PACKAGES/$ABI
        pkg install -y tree
-       tree -C -H -./ $PACKAGES/$ABI > ./$PACKAGES/$ABI/index.html
+       tree -C -H -./ $PACKAGES/$ABI > $PACKAGES/$ABI/index.html
       
     packages_artifacts:
       path: "./pkgs/**/*"
