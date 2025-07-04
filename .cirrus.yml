@@ -74,9 +74,6 @@ task:
        export PACKAGES="$(pwd)/pkgs/"
        mkdir $PACKAGES
        make package
-       ABI="$(pkg config abi)"
-       mv $PACKAGES/All $PACKAGES/$ABI
-       pkg repo -l $PACKAGES/$ABI
 
     build_postsetup_script:
       - |
