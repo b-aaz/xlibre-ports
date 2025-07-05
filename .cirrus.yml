@@ -42,11 +42,14 @@ task:
       - |
        {
        {
-       patch -R /usr/ports/Mk/bsd.port.subdir.mk << EOF
+       patch -N /usr/ports/Mk/bsd.port.subdir.mk << EOF
        @@ -173,6 +173,8 @@
         TARGETS+=	realinstall
         TARGETS+=	reinstall
         TARGETS+=	tags
+       +TARGETS+=	stage
+       +TARGETS+=	stage-qa
+       +TARGETS+=	check-plist
        +TARGETS+=	run-depends-list
        +TARGETS+=	build-depends-list
        
@@ -71,9 +74,20 @@ task:
       - |
        make build-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
 
-    build_script:
+    stage_script:
       - |
-       ls
+       make stage
+
+    stage-qa_script:
+      - |
+       make stage-qa
+
+    check-plist_script:
+      - |
+       make check-plist
+
+    package_script:
+      - |
        export PACKAGES="$(pwd)/pkgs/"
        mkdir $PACKAGES
        make package
