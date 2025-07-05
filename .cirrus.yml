@@ -43,7 +43,7 @@ task:
        {
        {
        patch -N /usr/ports/Mk/bsd.port.subdir.mk << EOF
-       @@ -173,6 +173,8 @@
+       @@ -173,6 +173,11 @@
         TARGETS+=	realinstall
         TARGETS+=	reinstall
         TARGETS+=	tags
