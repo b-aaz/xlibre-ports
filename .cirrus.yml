@@ -42,7 +42,7 @@ task:
       - |
        {
        {
-       patch -N /usr/ports/Mk/bsd.port.subdir.mk << EOF
+       patch -R /usr/ports/Mk/bsd.port.subdir.mk << EOF
        @@ -173,6 +173,8 @@
         TARGETS+=	realinstall
         TARGETS+=	reinstall
@@ -55,6 +55,7 @@ task:
        EOF
        } || true
        }
+       grep -n '^TARGETS+=' /usr/ports/Mk/bsd.port.subdir.mk
 
     makeconf_setup_script:
       - echo 'OVERLAYS=/'"$(pwd)"'/' >> /etc/make.conf
