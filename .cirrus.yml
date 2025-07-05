@@ -1,8 +1,8 @@
 task:
-    alias: buildpkg
+    alias: pkgs
     freebsd_instance:
       cpu: 4
-      memory: 16G
+      memory: 8G
       matrix:
         - image: freebsd-14-2-release-amd64-ufs
 
@@ -56,8 +56,10 @@ task:
        } || true
        }
 
-    overlay_setup_script:
+    makeconf_setup_script:
       - echo 'OVERLAYS=/'"$(pwd)"'/' >> /etc/make.conf
+      - echo 'WITH_DEBUG=yes' >> /etc/make.conf
+      - echo 'DEBUG_FLAGS+= -O0' >> /etc/make.conf
       - cat /etc/make.conf
 
     install-run-deps_setup_script:
@@ -85,5 +87,5 @@ task:
        cd $PACKAGES/$ABI 
        tree -h -D -C -H -./ --houtro=/dev/null -T 'XLibre binaries for FreeBSD' ./ > ./index.html
       
-    packages_artifacts:
+    pkgs_artifacts:
       path: "./pkgs/**/*"
