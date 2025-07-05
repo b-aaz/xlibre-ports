@@ -1,4 +1,5 @@
-# Porting X11Libre to FreeBSD
+# Porting X11Libre to FreeBSD [![Build Status](https://api.cirrus-ci.com/github/b-aaz/xlibre-ports.svg)](https://cirrus-ci.com/github/b-aaz/xlibre-ports)
+
 
 An effort for porting X11libre to FreeBSD.
 
