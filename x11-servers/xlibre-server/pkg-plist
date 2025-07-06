@@ -151,7 +151,7 @@ lib/xorg/modules/xlibre-25.0/libwfb.so
 lib/xorg/protocol.txt
 libdata/pkgconfig/xorg-server.pc
 libexec/Xorg
-libexec/Xorg.wrap
+@(,,4555) libexec/Xorg.wrap
 share/X11/xorg.conf.d/10-quirks.conf
 share/X11/xorg.conf.d/20-evdev-kbd.conf
 share/aclocal/xorg-server.m4
