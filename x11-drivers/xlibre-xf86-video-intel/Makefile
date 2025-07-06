@@ -26,14 +26,14 @@ TEST_TARGET=	check
 CONFIGURE_ARGS+=--with-default-accel=uxa
 
 OPTIONS_DEFINE=	UDEV XVMC
-OPTIONS_DEFAULT=UDEV
+OPTIONS_DEFAULT=UDEV XVMC
 OPTIONS_SUB=	yes
 
 UDEV_DESC=		udev-based monitor hotplug detection
 UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd
 UDEV_CONFIGURE_ENABLE=	udev
 
-XVMC_LIB_DEPENDS=	libxcb-util.so:x11/xcb-util
+XVMC_LIB_DEPENDS=	libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
 XVMC_USE=		XORG=x11,xcb,xvmc
 XVMC_CONFIGURE_ENABLE=	xvmc
 XVMC_VARS=		USE_LDCONFIG=yes
