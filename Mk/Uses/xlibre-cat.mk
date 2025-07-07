@@ -119,7 +119,7 @@ IGNORE= GH_TAGNAME is empty, add a tagname!
 #
 ## All xlibre ports need xorg-macros.
 .  if ${PORTNAME} != xorg-macros
-USE_XLIBRE+=      xorg-macros
+USE_XORG+=      xorg-macros
 .  endif
 
 #####.  if ${_XLIBRE_CAT} == app
@@ -132,7 +132,8 @@ USE_XLIBRE+=      xorg-macros
 
 .  if ${_XLIBRE_CAT} == driver
 MODULEDIR=lib/xorg/modules/xlibre-25.0
-USE_XLIBRE+=	xi xlibre-server xorgproto
+USE_XLIBRE+=	xlibre-server
+USE_XORG+=	xi xorgproto
 CFLAGS+=	-Werror=uninitialized
 .    if ${_XLIBRE_BUILDSYS} == meson
 # Put special stuff for meson here
@@ -189,9 +190,11 @@ INSTALL_TARGET=	install-strip
 # message about USES=xlibre not being set
 .  if defined(USE_XLIBRE) && !empty(USE_XLIBRE)
 USES+=		xlibre
+USES+=		xorg
 # This line needs to change to ${USESDIR}/xlibre.mk if this file ends up in the
 # main ports tree
 .include "./xlibre.mk"
+.include "${USESDIR}/xorg.mk"
 .  endif
 
 .endif

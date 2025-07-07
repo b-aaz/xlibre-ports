@@ -13,8 +13,8 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
 GH_TAGNAME=	31d3b74
-USES=		gmake pathfix xlibre xlibre-cat:driver
-USE_XLIBRE=	x11 xext xinerama xrandr
+USES=		gmake pathfix xorg xlibre-cat:driver
+USE_XORG=	x11 xext xinerama xrandr
 LDFLAGS+=	-Wl,--as-needed # Xext
 USE_RC_SUBR=	wacom
 SUB_FILES=	pkg-message
