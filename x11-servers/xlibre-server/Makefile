@@ -11,7 +11,7 @@ LICENSE=	MIT
 FLAVORS=	xorg xnest xephyr xvfb
 FLAVOR?=	${FLAVORS:[1]}
 
-USES=		compiler:c11 cpe gl meson pkgconfig tar:xz xorg pathfix
+USES=		compiler:c11 gl meson pkgconfig tar:xz xorg pathfix
 USE_GL=		gl
 
 USE_GITHUB=	yes
