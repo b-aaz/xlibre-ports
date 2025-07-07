@@ -115,6 +115,7 @@ MESON_ARGS+=	-Dsha1=libmd
 
 .if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
+MESON_ARGS+=	-Dlibunwind=true
 .endif
 
 .if ${FLAVOR} == xorg
