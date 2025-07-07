@@ -1,5 +1,5 @@
 PORTNAME=	xlibre
-PORTVERSION=	25.0.0.2
+PORTVERSION=	25.0.0.4
 CATEGORIES=	x11-servers
 
 MAINTAINER=	b-aazbsd@proton.me
