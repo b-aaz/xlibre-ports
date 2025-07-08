@@ -9,7 +9,7 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GH_TAGNAME=	08eb4fd
+GH_TAGNAME=	94adc53
 USES=		xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

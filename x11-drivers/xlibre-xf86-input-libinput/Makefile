@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 LIB_DEPENDS=	libinput.so:x11/libinput
 
-GH_TAGNAME=	9c64c02
+GH_TAGNAME=	cda5a98
 USES=		pathfix tar:xz xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share

@@ -20,7 +20,7 @@ ONLY_FOR_ARCHS_REASON=	KMS is required and currently only available on x86/arm64
 
 LIB_DEPENDS=	libdrm_amdgpu.so:graphics/libdrm
 
-GH_TAGNAME=	353b372
+GH_TAGNAME=	4fb6a27
 USES=		gl tar:xz xlibre-cat:driver
 USE_GL=		gbm
 

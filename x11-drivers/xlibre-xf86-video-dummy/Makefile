@@ -9,7 +9,7 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GH_TAGNAME=	3a407a3
+GH_TAGNAME=	dd676a9
 USES=		xlibre-cat:driver
 
 .include <bsd.port.mk>
