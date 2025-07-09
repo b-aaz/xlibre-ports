@@ -9,7 +9,7 @@ WWW=		https://github.com/X11Libre
 LICENSE=	none
 
 USES=		metaport
-MODULEDIR=	${LOCALBASE}/lib/xorg/modules/xlibre-25.0/
+MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-25.0/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input
 

@@ -119,7 +119,7 @@ IGNORE= GH_TAGNAME is empty, add a tagname!
 #
 ## All xlibre ports need xorg-macros.
 .  if ${PORTNAME} != xorg-macros
-USE_XORG+=      xorg-macros
+USE_XLIBRE+=      xlibre-macros
 .  endif
 
 #####.  if ${_XLIBRE_CAT} == app
@@ -138,11 +138,12 @@ CFLAGS+=	-Werror=uninitialized
 .    if ${_XLIBRE_BUILDSYS} == meson
 # Put special stuff for meson here
 #FIXME: This is a hack until the upstream fixes the default module folder!
-MESON_ARGS+= -Dxorg-module-dir='${LOCALBASE}/${MODULEDIR}'
+MESON_ARGS+= -Dxorg-module-dir='${PREFIX}/${MODULEDIR}'
 .    else
 #FIXME: This is a hack until the upstream fixes the default module folder!
-CONFIGURE_ARGS+= --with-xorg-module-dir='${LOCALBASE}/${MODULEDIR}'
-CONFIGURE_ENV+=	DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
+CONFIGURE_ARGS+= --with-xorg-module-dir='${PREFIX}/${MODULEDIR}'
+CONFIGURE_ENV+=	PKG_CONFIG_PATH=${PREFIX}/libdata/pkgconfig/ DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
+AUTORECONF_ARGS+= -I ${PREFIX}/share/aclocal
 libtool_ARGS?=	# empty
 .include "${USESDIR}/libtool.mk"
 INSTALL_TARGET=	install-strip

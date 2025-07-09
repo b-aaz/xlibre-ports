@@ -6,7 +6,7 @@
 #
 # 			Not specifying USE_XLIBRE with USES=xlibre is an error.
 #			
-#			Components can be found in the XORG_MODULES list below.
+#			Components can be found in the XLIBRE_MODULES list below.
 #
 #
 # If you feel something is missing from the list, please let us know.
@@ -33,26 +33,28 @@ IGNORE=		need to specify xlibre modules with USE_XLIBRE
 .  endif
 
 # List of xlibre modules
-XORG_MODULES=	xlibre-server
+XLIBRE_MODULES=	xlibre-server \
+		xlibre-macros
 
 # Register all xlibre .pc files here.
 # foo_LIB_PC_DEPENDS means it should go to BUILD_DEPENDS *and* RUN_DEPENDS.
-xlibre-server_LIB_PC_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/xorg-server.pc:x11-servers/xlibre-server
+xlibre-server_LIB_PC_DEPENDS=	${PREFIX}/libdata/pkgconfig/xorg-server.pc:x11-servers/xlibre-server
+xlibre-macros_BUILD_DEPENDS=	${PREFIX}/libdata/pkgconfig/xorg-macros.pc:devel/xorg-macros
 
 # Add explicit X options to avoid problems with false positives in configure
 .  if defined(GNU_CONFIGURE)
-CONFIGURE_ARGS+=--x-libraries=${LOCALBASE}/lib --x-includes=${LOCALBASE}/include
+CONFIGURE_ARGS+=--x-libraries=${PREFIX}/lib --x-includes=${PREFIX}/include
 .  endif
 
 .  for _module in ${USE_XLIBRE:M*\:both:C/\:.*//g}
-.    if ${XORG_MODULES:M${_module}} == ""
+.    if ${XLIBRE_MODULES:M${_module}} == ""
 IGNORE=		requires unknown xlibre module (${_module})
 .    endif
 RUN_DEPENDS+=	${${_module}_BUILD_DEPENDS}
 .  endfor
 
 .  for _module in ${USE_XLIBRE:C/\:both$//g}
-.    if ${XORG_MODULES:M${_module}} == ""
+.    if ${XLIBRE_MODULES:M${_module}} == ""
 IGNORE=		requires unknown xlibre module (${_module})
 .    endif
 LIB_PC_DEPENDS+=${${_module}_LIB_PC_DEPENDS}
