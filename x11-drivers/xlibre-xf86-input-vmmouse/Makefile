@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-vmmouse
+
 GH_TAGNAME=	f27f2b1
 USES=		gmake xlibre-cat:driver
 

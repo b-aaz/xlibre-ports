@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT # various styles
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-libinput
+
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 LIB_DEPENDS=	libinput.so:x11/libinput
 

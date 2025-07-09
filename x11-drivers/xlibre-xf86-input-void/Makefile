@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-void
+
 GH_TAGNAME=	b43e11e
 USES=		xlibre-cat:driver
 

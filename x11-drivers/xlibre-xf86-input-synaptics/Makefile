@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-synaptics
+
 GH_TAGNAME=	42ac305
 USES=		pathfix xorg xlibre-cat:driver
 USE_XORG=	x11 xtst

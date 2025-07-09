@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-qxl
+
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		spice-protocol>=0.12.10:devel/spice-protocol
 LIB_DEPENDS=	libspice-server.so:devel/libspice-server \

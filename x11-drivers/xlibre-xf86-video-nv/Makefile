@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-nv
+
 GH_TAGNAME=	ca3f59f
 USES=		tar:xz xlibre-cat:driver
 

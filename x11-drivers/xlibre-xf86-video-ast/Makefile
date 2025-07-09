@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-ast
+
 GH_TAGNAME=	e86afcc
 USES=		xlibre-cat:driver
 INSTALL_TARGET=	install-strip

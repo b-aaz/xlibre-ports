@@ -14,6 +14,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-amdgpu
+
 # No amdgpu kernel driver on non-x86 and PC98.
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64le
 ONLY_FOR_ARCHS_REASON=	KMS is required and currently only available on x86/arm64/powerpc64le

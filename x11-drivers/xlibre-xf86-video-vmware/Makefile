@@ -12,6 +12,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	vmware gfx protocol is only supported on x86-compatible architectures
 
+CONFLICTS_INSTALL=	xf86-video-vmware
+
 GH_TAGNAME=	90c79a5
 USES=		xlibre-cat:driver
 

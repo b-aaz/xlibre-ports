@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-joystick
+
 GH_TAGNAME=	f6e29f8
 USES=		pathfix xlibre-cat:driver
 
