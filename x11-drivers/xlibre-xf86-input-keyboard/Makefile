@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-keyboard
+
 GH_TAGNAME=	94adc53
 USES=		xlibre-cat:driver
 

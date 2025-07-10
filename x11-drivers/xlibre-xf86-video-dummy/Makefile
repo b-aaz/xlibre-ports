@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-dummy
+
 GH_TAGNAME=	dd676a9
 USES=		xlibre-cat:driver
 

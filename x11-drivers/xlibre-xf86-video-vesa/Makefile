@@ -9,6 +9,8 @@ WWW=		https://githhub.com/X11Libre
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-video-vesa
+
 GH_TAGNAME=	5b33e95
 USES=		xlibre-cat:driver
 

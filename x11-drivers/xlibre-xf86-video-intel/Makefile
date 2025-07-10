@@ -14,6 +14,8 @@ ONLY_FOR_ARCHS_REASON=	only Intel integrated GPUs on x86 are supported
 
 LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm
 
+CONFLICTS_INSTALL=	xf86-video-intel
+
 USES=		localbase xlibre xlibre-cat:driver
 GH_TAGNAME=	5245636
 USE_XORG=	pciaccess pixman

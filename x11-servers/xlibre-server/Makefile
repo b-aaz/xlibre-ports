@@ -11,6 +11,8 @@ LICENSE=	MIT
 FLAVORS=	xorg xnest xephyr xvfb
 FLAVOR?=	${FLAVORS:[1]}
 
+CONFLICTS_INSTALL=	xorg-server
+
 USES=		compiler:c11 gl meson pkgconfig tar:xz xorg pathfix
 USE_GL=		gl
 

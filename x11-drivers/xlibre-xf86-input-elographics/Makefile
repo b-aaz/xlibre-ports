@@ -9,6 +9,8 @@ WWW=		https://github.com/X11Libre/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+CONFLICTS_INSTALL=	xf86-input-elographics
+
 GH_TAGNAME=	80ef66f
 USES=		xlibre-cat:driver
 

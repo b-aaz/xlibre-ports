@@ -12,6 +12,8 @@ LICENSE_FILE=	${WRKSRC}/GPL
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
+CONFLICTS_INSTALL=	xf86-input-wacom
+
 GH_TAGNAME=	2060426
 USES=		gmake pathfix xorg xlibre-cat:driver
 USE_XORG=	x11 xext xinerama xrandr
