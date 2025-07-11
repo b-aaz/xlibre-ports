@@ -1,22 +1,20 @@
-task:
-    alias: pkgs
+env:
+  CIRRUS_CLONE_DEPTH: 1
+  BATCH: 1
+  CCACHE_DIR: "/tmp/.ccache"
+  CCACHE_COMPRESS: 1
+  CCACHE_SIZE: "200M"
+  CCACHE_STATIC_PREFIX: "/usr/local"
+  CCACHE_NOSTATS: 1
+  CCACHE_TEMPDIR: "/tmp"
+  WITH_CCACHE_BUILD: "YES"
+  PORTS_BRANCH: "2025Q2"
+
+common: &COMMON
     freebsd_instance:
       cpu: 4
       memory: 8G
-      matrix:
-        - image: freebsd-14-2-release-amd64-ufs
-
-    env:
-      CIRRUS_CLONE_DEPTH: 1
-      BATCH: 1
-      CCACHE_DIR: "/tmp/.ccache"
-      CCACHE_COMPRESS: 1
-      CCACHE_SIZE: "200M"
-      CCACHE_STATIC_PREFIX: "/usr/local"
-      CCACHE_NOSTATS: 1
-      CCACHE_TEMPDIR: "/tmp"
-      WITH_CCACHE_BUILD: "YES"
-      PORTS_BRANCH: "2025Q2"
+      image: freebsd-14-2-release-amd64-ufs
 
     portstree_cache:
       folder: /usr/ports/
@@ -72,8 +70,14 @@ task:
 
     install-build-deps_setup_script:
       - |
-       make build-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+       make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | cut -d '/' -f 4- | xargs pkg install -y
 
+
+master_task:
+    only_if: $CIRRUS_BRANCH != "x11set"
+    alias: pkgs
+    <<: *COMMON
+     
     stage_script:
       - |
        make stage
@@ -104,3 +108,48 @@ task:
       
     pkgs_artifacts:
       path: "./pkgs/**/*"
+      
+x11set_task:
+    only_if: $CIRRUS_BRANCH == "x11set"
+    alias: sets
+    <<: *COMMON
+      
+    env:
+      PREFIXP: '/usr/X11R7'
+
+    makeconf_prefix_script:
+      - echo "PREFIX=$PREFIXP" >> /etc/make.conf
+      - cat /etc/make.conf
+      - env
+    
+    stage_script:
+      - |
+       make stage
+
+    stage-qa_script:
+      - |
+       make stage-qa
+
+    check-plist_script:
+      - |
+       make check-plist
+
+    package_script:
+      - |
+       export PACKAGES="$(pwd)/sets/"
+       mkdir $PACKAGES
+       make package
+
+    build_postsetup_script:
+      - |
+       export PACKAGES="$(pwd)/sets/"
+       ABI="$(pkg config abi)"
+       mv $PACKAGES/All $PACKAGES/$ABI
+       pkg repo -l $PACKAGES/$ABI
+       pkg install -y tree
+       cd $PACKAGES/$ABI 
+       tree -h -D -C -H -./ --houtro=/dev/null -T 'XLibre sets for FreeBSD' ./ > ./index.html
+      
+    sets_artifacts:
+      path: "./sets/**/*"
+
