@@ -39,7 +39,7 @@
 _INCLUDE_USES_XLIBRE_CAT_MK=yes
 
 ######_XLIBRE_CATEGORIES=	app data doc driver font lib proto util
-_XLIBRE_CATEGORIES=	driver
+_XLIBRE_CATEGORIES=	driver server
 _XLIBRE_BUILDSYSTEMS=	autotools meson
 
 _XLIBRE_CAT=		# empty
@@ -67,6 +67,13 @@ IGNORE=		unknown argument specified via xlibre-cat:${xlibre-cat_ARGS:ts,}
 .    endif
 .  endfor
 
+.  if ${_XLIBRE_CAT} == server
+.    if ${_XLIBRE_BUILDSYS} == autotools
+IGNORE=		autotools build systems specified for the servers via xlibre-cat:${xlibre-cat_ARGS:ts,}, they only support meson.
+.    endif
+_XLIBRE_BUILDSYS= meson
+.  endif
+
 # Default to the autotools build system
 .  if empty(_XLIBRE_BUILDSYS)
 _XLIBRE_BUILDSYS=		autotools
@@ -91,23 +98,23 @@ IGNORE=		unknown build system specified via xlibre-cat:${xlibre-cat_ARGS:ts,}
 # Set up things for fetching from X11Libre GitHub.
 # This can be overridden using normal GH_* macros in the ports Makefile.
 # We make a best guess for GH_PROJECT.
-USE_GITHUB=		yes
+USE_GITHUB?=		yes
 GH_ACCOUNT?=		X11Libre
 .  if ${_XLIBRE_CAT} == driver
-# Removeds the xlibre- suffix from the PORTNAME
+# Removes the xlibre- suffix from the PORTNAME
 GH_PROJECT?=		${PORTNAME:tl:C/xlibre-//}
+.  elif ${_XLIBRE_CAT} == server
+GH_PROJECT?=		xserver
+GH_TAGNAME?=	xlibre-xserver-${PORTVERSION}
 .  else
 GH_PROJECT?=		${PORTNAME:tl}
 .  endif
 
-.  if empty(GH_TAGNAME)
-IGNORE= GH_TAGNAME is empty, add a tagname!
-.  endif
 .  if ${_XLIBRE_BUILDSYS} == meson
-# set up meson stuff here
+# Set up meson stuff here
 .  else
-# Things from GitHub doesn't come with pre-generated configure, add dependency on
-# autoreconf and run it, if we're using autotools.
+# Things from GitHub doesn't come with pre-generated configure, add dependency
+# on autoreconf and run it, if we're using autotools.
 .include "${USESDIR}/autoreconf.mk"
 .  endif
 
@@ -117,8 +124,8 @@ IGNORE= GH_TAGNAME is empty, add a tagname!
 .include "${USESDIR}/pkgconfig.mk"
 
 #
-## All xlibre ports need xorg-macros.
-.  if ${PORTNAME} != xorg-macros
+## All xlibre ports need xorg-macros except for the server.
+.  if ${PORTNAME} != xorg-macros && ${_XLIBRE_CAT} != server
 USE_XLIBRE+=      xlibre-macros
 .  endif
 
@@ -142,15 +149,19 @@ MESON_ARGS+= -Dxorg-module-dir='${PREFIX}/${MODULEDIR}'
 .    else
 #FIXME: This is a hack until the upstream fixes the default module folder!
 CONFIGURE_ARGS+= --with-xorg-module-dir='${PREFIX}/${MODULEDIR}'
-CONFIGURE_ENV+=	PKG_CONFIG_PATH=${PREFIX}/libdata/pkgconfig/ DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
+CONFIGURE_ENV+=	PKG_CONFIG_PATH=${PREFIX}/libdata/pkgconfig/ \
+		DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
 AUTORECONF_ARGS+= -I ${PREFIX}/share/aclocal
 libtool_ARGS?=	# empty
 .include "${USESDIR}/libtool.mk"
 INSTALL_TARGET=	install-strip
 .    endif
 
-## X11Libre does not host any category other than drivers for now so there is 
-## need to check for them. 
+.  elif ${_XLIBRE_CAT} == server
+# For common flags across servers.
+
+# X11Libre does not (yet) host any category other than drivers and the server so
+# there is no need to check for them.
 
 #####.  elif ${_XLIBRE_CAT} == font
 #####FONTNAME?=	${PORTNAME:C/.*-//g:S/type/Type/:S/ttf/TTF/:S/speedo/Speedo/}
@@ -186,16 +197,19 @@ INSTALL_TARGET=	install-strip
 
 .  endif # ${_XLIBRE_CAT} == <category>
 
-# We only need to include xlibre.mk if we want USE_XLIBRE modules
-# USES+=xlibre does not provide any functionality, it just silences an error
-# message about USES=xlibre not being set
+# We only need to include xorg.mk if we want USE_XORG modules
+# USES+=xorg does not provide any functionality, it just silences an error
+# message about USES=xorg not being set
+.  if defined(USE_XORG) && !empty(USE_XORG)
+USES+=		xorg
+.include "${USESDIR}/xorg.mk"
+.  endif
+
 .  if defined(USE_XLIBRE) && !empty(USE_XLIBRE)
 USES+=		xlibre
-USES+=		xorg
 # This line needs to change to ${USESDIR}/xlibre.mk if this file ends up in the
 # main ports tree
 .include "./xlibre.mk"
-.include "${USESDIR}/xorg.mk"
 .  endif
 
 .endif
