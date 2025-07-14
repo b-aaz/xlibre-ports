@@ -71,6 +71,7 @@ common: &COMMON
     install-build-deps_setup_script:
       - |
        make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | cut -d '/' -f 4- | xargs pkg install -y
+       make -C /usr/ports/devel/xorg-macros/ clean
 
 
 master_task:
