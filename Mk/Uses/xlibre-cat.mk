@@ -10,9 +10,9 @@
 # 		* driver   depends on xorgproto at least
 #
 # 		Bleow are the old freedesktop.org categories and their comments
-# 		X11Libre only hosts the driver category and the xserver, these
+# 		XLibre only hosts the driver category and the xserver, these
 # 		categoryes are disabled now, but kept in a commented state for
-#		if they be added to X11Libre in the future.
+#		if they be added to XLibre in the future.
 #
 # 		* app      Installs applications, no shared libraries.
 # 		* data     Installs only data.
@@ -95,7 +95,7 @@ GNU_CONFIGURE=		yes
 IGNORE=		unknown build system specified via xlibre-cat:${xlibre-cat_ARGS:ts,}
 .  endif
 
-# Set up things for fetching from X11Libre GitHub.
+# Set up things for fetching from XLibre GitHub.
 # This can be overridden using normal GH_* macros in the ports Makefile.
 # We make a best guess for GH_PROJECT.
 USE_GITHUB?=		yes
@@ -160,7 +160,7 @@ INSTALL_TARGET=	install-strip
 .  elif ${_XLIBRE_CAT} == server
 # For common flags across servers.
 
-# X11Libre does not (yet) host any category other than drivers and the server so
+# XLibre does not (yet) host any category other than drivers and the server so
 # there is no need to check for them.
 
 #####.  elif ${_XLIBRE_CAT} == font
