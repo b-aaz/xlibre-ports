@@ -33,12 +33,12 @@ USE_GL+=	gbm
 
 .include "../xlibre-server/Makefile.common"
 
-MODULESDIR=	/lib/xorg/modules
+OLDMODULEDIR=	/lib/xorg/modules
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d
-	@${MKDIR} ${STAGEDIR}${PREFIX}${MODULESDIR}/extensions
-	@${MKDIR} ${STAGEDIR}${PREFIX}${MODULESDIR}/drivers
-	@${MKDIR} ${STAGEDIR}${PREFIX}${MODULESDIR}/input
+	@${MKDIR} ${STAGEDIR}${PREFIX}${OLDMODULEDIR}/extensions
+	@${MKDIR} ${STAGEDIR}${PREFIX}${OLDMODULEDIR}/drivers
+	@${MKDIR} ${STAGEDIR}${PREFIX}${OLDMODULEDIR}/input
 	@${MKDIR} ${STAGEDIR}${FONTPATHD}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/X11/xorg.conf.d
 	@${INSTALL_DATA} ${FILESDIR}/20-evdev-kbd.conf \

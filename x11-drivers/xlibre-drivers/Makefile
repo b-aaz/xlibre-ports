@@ -9,7 +9,9 @@ WWW=		https://github.com/X11Libre
 LICENSE=	none
 
 USES=		metaport
-MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-25.0/
+
+.include "../../x11-servers/xlibre-server/Makefile.version"
+MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input
 

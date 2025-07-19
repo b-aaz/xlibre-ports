@@ -138,7 +138,8 @@ USE_XLIBRE+=      xlibre-macros
 #####.  elif ${_XLIBRE_CAT} == driver
 
 .  if ${_XLIBRE_CAT} == driver
-MODULEDIR=lib/xorg/modules/xlibre-25.0
+.include "../../x11-servers/xlibre-server/Makefile.version"
+MODULEDIR=lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}
 USE_XLIBRE+=	xlibre-server
 USE_XORG+=	xi xorgproto
 CFLAGS+=	-Werror=uninitialized
