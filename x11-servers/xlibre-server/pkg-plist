@@ -150,20 +150,20 @@ lib/xorg/modules/xlibre-25.0/libvgahw.so
 lib/xorg/modules/xlibre-25.0/libwfb.so
 lib/xorg/protocol.txt
 libdata/pkgconfig/xorg-server.pc
-libexec/Xorg
-@(,,4555) libexec/Xorg.wrap
-share/X11/xorg.conf.d/10-quirks.conf
+%%SUID%%libexec/Xorg
+%%SUID%%@(,,4555) libexec/Xorg.wrap
+%%UDEV%%share/X11/xorg.conf.d/10-quirks.conf
 share/X11/xorg.conf.d/20-evdev-kbd.conf
 share/aclocal/xorg-server.m4
 share/man/man1/Xorg.1.gz
-share/man/man1/Xorg.wrap.1.gz
+%%SUID%%share/man/man1/Xorg.wrap.1.gz
 share/man/man1/Xserver.1.gz
 share/man/man1/gtf.1.gz
 share/man/man4/exa.4.gz
 share/man/man4/fbdevhw.4.gz
 share/man/man4/inputtestdrv.4.gz
 share/man/man4/modesetting.4.gz
-share/man/man5/Xwrapper.config.5.gz
+%%SUID%%share/man/man5/Xwrapper.config.5.gz
 share/man/man5/xorg.conf.5.gz
 share/man/man5/xorg.conf.d.5.gz
 @dir %%FONTPATHD%%

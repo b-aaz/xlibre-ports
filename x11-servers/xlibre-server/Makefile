@@ -15,16 +15,25 @@ USES+=		xlibre-cat:server
 
 # TODO: XLibre server seams to depend on libepoll-shim, it should be added here.
 
-LIB_DEPENDS+=	libudev.so:devel/libudev-devd \
-		libxcvt.so:x11/libxcvt \
+OPTIONS_SUB=	YES
+OPTIONS_DEFINE=	UDEV SUID
+OPTIONS_DEFAULT=UDEV SUID
+
+UDEV_DESC= Enable udev (For libinput & autoconfiguration/hotplug).
+UDEV_MESON_ON=	-Dudev=true -Dudev_kms=true
+UDEV_MESON_OFF=	-Dudev=false -Dudev_kms=false
+UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd
+
+SUID_DESC= Enable the setuid binary (For starting X as a normal user).
+SUID_MESON_ON=		-Dsuid_wrapper=true
+SUID_MESON_OFF=		-Dsuid_wrapper=false
+
+LIB_DEPENDS+=	libxcvt.so:x11/libxcvt \
 		libdrm.so:graphics/libdrm \
 		libepoxy.so:graphics/libepoxy
 
-MESON_ARGS+=	-Dudev=true \
-		-Dudev_kms=true \
-		-Dlog_dir=/var/log \
-		-Dsuid_wrapper=true
-MESON_ARGS+=	-Ddrm=true
+MESON_ARGS+=	-Dlog_dir=/var/log \
+		-Ddrm=true
 
 PLIST_SUB+=	FONTPATHD="${FONTPATHD:S,^${PREFIX}/,,}"
 
