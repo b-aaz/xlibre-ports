@@ -4,7 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre synaptics input driver
-WWW=		https://github.com/X11Libre/
+WWW=		https://github.com/X11Libre/xf86-input-synaptics/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

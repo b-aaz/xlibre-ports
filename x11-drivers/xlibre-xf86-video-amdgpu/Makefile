@@ -9,7 +9,7 @@ PATCHFILES+=	77b13493.patch:-p1 # https://gitlab.freedesktop.org/xorg/driver/xf8
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre amdgpu display driver
-WWW=		https://github.com/X11Libre/
+WWW=		https://github.com/X11Libre/xf86-video-amdgpu/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

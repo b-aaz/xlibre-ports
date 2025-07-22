@@ -4,7 +4,8 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre legacy Wacom tablet driver
-WWW=		https://linuxwacom.github.io/
+WWW=		https://github.com/X11Libre/xf86-input-wacom/ \
+		https://linuxwacom.github.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL

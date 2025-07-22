@@ -4,7 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre drivers meta-port
-WWW=		https://github.com/X11Libre
+WWW=		https://github.com/X11Libre/
 
 LICENSE=	none
 

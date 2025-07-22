@@ -4,7 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre legacy driver for Intel integrated graphics chipsets
-WWW=		https://01.org/linuxgraphics/
+WWW=		https://01.org/linuxgraphics/xf86-video-intel/
 
 LICENSE=	MIT	# various
 LICENSE_FILE=	${WRKSRC}/COPYING

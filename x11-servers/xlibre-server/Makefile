@@ -5,7 +5,7 @@ CATEGORIES=	x11-servers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	Xlibre X server
-WWW=		https://github.com/xlibre/xserver
+WWW=		https://github.com/X11Libre/xserver/
 
 LICENSE=	MIT
 

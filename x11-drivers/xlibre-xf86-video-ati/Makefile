@@ -4,6 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre ati display driver
+WWW=		https://github.com/X11Libre/xf86-video-ati/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -4,7 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre vesa display driver
-WWW=		https://githhub.com/X11Libre
+WWW=		https://githhub.com/X11Libre/xf86-video-vesa
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

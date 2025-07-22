@@ -4,7 +4,7 @@ CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	XLibre X server -- QXL display driver
-WWW=		https://github.com/X11Libre/
+WWW=		https://github.com/X11Libre/xf86-video-qxl/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
