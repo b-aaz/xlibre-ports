@@ -9,7 +9,7 @@ WWW=		https://github.com/X11Libre/xserver/
 
 LICENSE=	MIT
 
-CONFLICTS_INSTALL=	xorg-server
+CONFLICTS=	xorg-server
 
 USES+=		xlibre-cat:server
 
