@@ -27,9 +27,14 @@ TEST_TARGET=	check
 # XXX bug 214593: SNA crashes on pre-SandyBridge hardware
 CONFIGURE_ARGS+=--with-default-accel=uxa
 
-OPTIONS_DEFINE=	UDEV XVMC
+OPTIONS_DEFINE=	UDEV XVMC TOOLS
 OPTIONS_DEFAULT=UDEV XVMC
 OPTIONS_SUB=	yes
+
+TOOLS_DESC=		Enables misc tools
+TOOLS_USE=		XORG=x11,xcb,xinerama,xrandr,xdamage,xcursor,xtst,xfixes,xrender,xscrnsaver,xext
+TOOLS_LIB_DEPENDS+=	libxshmfence.so:x11/libxshmfence
+TOOLS_CONFIGURE_ENABLE=	tools
 
 UDEV_DESC=		udev-based monitor hotplug detection
 UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd
@@ -39,6 +44,7 @@ XVMC_LIB_DEPENDS=	libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
 XVMC_USE=		XORG=x11,xcb,xvmc
 XVMC_CONFIGURE_ENABLE=	xvmc
 XVMC_VARS=		USE_LDCONFIG=yes
+
 
 post-patch:
 .if ${CONFIGURE_ARGS:M--with-default-accel=uxa}
