@@ -12,8 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 CONFLICTS_INSTALL=	xf86-video-mga
 
 GH_TAGNAME=	3f2000a
-USES=		gl xlibre-cat:driver
-USE_GL=		gl
+USES=		xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 

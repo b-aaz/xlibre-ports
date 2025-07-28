@@ -13,8 +13,6 @@ CONFLICTS=	xorg-server
 
 USES+=		xlibre-cat:server
 
-# TODO: XLibre server seams to depend on libepoll-shim, it should be added here.
-
 OPTIONS_SUB=	YES
 OPTIONS_DEFINE=	UDEV SUID
 OPTIONS_DEFAULT=UDEV SUID
@@ -30,7 +28,8 @@ SUID_MESON_OFF=		-Dsuid_wrapper=false
 
 LIB_DEPENDS+=	libxcvt.so:x11/libxcvt \
 		libdrm.so:graphics/libdrm \
-		libepoxy.so:graphics/libepoxy
+		libepoxy.so:graphics/libepoxy \
+		libepoll-shim.so:devel/libepoll-shim
 
 MESON_ARGS+=	-Dlog_dir=/var/log \
 		-Ddrm=true

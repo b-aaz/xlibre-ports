@@ -21,7 +21,7 @@ CONFLICTS_INSTALL=	xf86-video-ati
 
 GH_TAGNAME=	a1af1a3
 USES=		gl xlibre xlibre-cat:driver
-USE_GL=		gl
+USE_GL=		gbm
 USE_XORG=	pciaccess
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

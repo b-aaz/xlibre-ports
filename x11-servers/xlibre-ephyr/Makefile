@@ -13,9 +13,8 @@ CONFLICTS_INSTALL=	xephyr
 USES+=		xlibre-cat:server
 USE_XORG+=xcb
 
-MESON_ARGS+=	-Ddrm=true
-LIB_DEPENDS+=	libdrm.so:graphics/libdrm \
-		libepoxy.so:graphics/libepoxy
+MESON_ARGS+=	-Dglamor=true
+LIB_DEPENDS+=	libepoxy.so:graphics/libepoxy
 
 LIB_DEPENDS+=	libxcb-render-util.so:x11/xcb-util-renderutil \
 		libxcb-image.so:x11/xcb-util-image \
