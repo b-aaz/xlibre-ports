@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-drivers
-PORTVERSION=	7.7
+PORTVERSION=	0.1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
