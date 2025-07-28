@@ -11,7 +11,7 @@
 #
 # If you feel something is missing from the list, please let us know.
 #
-# MAINTAINER:	x11@FreeBSD.org
+# MAINTAINER:	b-aazbsd@proton.me
 
 .if !defined(_INCLUDE_USES_XLIBRE_MK)
 _INCLUDE_USES_XLIBRE_MK=		yes
