@@ -1,5 +1,6 @@
 PORTNAME=	xlibre-xf86-video-intel
 DISTVERSION=	2.99.917-923
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm
 CONFLICTS_INSTALL=	xf86-video-intel
 
 USES=		localbase xlibre xlibre-cat:driver
-GH_TAGNAME=	5245636
+GH_TAGNAME=	a90192a
 USE_XORG=	pciaccess pixman
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no # XXX ports/242236

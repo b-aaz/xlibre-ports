@@ -1,5 +1,5 @@
-TIMESTAMP = 1751980767
-SHA256 (xlibre/driver/X11Libre-xf86-video-amdgpu-22.0.0-4fb6a27_GH0.tar.gz) = 3068a09b3ec00be0b75bc0d6c11618db1d2ab8ed6c4cf4b43e214fb56dc67d41
-SIZE (xlibre/driver/X11Libre-xf86-video-amdgpu-22.0.0-4fb6a27_GH0.tar.gz) = 100056
+TIMESTAMP = 1753708681
+SHA256 (xlibre/driver/X11Libre-xf86-video-amdgpu-22.0.0-4d5c637_GH0.tar.gz) = d40d12e51692951154f202bcd1e0632830e4b3e9f9e5c3b92d948d5429c8f46d
+SIZE (xlibre/driver/X11Libre-xf86-video-amdgpu-22.0.0-4d5c637_GH0.tar.gz) = 102711
 SHA256 (xlibre/driver/77b13493.patch) = 1e76bb36f7fd69e0556ae6b5a7d2331a711367b6a7421adc221f2fcae1aff82b
 SIZE (xlibre/driver/77b13493.patch) = 1269

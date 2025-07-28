@@ -2,6 +2,7 @@
 
 PORTNAME=	xlibre-xf86-video-amdgpu
 DISTVERSION=	22.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 PATCH_SITES=	https://gitlab.freedesktop.org/xorg/driver/${PORTNAME:C/xlibre-//}/-/commit/
@@ -22,7 +23,7 @@ ONLY_FOR_ARCHS_REASON=	KMS is required and currently only available on x86/arm64
 
 LIB_DEPENDS=	libdrm_amdgpu.so:graphics/libdrm
 
-GH_TAGNAME=	4fb6a27
+GH_TAGNAME=	4d5c637
 USES=		gl tar:xz xlibre-cat:driver
 USE_GL=		gbm
 
