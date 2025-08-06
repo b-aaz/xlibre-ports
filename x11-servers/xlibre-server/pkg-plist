@@ -36,6 +36,7 @@ include/xorg/fbdevhw.h
 include/xorg/fboverlay.h
 include/xorg/fbpict.h
 include/xorg/fbrop.h
+include/xorg/fd_notify.h
 include/xorg/fourcc.h
 include/xorg/gc.h
 include/xorg/gcstruct.h
