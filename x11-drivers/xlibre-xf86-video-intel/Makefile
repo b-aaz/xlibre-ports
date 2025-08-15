@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-video-intel
-DISTVERSION=	2.99.917-923
-PORTREVISION=	1
+PORTVERSION=	3.0.0.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -13,42 +12,42 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	only Intel integrated GPUs on x86 are supported
 
-LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm
+LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm \
+		libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
 
 CONFLICTS_INSTALL=	xf86-video-intel
 
-USES=		localbase xlibre xlibre-cat:driver
-GH_TAGNAME=	a90192a
-USE_XORG=	pciaccess pixman
-GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+USES=		localbase xlibre xlibre-cat:driver,meson
+USE_XORG=	pciaccess pixman x11 xcb xinerama xrandr xdamage xcursor xtst xfixes xrender xscrnsaver xext xv
 CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no # XXX ports/242236
-CONFIGURE_ARGS=	--with-builderstring="${DISTVERSIONFULL}"
 TEST_TARGET=	check
 
 # XXX bug 214593: SNA crashes on pre-SandyBridge hardware
-CONFIGURE_ARGS+=--with-default-accel=uxa
+MESON_ARGS+=-Ddefault-accel=uxa -Dbacklight-helper=false
 
-OPTIONS_DEFINE=	UDEV XVMC TOOLS
-OPTIONS_DEFAULT=UDEV XVMC
+OPTIONS_DEFINE=	UDEV XVMC UMS TOOLS VALGRIND
+OPTIONS_DEFAULT=UDEV XVMC UMS
 OPTIONS_SUB=	yes
 
 TOOLS_DESC=		Enables misc tools
-TOOLS_USE=		XORG=x11,xcb,xinerama,xrandr,xdamage,xcursor,xtst,xfixes,xrender,xscrnsaver,xext
-TOOLS_LIB_DEPENDS+=	libxshmfence.so:x11/libxshmfence
-TOOLS_CONFIGURE_ENABLE=	tools
+TOOLS_MESON_ENABLE=	tools
 
 UDEV_DESC=		udev-based monitor hotplug detection
 UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd
-UDEV_CONFIGURE_ENABLE=	udev
+UDEV_MESON_TRUE=	udev
 
-XVMC_LIB_DEPENDS=	libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
-XVMC_USE=		XORG=x11,xcb,xvmc
-XVMC_CONFIGURE_ENABLE=	xvmc
-XVMC_VARS=		USE_LDCONFIG=yes
+XVMC_MESON_ENABLE=	xvmc
 
+UMS_DESC=		Userspace Mode Setting for old chips.
+UMS_LIB_DEPENDS=	libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
+UMS_MESON_TRUE=		ums
+
+VALGRIND_DESC=		Enable valgrindified ioctls for debugging
+VALGRIND_BUILD_DEPENDS=	valgrind:devel/valgrind
+VALGRIND_MESON_TRUE=	valgrind
 
 post-patch:
-.if ${CONFIGURE_ARGS:M--with-default-accel=uxa}
+.if ${MESON_ARGS:M-Ddefault-accel=uxa}
 	@${REINPLACE_CMD} '/^Default/s/SNA/UXA/' ${WRKSRC}/man/intel.man
 .endif
 

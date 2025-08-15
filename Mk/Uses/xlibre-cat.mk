@@ -103,6 +103,7 @@ GH_ACCOUNT?=		X11Libre
 .  if ${_XLIBRE_CAT} == driver
 # Removes the xlibre- suffix from the PORTNAME
 GH_PROJECT?=		${PORTNAME:tl:C/xlibre-//}
+GH_TAGNAME?=	${PORTNAME}-${PORTVERSION}
 .  elif ${_XLIBRE_CAT} == server
 GH_PROJECT?=		xserver
 GH_TAGNAME?=	xlibre-xserver-${PORTVERSION}
@@ -145,8 +146,7 @@ USE_XORG+=	xi xorgproto
 CFLAGS+=	-Werror=uninitialized
 .    if ${_XLIBRE_BUILDSYS} == meson
 # Put special stuff for meson here
-#FIXME: This is a hack until the upstream fixes the default module folder!
-MESON_ARGS+= -Dxorg-module-dir='${PREFIX}/${MODULEDIR}'
+MESON_ARGS+= -Dxorg-module-dir='/${MODULEDIR}'
 .    else
 #FIXME: This is a hack until the upstream fixes the default module folder!
 CONFIGURE_ARGS+= --with-xorg-module-dir='${PREFIX}/${MODULEDIR}'
