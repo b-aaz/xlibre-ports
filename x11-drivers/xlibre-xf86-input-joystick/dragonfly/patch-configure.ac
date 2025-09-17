@@ -1,0 +1,26 @@
+--- configure.ac.orig
++++ configure.ac
+@@ -107,6 +107,23 @@ AM_CONDITIONAL(BSD_BACKEND, [test "x$bsd_backend" = xyes])
+ if test "x$bsd_backend" = xyes; then
+     AC_CHECK_HEADERS([dev/usb/usb_ioctl.h])
+     AC_DEFINE(BSD_BACKEND, 1, [Compile BSD usbhid backend])
++else
++    # On DragonFlyBSD the USB header files are stored in bus/u4b so check for
++    # them too.
++
++    bsd_backend=yes
++    AC_CHECK_HEADERS([bus/u4b/usb.h])
++    AC_CHECK_HEADERS([usbhid.h bus/u4b/usbhid.h],, [bsd_backend=no],
++    [[#if HAVE_BUS_U4B_USB_H
++    #include <bus/u4b/usb.h>
++    #endif
++    ]])
++    AC_CHECK_HEADERS([bus/u4b/usb_ioctl.h],, [bsd_backend=no])
++    AC_CHECK_LIB([usbhid],[hid_get_item],, [bsd_backend=no])
++    AM_CONDITIONAL(BSD_BACKEND, [test "x$bsd_backend" = xyes])
++    if test "x$bsd_backend" = xyes; then
++        AC_DEFINE(BSD_BACKEND, 1, [Compile DragonFlyBSD usbhid backend])
++    fi
+ fi
+ 
+ evdev_backend=yes

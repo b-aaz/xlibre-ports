@@ -10,6 +10,7 @@ LICENSE=	none
 
 USES=		metaport
 
+THIS_OPSYS!=	uname -s
 .include "../../x11-servers/xlibre-server/Makefile.version"
 MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
 VIDEODIR=	${MODULEDIR}/drivers
@@ -50,8 +51,13 @@ ${a:tu}_DESC=		Install ${a} ${type} driver
 . endfor
 .endfor
 
+.if ${THIS_OPSYS}==DragonFly
+OPTIONS_DEFINE_x86_64=	AMDGPU ATI INTEL VMMOUSE VMWARE
+OPTIONS_DEFAULT_x86_64=	VESA
+.else
 OPTIONS_DEFINE_amd64=	AMDGPU ATI INTEL VMMOUSE VMWARE
 OPTIONS_DEFAULT_amd64=	VESA
+.endif
 
 #OPTIONS_DEFINE_i386:=	${OPTIONS_DEFINE_amd64} GEODE
 #OPTIONS_DEFAULT_i386:=	${OPTIONS_DEFAULT_amd64}
@@ -70,7 +76,13 @@ QUIRKS=		keyboard:kbd
 .include <bsd.port.options.mk>
 
 # Manual add arch specific drivers so they be added to depend lines.
-.if ${ARCH}==i386 || ${ARCH}==amd64
+.if ${THIS_OPSYS}==DragonFly
+AMD64=x86_64
+.else
+AMD64=amd64
+.endif
+
+.if ${ARCH}==i386 || ${ARCH}==${AMD64}
 INPUT_DRIVERS+=	vmmouse
 VIDEO_DRIVERS+=	amdgpu ati intel vmware
 .endif

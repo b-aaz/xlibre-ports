@@ -11,7 +11,12 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+
+THIS_OPSYS!=	uname -s
+
+.if ${THIS_OPSYS}!=DragonFly
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
+.endif
 
 CONFLICTS_INSTALL=	xf86-input-wacom
 
