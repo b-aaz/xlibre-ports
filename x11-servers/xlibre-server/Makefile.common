@@ -62,9 +62,14 @@ PLIST_FILES=	bin/${BINARY_NAME} \
 .endif
 
 .include <bsd.port.pre.mk>
+.if ${OPSYS}==DragonFly
+AMD64=x86_64
+.else
+AMD64=amd64
+.endif
 
 .if ${PORT_OPTIONS:MLIBUNWIND}
-.  if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
+.  if ${ARCH} == aarch64 || ${ARCH} == ${AMD64} || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 MESON_ARGS+=	-Dlibunwind=true
 .  endif

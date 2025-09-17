@@ -1,0 +1,29 @@
+--- configure.ac.orig
++++ configure.ac
+@@ -132,7 +132,7 @@ case $host_os in
+ 	 AC_DEFINE(VMMOUSE_OS_GENERIC, 1,
+ 	           [Building for iopl / ioperm capable OS])
+      ;;
+-     *bsd*)
++     *bsd*|dragonfly*)
+          AC_DEFINE(VMMOUSE_OS_BSD, 1, [Building for BSD flavour])
+      ;;
+      solaris*)
+@@ -152,7 +152,7 @@ esac
+ case $host_cpu in
+      i*86)
+ 	case $host_os in
+-		*freebsd*)	AC_DEFINE(USE_DEV_IO) ;;
++		*freebsd*|*dragonfly*)	AC_DEFINE(USE_DEV_IO) ;;
+ 		*netbsd*)	AC_DEFINE([USE_I386_IOPL], [], [BSD i386 iopl])
+ 				use_i386_iopl=yes ;;
+ 		*openbsd*)	AC_DEFINE([USE_I386_IOPL], [], [BSD i386 iopl])
+@@ -161,7 +161,7 @@ case $host_cpu in
+ 	;;
+      x86_64*|amd64*)
+ 	case $host_os in
+-		*freebsd*)	AC_DEFINE(USE_DEV_IO, 1, [BSD /dev/io]) ;;
++		*freebsd*|*dragonfly*)	AC_DEFINE(USE_DEV_IO, 1, [BSD /dev/io]) ;;
+ 		*netbsd*)	AC_DEFINE(USE_X86_64_IOPL, 1, [BSD X86_64 iopl])
+ 				use_x86_64_iopl=yes ;;
+ 		*openbsd*)	AC_DEFINE(USE_AMD64_IOPL, 1, [BSD AMD64 iopl])

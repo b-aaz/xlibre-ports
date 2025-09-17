@@ -49,10 +49,16 @@
  #ifdef WSCONS_SUPPORT
  #include <dev/wscons/wsconsio.h>
  #endif
-@@ -47,9 +79,6 @@
+@@ -49,10 +49,11 @@
+ #include "usb.h"
  #endif
  
- #include <dev/usb/usb.h>
+-#include <dev/usb/usb.h>
++#ifndef __DragonFly__
++# include <dev/usb/usb.h>
++#else
++# include <bus/u4b/usb.h>
++#endif
 -#ifdef USB_GET_REPORT_ID
 -#define USB_NEW_HID
 -#endif

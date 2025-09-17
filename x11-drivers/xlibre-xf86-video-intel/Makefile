@@ -25,12 +25,21 @@ TEST_TARGET=	check
 # XXX bug 214593: SNA crashes on pre-SandyBridge hardware
 MESON_ARGS+=-Ddefault-accel=uxa -Dbacklight-helper=false
 
-OPTIONS_DEFINE=	UDEV XVMC UMS TOOLS VALGRIND
+OPTIONS_DEFINE=	UDEV XVMC UMS VALGRIND
 OPTIONS_DEFAULT=UDEV XVMC UMS
 OPTIONS_SUB=	yes
 
+THIS_OPSYS!=	uname -s
+
+.if ${THIS_OPSYS}!=DragonFly
+OPTIONS_DEFINE+=	TOOLS
 TOOLS_DESC=		Enables misc tools
-TOOLS_MESON_ENABLE=	tools
+TOOLS_MESON_TRUE=	tools
+.else
+MESON_ARGS+=	-Dtools=false
+PLIST_SUB+=	TOOLS="@comment "
+.endif
+
 
 UDEV_DESC=		udev-based monitor hotplug detection
 UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd

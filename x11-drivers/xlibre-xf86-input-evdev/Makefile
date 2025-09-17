@@ -14,7 +14,11 @@ CONFLICTS_INSTALL=	xf86-input-evdev
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libmtdev.so:devel/libmtdev
+
+THIS_OPSYS!=	uname -s
+.if ${THIS_OPSYS}!=DragonFly
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
+.endif
 
 GH_TAGNAME=	0b5b97b
 USES=		pathfix xlibre-cat:driver
