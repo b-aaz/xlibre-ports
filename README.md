@@ -10,7 +10,7 @@
 You need the ports tree installed to build these packages.
 
 ```sh
-git clone https://b-aaz/xlibre-ports/
+git clone https://github.com/b-aaz/xlibre-ports.git
 cd xlibre-ports/
 echo "OVERLAYS=$(pwd)/" >> /etc/make.conf
 make clean
