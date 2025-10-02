@@ -102,7 +102,7 @@ env_setup(){
 		if [ "$OS_NAME" = "DragonFly" ]
 		then
 			export PORTS_REPO_URL="https://github.com/dragonflybsd/dports"
-		elif
+		else
 			export PORTS_REPO_URL="https://github.com/freebsd/freebsd-ports"
 		fi
 	fi
