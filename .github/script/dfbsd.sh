@@ -85,7 +85,7 @@ env_setup(){
 		if [ "$OS_NAME" = "DragonFly" ]
 		then
 			export PORTS_DIR="/usr/dports"
-		elif
+		else
 			export PORTS_DIR="/usr/ports"
 		fi
 	fi
