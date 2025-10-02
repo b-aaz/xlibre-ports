@@ -128,7 +128,7 @@ debug_ci(){
 	border_color=1
 	title="DEBUG-SECTION"
 	[ -n "$1" ] && title="$1"
-	[ "$DEBUG_CI" = "YES"] &&
+	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::group::$title" &&
 		tput setaf $border_color &&
@@ -142,7 +142,7 @@ debug_ci(){
 debug_ci_end(){
 	text_color=6
 	border_color=1
-	[ "$DEBUG_CI" = "YES"] &&
+	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::endgroup::"
 		tput setaf $border_color
@@ -246,7 +246,7 @@ step_6(){
 step_7(){
 	section 'Install build dependencies'
 	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | cut -d '/' -f 4- | xargs pkg install -y
-	make -C ${PORTS_DIR}/devel/xorg-macros/ clean
+	make -C "${PORTS_DIR}/devel/xorg-macros/" clean
 	section_end
 }
 
@@ -271,7 +271,7 @@ step_10(){
 step_10(){
 	section 'Package'
 	export PACKAGES="$(pwd)/pkgs/"
-	mkdir $PACKAGES
+	mkdir "$PACKAGES"
 	make package
 	debug_ci && {
 		ls "${PACKAGES}"
@@ -283,10 +283,10 @@ step_10(){
 step_11(){
 	section 'Repo setup'
 	ABI="$(pkg config abi)"
-	mv $PACKAGES/All $PACKAGES/$ABI
-	pkg repo -l $PACKAGES/$ABI
+	mv "$PACKAGES/All" "$PACKAGES/$ABI"
+	pkg repo -l "$PACKAGES/$ABI"
 	pkg install -y tree
-	cd $PACKAGES/$ABI 
+	cd "$PACKAGES/$ABI"
 	tree -h -D -C -H -./ --houtro=/dev/null -T "XLibre binaries for $OS_NAME" ./ > ./index.html
 	debug_ci && {
 		pwd
@@ -305,9 +305,9 @@ step_11(){
 	then
 		eval "step_$1"
 	else
-		for i in "$(seq 0 11)"
+		for i in $(seq 0 11)
 		do
-			eval "step_$1" || exit
+			eval "step_$i" || exit
 		done
 	fi
 
