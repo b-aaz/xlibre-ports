@@ -78,6 +78,10 @@ export_not_defined(){
 }
 
 env_setup(){
+	# Forcing color
+	export FORCE_COLOR="1"
+	export CLICOLOR_FORCE="1"
+	export CLANG_FORCE_COLOR_DIAGNOSTICS="1"
 
 	export_not_defined OS_NAME "$(uname -s)"
 
@@ -125,6 +129,7 @@ env_setup(){
 	export_not_defined WITH_CCACHE_BUILD "YES"
 
 	export_not_defined DEBUG_CI "NO"
+
 	debug_ci && {
 		env
 		debug_ci_end
@@ -166,12 +171,12 @@ step_0(){
 	git clone "$REPO_URL"
 	git switch "$BRANCH"
 
+	section_end
+
 	debug_ci && {
 		ls .
 		debug_ci_end
 	}
-
-	section_end
 }
 step_1(){
 	section 'Perquisites'
@@ -182,7 +187,6 @@ step_1(){
 
 step_2(){
 	section 'Ports tree setup'
-	ls "${PORTS_DIR}"
 
 	if [ ! -f "${PORTS_DIR}/${PORTS_BRANCH}" ]
 	then
@@ -190,11 +194,12 @@ step_2(){
 			fetch "${PORTS_REPO_URL}/archive/refs/heads/${PORTS_BRANCH}.tar.gz" -o - | tar xf - -C "${PORTS_DIR}" --strip-components=1 &&
 			touch "${PORTS_DIR}/${PORTS_BRANCH}"
 	fi
+	section_end
+
 	debug_ci && {
 		ls "${PORTS_DIR}"
 		debug_ci_end
 	}
-	section_end
 }
 
 step_3(){
@@ -225,12 +230,12 @@ step_4(){
 		} || true
 	}
 
+	section_end
+	
 	debug_ci && {
 		grep -n '^TARGETS+=' "${PORTS_DIR}/Mk/bsd.port.subdir.mk"
 		debug_ci_end
 	}
-
-	section_end
 }
 
 step_5(){
@@ -239,11 +244,12 @@ step_5(){
 	echo 'WITH_DEBUG=yes' >> /etc/make.conf
 	echo 'DEBUG_FLAGS+= -O0' >> /etc/make.conf
 	echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+	section_end
+
 	debug_ci && {
 		cat /etc/make.conf
 		debug_ci_end
 	}
-	section_end
 }
 
 step_6(){
@@ -282,11 +288,12 @@ step_10(){
 	export PACKAGES="$(pwd)/pkgs/"
 	mkdir "$PACKAGES"
 	make package
+	section_end
+
 	debug_ci && {
 		ls "${PACKAGES}"
 		debug_ci_end
 	}
-	section_end
 }
 
 step_11(){
@@ -297,12 +304,13 @@ step_11(){
 	pkg install -y tree
 	cd "$PACKAGES/$ABI" || return
 	tree -h -D -C -H -./ --houtro=/dev/null -T "XLibre binaries for $OS_NAME" ./ > ./index.html
+	section_end
+
 	debug_ci && {
 		pwd
 		tree
 		debug_ci_end
 	}
-	section_end
 }
 
 {
