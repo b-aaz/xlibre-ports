@@ -1,7 +1,7 @@
 #!/bin/sh
 set_fg_color(){
-	[ "$1" -le 9 ] && [ "$1" -gt 0 ] && printf "%s" "\033[0;3$1m"
-	[ "$1" -eq 9 ] && printf "%s" "\033[0m"
+	[ "$1" -le 9 ] && [ "$1" -gt 0 ] && printf "%s" "[0;3$1m"
+	[ "$1" -eq 9 ] && printf "%s" "[0m"
 	true
 }
 	
@@ -16,8 +16,8 @@ on_bare() {
 }
 
 repeat_string() {
-	char= "$1"
-	count= "$2"
+	char="$1"
+	count="$2"
 	while [ "$count" -gt 0 ];
 	do
 		printf '%s' "$char"
@@ -25,11 +25,11 @@ repeat_string() {
 	done
 }
 center() {
-	string= "$1"
+	string="$1"
 	string_len=${#string}
-	pad_len= "$2"
-	pad_r_len=$(( ($pad_len - $string_len)/2 + ($pad_len - $string_len)%2 ))
-	pad_l_len=$(( ($pad_len - $string_len)/2 ))
+	pad_len="$2"
+	pad_r_len=$(( (pad_len - string_len)/2 + (pad_len - string_len)%2 ))
+	pad_l_len=$(( (pad_len - string_len)/2 ))
 
 	repeat_string ' ' "$pad_r_len" 
 	printf '%s' "$string"
@@ -65,13 +65,13 @@ section_end() {
 }
 
 not_defined(){
-	var_name= "$1"
-	var_value=$(eval 'echo "$'$var_name'"')
+	var_name="$1"
+	var_value=$(eval 'echo "$'"$var_name"'"')
 	[ -z "$var_value" ]
 }
 export_not_defined(){
-	var_name= "$1"
-	value= "$2"
+	var_name="$1"
+	value="$2"
 	not_defined "$var_name" && export "$var_name"="$value"
 }
 
@@ -204,24 +204,25 @@ step_3(){
 
 step_4(){
 	section 'Patch setup'
-{
-{
-patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk" << EOF
-@@ -173,6 +173,11 @@
- TARGETS+=	realinstall
- TARGETS+=	reinstall
- TARGETS+=	tags
-+TARGETS+=	stage
-+TARGETS+=	stage-qa
-+TARGETS+=	check-plist
-+TARGETS+=	run-depends-list
-+TARGETS+=	build-depends-list
+	{
+		{
+			patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk" <<-"EOF"
+			@@ -173,6 +173,11 @@
+			 TARGETS+=	realinstall
+			 TARGETS+=	reinstall
+			 TARGETS+=	tags
+			+TARGETS+=	stage
+			+TARGETS+=	stage-qa
+			+TARGETS+=	check-plist
+			+TARGETS+=	run-depends-list
+			+TARGETS+=	build-depends-list
 
- .for __target in ${TARGETS}
- .  if !target(${__target})
-EOF
-} || true
-}
+			 .for __target in ${TARGETS}
+			 .  if !target(${__target})
+			EOF
+		} || true
+	}
+
 	debug_ci && {
 		grep -n '^TARGETS+=' "${PORTS_DIR}/Mk/bsd.port.subdir.mk"
 		debug_ci_end
@@ -292,7 +293,7 @@ step_11(){
 	mv "$PACKAGES/All" "$PACKAGES/$ABI"
 	pkg repo -l "$PACKAGES/$ABI"
 	pkg install -y tree
-	cd "$PACKAGES/$ABI"
+	cd "$PACKAGES/$ABI" || return
 	tree -h -D -C -H -./ --houtro=/dev/null -T "XLibre binaries for $OS_NAME" ./ > ./index.html
 	debug_ci && {
 		pwd
