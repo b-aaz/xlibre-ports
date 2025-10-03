@@ -63,7 +63,7 @@ section_end() {
 	set_fg_color "$border_color"
 	printf '%s\n' '+===============================/'
 	set_fg_color 9
-	on_github && echo "::endgroup::"
+#	on_github && echo "::endgroup::"
 }
 
 not_defined(){
@@ -162,7 +162,7 @@ debug_ci_end(){
 		set_fg_color "$text_color"
 		echo "END-DEBUG-SECTION"
 		set_fg_color 9
-		on_github && echo "::endgroup::"
+#		on_github && echo "::endgroup::"
 	}
 }
 
