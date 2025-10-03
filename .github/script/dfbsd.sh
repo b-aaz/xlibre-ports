@@ -10,36 +10,36 @@ on_bare() {
 }
 
 repeat_string() {
-	char=$1
-	count=$2
-	while [ $count -gt 0 ];
+	char= "$1"
+	count= "$2"
+	while [ "$count" -gt 0 ];
 	do
 		printf '%s' "$char"
-		count=$(( $count - 1 ))
+		count=$(( "$count" - 1 ))
 	done
 }
 center() {
-	string=$1
+	string= "$1"
 	string_len=${#string}
-	pad_len=$2
+	pad_len= "$2"
 	pad_r_len=$(( ($pad_len - $string_len)/2 + ($pad_len - $string_len)%2 ))
 	pad_l_len=$(( ($pad_len - $string_len)/2 ))
 
-	repeat_string ' ' $pad_r_len 
+	repeat_string ' ' "$pad_r_len" 
 	printf '%s' "$string"
-	repeat_string ' ' $pad_l_len
+	repeat_string ' ' "$pad_l_len"
 }
 
 section() {
 	text_color=6
 	border_color=3
 	on_github && echo "::group::$1"
-	tput setaf $border_color
+	tput setaf "$border_color"
 	echo '/============================================================================\'
 	printf '%s' "|"
-	tput setaf $text_color
+	tput setaf "$text_color"
 	center "$1" 76
-	tput setaf $border_color
+	tput setaf "$border_color"
 	printf '%s\n' "|"
 	echo '\============================================================================/'
 	tput setaf 9
@@ -49,23 +49,23 @@ section_end() {
 	text_color=6
 	border_color=3
 	on_github && echo "::endgroup::"
-	tput setaf $border_color
+	tput setaf "$border_color"
 	printf '%s' '\================================+'
-	tput setaf $text_color
+	tput setaf "$text_color"
 	printf '%s' 'END-SECTION'
-	tput setaf $border_color
+	tput setaf "$border_color"
 	printf '%s\n' '+===============================/'
 	tput setaf 9
 }
 
 not_defined(){
-	var_name=$1
+	var_name= "$1"
 	var_value=$(eval 'echo "$'$var_name'"')
 	[ -z "$var_value" ]
 }
 export_not_defined(){
-	var_name=$1
-	value=$2
+	var_name= "$1"
+	value= "$2"
 	not_defined "$var_name" && export "$var_name"="$value"
 }
 
@@ -131,9 +131,9 @@ debug_ci(){
 	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::group::$title" &&
-		tput setaf $border_color &&
+		tput setaf "$border_color" &&
 		printf '%s' '>>>>>>>>>>>>>>' &&
-		tput setaf $text_color &&
+		tput setaf "$text_color" &&
 		echo "$title" &&
 		tput setaf 9
 	}
@@ -145,9 +145,9 @@ debug_ci_end(){
 	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::endgroup::"
-		tput setaf $border_color
+		tput setaf "$border_color"
 		echo '<<<<<<<<<<<<<<'
-		tput setaf $text_color
+		tput setaf "$text_color"
 		echo "END-DEBUG-SECTION"
 		tput setaf 9
 	}
@@ -174,12 +174,12 @@ step_1(){
 
 step_2(){
 	section 'Ports tree setup'
-	ls ${PORTS_DIR}
+	ls "${PORTS_DIR}"
 
 	if [ ! -f "${PORTS_DIR}/${PORTS_BRANCH}" ]
 	then
-		mkdir -p ${PORTS_DIR} &&
-			fetch "${PORTS_REPO_URL}/archive/refs/heads/${PORTS_BRANCH}.tar.gz" -o - | tar xf - -C ${PORTS_DIR} --strip-components=1 &&
+		mkdir -p "${PORTS_DIR}" &&
+			fetch "${PORTS_REPO_URL}/archive/refs/heads/${PORTS_BRANCH}.tar.gz" -o - | tar xf - -C "${PORTS_DIR}" --strip-components=1 &&
 			touch "${PORTS_DIR}/${PORTS_BRANCH}"
 	fi
 	debug_ci && {
@@ -192,7 +192,7 @@ step_2(){
 step_3(){
 	section 'ccache setup'
 	pkg install -y ccache-static
-	ccache --max-size=${CCACHE_SIZE}
+	ccache --max-size="${CCACHE_SIZE}"
 	section_end
 }
 
@@ -200,7 +200,7 @@ step_4(){
 	section 'Patch setup'
 {
 {
-patch -N ${PORTS_DIR}/Mk/bsd.port.subdir.mk << EOF
+patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk" << EOF
 @@ -173,6 +173,11 @@
  TARGETS+=	realinstall
  TARGETS+=	reinstall
@@ -217,7 +217,7 @@ EOF
 } || true
 }
 	debug_ci && {
-		grep -n '^TARGETS+=' ${PORTS_DIR}/Mk/bsd.port.subdir.mk
+		grep -n '^TARGETS+=' "${PORTS_DIR}/Mk/bsd.port.subdir.mk"
 		debug_ci_end
 	}
 
@@ -298,6 +298,7 @@ step_11(){
 
 {
 	export DEBUG_CI="YES"
+	export TERM="xterm"
 
 	env_setup
 
