@@ -39,14 +39,16 @@ center() {
 section() {
 	text_color=6
 	border_color=3
-	on_github && echo "::group::"
+	on_github && echo "::group::$1"
 	set_fg_color "$border_color"
 	echo '/============================================================================\'
+	set_fg_color "$border_color"
 	printf '%s' "|"
 	set_fg_color "$text_color"
 	center "$1" 76
 	set_fg_color "$border_color"
 	printf '%s\n' "|"
+	set_fg_color "$border_color"
 	echo '\============================================================================/'
 	set_fg_color 9
 
