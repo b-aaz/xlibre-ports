@@ -39,7 +39,7 @@ center() {
 section() {
 	text_color=6
 	border_color=3
-	on_github && echo "::group::$1"
+	on_github && echo "::group::"#$1"
 	set_fg_color "$border_color"
 	echo '/============================================================================\'
 	printf '%s' "|"
@@ -54,7 +54,6 @@ section() {
 section_end() {
 	text_color=6
 	border_color=3
-	on_github && echo "::endgroup::"
 	set_fg_color "$border_color"
 	printf '%s' '\================================+'
 	set_fg_color "$text_color"
@@ -62,6 +61,7 @@ section_end() {
 	set_fg_color "$border_color"
 	printf '%s\n' '+===============================/'
 	set_fg_color 9
+	on_github && echo "::endgroup::"
 }
 
 not_defined(){
@@ -150,12 +150,12 @@ debug_ci_end(){
 	border_color=1
 	[ "$DEBUG_CI" = "YES" ] &&
 	{
-		on_github && echo "::endgroup::"
 		set_fg_color "$border_color"
 		echo '<<<<<<<<<<<<<<'
 		set_fg_color "$text_color"
 		echo "END-DEBUG-SECTION"
 		set_fg_color 9
+		on_github && echo "::endgroup::"
 	}
 }
 
