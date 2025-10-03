@@ -1,4 +1,10 @@
 #!/bin/sh
+set_fg_color(){
+	[ "$1" -le 9 ] && [ "$1" -gt 0 ] && printf "%s" "\033[0;3$1m"
+	[ "$1" -eq 9 ] && printf "%s" "\033[0m"
+	true
+}
+	
 on_github() {
 [ "${GITHUB_ACTIONS}" = "true" ]
 }
@@ -34,28 +40,28 @@ section() {
 	text_color=6
 	border_color=3
 	on_github && echo "::group::$1"
-	tput setaf "$border_color"
+	set_fg_color "$border_color"
 	echo '/============================================================================\'
 	printf '%s' "|"
-	tput setaf "$text_color"
+	set_fg_color "$text_color"
 	center "$1" 76
-	tput setaf "$border_color"
+	set_fg_color "$border_color"
 	printf '%s\n' "|"
 	echo '\============================================================================/'
-	tput setaf 9
+	set_fg_color 9
 
 }
 section_end() {
 	text_color=6
 	border_color=3
 	on_github && echo "::endgroup::"
-	tput setaf "$border_color"
+	set_fg_color "$border_color"
 	printf '%s' '\================================+'
-	tput setaf "$text_color"
+	set_fg_color "$text_color"
 	printf '%s' 'END-SECTION'
-	tput setaf "$border_color"
+	set_fg_color "$border_color"
 	printf '%s\n' '+===============================/'
-	tput setaf 9
+	set_fg_color 9
 }
 
 not_defined(){
@@ -131,11 +137,11 @@ debug_ci(){
 	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::group::$title" &&
-		tput setaf "$border_color" &&
+		set_fg_color "$border_color" &&
 		printf '%s' '>>>>>>>>>>>>>>' &&
-		tput setaf "$text_color" &&
+		set_fg_color "$text_color" &&
 		echo "$title" &&
-		tput setaf 9
+		set_fg_color 9
 	}
 }
 
@@ -145,11 +151,11 @@ debug_ci_end(){
 	[ "$DEBUG_CI" = "YES" ] &&
 	{
 		on_github && echo "::endgroup::"
-		tput setaf "$border_color"
+		set_fg_color "$border_color"
 		echo '<<<<<<<<<<<<<<'
-		tput setaf "$text_color"
+		set_fg_color "$text_color"
 		echo "END-DEBUG-SECTION"
-		tput setaf 9
+		set_fg_color 9
 	}
 }
 
@@ -298,7 +304,6 @@ step_11(){
 
 {
 	export DEBUG_CI="YES"
-	export TERM="xterm"
 
 	env_setup
 
