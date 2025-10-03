@@ -39,7 +39,7 @@ center() {
 section() {
 	text_color=6
 	border_color=3
-	on_github && echo "::group::"#$1"
+	on_github && echo "::group::"
 	set_fg_color "$border_color"
 	echo '/============================================================================\'
 	printf '%s' "|"
