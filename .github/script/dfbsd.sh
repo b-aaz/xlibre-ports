@@ -314,8 +314,8 @@ step_11(){
 }
 
 {
+	on_github && echo "::endgroup::"
 	export DEBUG_CI="YES"
-
 	env_setup
 
 	if [ -n "$1" ] 
