@@ -359,7 +359,21 @@ step_12(){
 
 	mv "$PACKAGES/All" "./$ABI"
 	cd "./$ABI"  || return
-	pkg -ddddddddddddd -r . repo .
+
+	# Retry repo creation on DFBSD ad-infinitum with a timeout until it
+	# actually creates a repo.
+	# For some weird reason pkg just randomly gets stuck when trying to
+	# create a repo on DFBSB.
+	# ( I hate pkg-ng :-). )
+	if [ "$OS_NAME" == "DragonFly" ]
+	then
+		while ! timeout -k 15s 10s "pkg -dddddd repo ."
+		do
+			echo Retrying the repo creation
+		done
+	else
+		pkg repo .
+	fi
 
 	if [ -n "$SET_PREFIX_PATH" ]
 	then
