@@ -367,7 +367,7 @@ step_12(){
 	# ( I hate pkg-ng :-). )
 	if [ "$OS_NAME" == "DragonFly" ]
 	then
-		while ! timeout -k 15s 10s "pkg -dddddd repo ."
+		while ! timeout -k 15s 10s pkg -dddddd repo .
 		do
 			echo Retrying the repo creation
 		done
