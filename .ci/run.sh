@@ -181,14 +181,14 @@ step_1(){
 
 	if [ ! -d './.git' ]
 	then
-		git clone "$REPO_URL" ./ 
+		git clone "$REPO_URL" ./  || exit 1
 	else
 		echo Already cloned
 	fi
 	
 	if [ "$(git rev-parse --abbrev-ref HEAD)" != "$BRANCH" ] 
 	then
-		git switch "$BRANCH"
+		git switch "$BRANCH" || exit 1
 	else
 		echo Already switched
 	fi
@@ -255,8 +255,8 @@ step_2(){
 
 step_3(){
 	section 'ccache setup'
-	pkg install -y ccache-static
-	ccache --max-size="${CCACHE_SIZE}"
+	pkg install -y ccache-static || exit 1
+	ccache --max-size="${CCACHE_SIZE}" || exit 1
 	section_end
 }
 
@@ -310,39 +310,39 @@ step_5(){
 
 step_6(){
 	section 'Install run dependencies'
-	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y
+	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | cut -d '/' -f 4- | xargs pkg install -y || exit 1
 	section_end
 }
 
 step_7(){
 	section 'Install build dependencies'
-	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | cut -d '/' -f 4- | xargs pkg install -y
-	make -C "${PORTS_DIR}/devel/xorg-macros/" clean
+	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | cut -d '/' -f 4- | xargs pkg install -y || exit 1
+	make -C "${PORTS_DIR}/devel/xorg-macros/" clean || exit 1
 	section_end
 }
 
 step_8(){
 	section 'Stage'
-	make stage
+	make stage || exit 1
 	section_end
 }
 
 step_9(){
 	section 'Stage QA'
-	make stage-qa
+	make stage-qa || exit 1
 	section_end
 }
 
 step_10(){
 	section 'Check-plist'
-	make check-plist
+	make check-plist || exit 1
 	section_end
 }
 
 step_11(){
 	section 'Package'
 	mkdir "$PACKAGES"
-	make package
+	make package || exit 1
 	section_end
 
 	debug_ci && {
@@ -358,7 +358,7 @@ step_12(){
 	rm -rf ./* ./.*
 
 	mv "$PACKAGES/All" "./$ABI"
-	cd "./$ABI"  || return
+	cd "./$ABI" || exit 1
 
 	# Retry repo creation on DFBSD ad-infinitum with a timeout until it
 	# actually creates a repo.
@@ -372,7 +372,7 @@ step_12(){
 			echo Retrying the repo creation
 		done
 	else
-		pkg repo .
+		pkg repo . || exit 1
 	fi
 
 	if [ -n "$SET_PREFIX_PATH" ]
