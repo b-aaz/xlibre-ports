@@ -1,3 +1,3 @@
-TIMESTAMP = 1751186053
-SHA256 (xlibre/driver/X11Libre-xf86-input-synaptics-1.9.1-42ac305_GH0.tar.gz) = 5df31016ef0ac3321b824c28036a3552e414f78ef32809316c06db12daf854e5
-SIZE (xlibre/driver/X11Libre-xf86-input-synaptics-1.9.1-42ac305_GH0.tar.gz) = 90634
+TIMESTAMP = 1760813265
+SHA256 (xlibre/driver/X11Libre-xf86-input-synaptics-1.10.0.2-xlibre-xf86-input-synaptics-1.10.0.2_GH0.tar.gz) = 3e6bc8453f5f957074db28b12e4826ef65ab017e0dd5e34a29d57692ce0c7fe5
+SIZE (xlibre/driver/X11Libre-xf86-input-synaptics-1.10.0.2-xlibre-xf86-input-synaptics-1.10.0.2_GH0.tar.gz) = 95014

@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-synaptics
-PORTVERSION=	1.9.1
+PORTVERSION=	1.10.0.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-input-synaptics
 
-GH_TAGNAME=	42ac305
 USES=		pathfix xorg xlibre-cat:driver
 USE_XORG=	x11 xtst
 

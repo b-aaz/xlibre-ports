@@ -1,3 +1,3 @@
-TIMESTAMP = 1751186063
-SHA256 (xlibre/driver/X11Libre-xf86-input-vmmouse-13.1.0-f27f2b1_GH0.tar.gz) = 64c494055309781dd5d83f87f293d8581c9cacdb1e205c99286515629bcba79f
-SIZE (xlibre/driver/X11Libre-xf86-input-vmmouse-13.1.0-f27f2b1_GH0.tar.gz) = 29361
+TIMESTAMP = 1760830348
+SHA256 (xlibre/driver/X11Libre-xf86-input-vmmouse-13.2.0.2-fa6a064_GH0.tar.gz) = dbbdf597b70dec88143c1c22c98579053c2c782b6f20e4fb276a27dfa874f158
+SIZE (xlibre/driver/X11Libre-xf86-input-vmmouse-13.2.0.2-fa6a064_GH0.tar.gz) = 31247

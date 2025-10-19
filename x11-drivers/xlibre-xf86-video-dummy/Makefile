@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-dummy
-PORTVERSION=	0.3.8
+PORTVERSION=	0.4.1.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-video-dummy
 
-GH_TAGNAME=	dd676a9
 USES=		xlibre-cat:driver
 
 .include <bsd.port.mk>

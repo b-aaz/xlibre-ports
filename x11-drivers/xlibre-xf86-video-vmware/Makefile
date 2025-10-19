@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-vmware
-PORTVERSION=	13.3.0
+PORTVERSION=	13.4.0.3
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -14,7 +14,6 @@ ONLY_FOR_ARCHS_REASON=	vmware gfx protocol is only supported on x86-compatible a
 
 CONFLICTS_INSTALL=	xf86-video-vmware
 
-GH_TAGNAME=	90c79a5
 USES=		xlibre-cat:driver
 
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm \

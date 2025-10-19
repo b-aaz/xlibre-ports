@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-elographics
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.4.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-input-elographics
 
-GH_TAGNAME=	80ef66f
 USES=		xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

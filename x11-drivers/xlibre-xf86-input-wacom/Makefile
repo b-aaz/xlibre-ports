@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-wacom
-PORTVERSION=	0.39.0
+PORTVERSION=	1.2.3.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -20,7 +20,6 @@ RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
 CONFLICTS_INSTALL=	xf86-input-wacom
 
-GH_TAGNAME=	2060426
 USES=		gmake pathfix xorg xlibre-cat:driver
 USE_XORG=	x11 xext xinerama xrandr
 LDFLAGS+=	-Wl,--as-needed # Xext

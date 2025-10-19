@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-evdev
-PORTVERSION=	2.10.6
+PORTVERSION=	2.11.0.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -20,7 +20,6 @@ THIS_OPSYS!=	uname -s
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 .endif
 
-GH_TAGNAME=	0b5b97b
 USES=		pathfix xlibre-cat:driver
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	UDEV_CFLAGS=" " UDEV_LIBS=" "

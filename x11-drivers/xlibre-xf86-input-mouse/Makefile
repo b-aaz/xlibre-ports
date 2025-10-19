@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-mouse
-PORTVERSION=	1.9.3
+PORTVERSION=	1.9.5.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-input-mouse
 
-GH_TAGNAME=	6d84baa
 USES=		pathfix xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share

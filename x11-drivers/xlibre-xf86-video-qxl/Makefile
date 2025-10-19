@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-qxl
-DISTVERSION=	0.1.6
+DISTVERSION=	0.1.6.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -16,7 +16,6 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 LIB_DEPENDS=	libspice-server.so:devel/libspice-server \
 		libudev.so:devel/libudev-devd
 
-GH_TAGNAME=	39130a4
 USES=		localbase:ldflags pkgconfig python shebangfix tar:xz xorg \
 		xlibre-cat:driver
 USE_XORG=	xfont2

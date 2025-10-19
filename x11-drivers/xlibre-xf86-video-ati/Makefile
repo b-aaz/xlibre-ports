@@ -1,6 +1,5 @@
 PORTNAME=	xlibre-xf86-video-ati
-PORTVERSION=	19.1.0
-PORTREVISION=	1
+PORTVERSION=	22.0.0.3
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -19,7 +18,6 @@ LIB_DEPENDS=	libpciaccess.so:devel/libpciaccess \
 
 CONFLICTS_INSTALL=	xf86-video-ati
 
-GH_TAGNAME=	a1af1a3
 USES=		gl xlibre xlibre-cat:driver
 USE_GL=		gbm
 USE_XORG=	pciaccess

@@ -1,5 +1,6 @@
 PORTNAME=	xlibre-xf86-input-vmmouse
-PORTVERSION=	13.1.0
+PORTVERSION=	13.2.0.2
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,8 +12,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-input-vmmouse
 
-GH_TAGNAME=	f27f2b1
 USES=		gmake xlibre-cat:driver
+
+GH_TAGNAME=	fa6a064
 
 THIS_OPSYS!=	uname -s
 

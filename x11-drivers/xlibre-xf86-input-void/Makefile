@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-void
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.2.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	xf86-input-void
 
-GH_TAGNAME=	b43e11e
 USES=		xlibre-cat:driver
 
 GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
