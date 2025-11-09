@@ -310,7 +310,7 @@ step_5(){
 
 step_6(){
 	section 'Install run dependencies'
-	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | xargs pkg install -y || exit 1
+	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v "x11-drivers/xf86-video-scfb" | xargs pkg install -y || exit 1
 	
 	section_end
 }
