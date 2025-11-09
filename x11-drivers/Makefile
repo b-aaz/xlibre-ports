@@ -21,5 +21,7 @@
     SUBDIR += xlibre-xf86-video-qxl
     SUBDIR += xlibre-xf86-video-vesa
     SUBDIR += xlibre-xf86-video-vmware
+    SUBDIR += xf86-video-scfb
+    SUBDIR += xf86-input-egalax
 
 .include <bsd.port.subdir.mk>
