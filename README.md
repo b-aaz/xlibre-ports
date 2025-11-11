@@ -6,13 +6,20 @@
 ---
 ## Installing the packages from sources:
 
-You need the ports tree installed to build these packages.
+Firstly, make sure that you have the FreeBSD ports tree is installed and fully populated in `/usr/ports`.
+[FreeBSD Handbook - Installing the Ports Collection](https://docs.freebsd.org/en/books/handbook/ports/#ports-using-installation-methods).
 
+Then, clone this tree, enable it as an overlay, and clean everything just to be sure:
 ```sh
 git clone https://github.com/b-aaz/xlibre-ports.git
 cd xlibre-ports/
 echo "OVERLAYS=$(pwd)/" >> /etc/make.conf
 make clean
+```
+
+Finaly, to build and install a port, move to its directory and run `make install`. For example installing xlibre-server would be as follows:
+```sh
+cd x11-servers/xlibre-server
 make install
 ```
 ---
