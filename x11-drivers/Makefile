@@ -1,5 +1,7 @@
     COMMENT = X11 drivers
 
+    SUBDIR += xf86-input-egalax
+    SUBDIR += xf86-video-scfb
     SUBDIR += xlibre-drivers
     SUBDIR += xlibre-xf86-input-elographics
     SUBDIR += xlibre-xf86-input-evdev
@@ -21,7 +23,7 @@
     SUBDIR += xlibre-xf86-video-qxl
     SUBDIR += xlibre-xf86-video-vesa
     SUBDIR += xlibre-xf86-video-vmware
-    SUBDIR += xf86-video-scfb
-    SUBDIR += xf86-input-egalax
+    SUBDIR += xorgxrdp
+    SUBDIR += xorgxrdp-devel
 
 .include <bsd.port.subdir.mk>
