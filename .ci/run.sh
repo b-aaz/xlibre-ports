@@ -310,7 +310,7 @@ step_5(){
 
 step_6(){
 	section 'Install run dependencies'
-	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v "x11-drivers/xf86-video-scfb" | xargs pkg install -y || exit 1
+	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11-drivers/xf86-video-scfb\|x11/plasma6-plasma$\|x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
 	[ "$OS_NAME" != "DragonFly" ] &&  pkg install -y nvidia-kmod
 	
 	section_end
@@ -318,7 +318,7 @@ step_6(){
 
 step_7(){
 	section 'Install build dependencies'
-	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | awk -F "/" '{print $(NF-1) "/" $NF}' | xargs pkg install -y || exit 1
+	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
 	make -C "${PORTS_DIR}/devel/xorg-macros/" clean || exit 1
 	section_end
 }
