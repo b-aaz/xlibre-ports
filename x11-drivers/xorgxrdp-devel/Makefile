@@ -67,4 +67,3 @@ pre-configure:
 	@cd ${WRKSRC} && ./bootstrap
 
 .include <bsd.port.mk>
-

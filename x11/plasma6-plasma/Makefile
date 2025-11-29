@@ -11,7 +11,7 @@ FLAVORS=	xorg xlibre
 FLAVOR?=	${FLAVORS:[2]}
 
 USES=		kde:6 metaport qt:6
-USE_KDE=	${_USE_PLASMA_ALL:Nplasma-pa} 
+USE_KDE=	${_USE_PLASMA_ALL:Nplasma-pa}
 
 OPTIONS_DEFINE=		PULSEAUDIO QT5
 OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
@@ -26,6 +26,8 @@ BROKEN_DragonFly= BROKEN due to missing dependencies in DPorts
 
 .if ${FLAVOR} == xlibre
 PKGNAMEPREFIX:=		xlibre-${PKGNAMEPREFIX}
+
+# Make the XLibre flavor of this port depend on the XLibre flavor of plasma-desktop
 RUN_DEPENDS:=${RUN_DEPENDS:S/plasma-desktop/plasma-desktop@xlibre/}
 RUN_DEPENDS:=${BUILD_DEPENDS:S/plasma-desktop/plasma-desktop@xlibre/}
 CONFLICTS=plasma6-plasma-desktop

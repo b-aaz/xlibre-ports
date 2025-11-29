@@ -31,7 +31,7 @@ GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 .if ${THIS_OPSYS}==DragonFly
 CONFIGURE_ARGS+=	--with-hal-callouts-dir=${PREFIX}/libexec/hal/scripts
-PLIST_FILES+=		libexec/hal/scripts/hal-probe-vmmouse		
+PLIST_FILES+=		libexec/hal/scripts/hal-probe-vmmouse
 .endif
 
 .include <bsd.port.mk>

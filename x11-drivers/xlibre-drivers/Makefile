@@ -11,6 +11,7 @@ LICENSE=	none
 USES=		metaport
 
 THIS_OPSYS!=	uname -s
+
 .include "../../x11-servers/xlibre-server/Makefile.version"
 MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
 XORG_MODULEDIR=	${PREFIX}/lib/xorg/modules/
@@ -29,7 +30,6 @@ INPUT_DRIVERS=		elographics \
 			void \
 			egalax \
 			wacom
-
 
 VIDEO_DRIVERS=		ast \
 			dummy \
@@ -50,12 +50,13 @@ ${a:tu}_DESC=		Install ${a} ${type} driver
 .endfor
 
 .if ${THIS_OPSYS}==DragonFly
-OPTIONS_DEFINE_x86_64=	AMDGPU ATI INTEL VMMOUSE VMWARE
-OPTIONS_DEFAULT_x86_64=	VESA
+AMD64=x86_64
 .else
-OPTIONS_DEFINE_amd64=	AMDGPU ATI INTEL VMMOUSE VMWARE
-OPTIONS_DEFAULT_amd64=	VESA
+AMD64=amd64
 .endif
+
+OPTIONS_DEFINE_${AMD64}=	AMDGPU ATI INTEL VMMOUSE VMWARE
+OPTIONS_DEFAULT_${AMD64}=	VESA
 
 #OPTIONS_DEFINE_i386:=	${OPTIONS_DEFINE_amd64} GEODE
 #OPTIONS_DEFAULT_i386:=	${OPTIONS_DEFAULT_amd64}
@@ -72,12 +73,6 @@ QUIRKS=		keyboard:kbd
 NONXLIBRE=	scfb egalax #geode
 
 .include <bsd.port.options.mk>
-
-.if ${THIS_OPSYS}==DragonFly
-AMD64=x86_64
-.else
-AMD64=amd64
-.endif
 
 # Manual add arch specific drivers so they be added to depend lines.
 .if ${ARCH}==i386 || ${ARCH}==${AMD64}

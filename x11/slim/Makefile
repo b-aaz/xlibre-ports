@@ -24,11 +24,12 @@ CPE_VENDOR=	berlios
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xft xmu xrandr xrender xt
 
 .if ${FLAVOR} == xlibre
-PKGNAMEPREFIX=		xlibre-
-USES+=			xlibre
-USE_XLIBRE+=		xlibre-server
+PKGNAMEPREFIX=	xlibre-
+USES+=		xlibre
+USE_XLIBRE+=	xlibre-server
 .else
-USE_XORG+=		xorg-server
+USE_XORG+=	xorg-server
+CONFLICTS_BUILD+=	xlibre-server
 .endif
 
 USE_RC_SUBR=	slim
