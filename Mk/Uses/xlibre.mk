@@ -39,6 +39,7 @@ XLIBRE_MODULES=	xlibre-server \
 # Register all xlibre .pc files here.
 # foo_LIB_PC_DEPENDS means it should go to BUILD_DEPENDS *and* RUN_DEPENDS.
 xlibre-server_LIB_PC_DEPENDS=	${PREFIX}/libdata/pkgconfig/xorg-server.pc:x11-servers/xlibre-server
+xlibre-server_CONFLICTS=	xorg-server
 xlibre-macros_BUILD_DEPENDS=	${PREFIX}/libdata/pkgconfig/xorg-macros.pc:devel/xorg-macros
 
 # Add explicit X options to avoid problems with false positives in configure
@@ -59,6 +60,7 @@ IGNORE=		requires unknown xlibre module (${_module})
 .    endif
 LIB_PC_DEPENDS+=${${_module}_LIB_PC_DEPENDS}
 BUILD_DEPENDS+=	${${_module}_BUILD_DEPENDS}
+CONFLICTS+=	${${_module}_CONFLICTS}
 .  endfor
 
 RUN_DEPENDS+=	${LIB_PC_DEPENDS}
