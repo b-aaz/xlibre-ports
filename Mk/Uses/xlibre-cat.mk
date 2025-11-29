@@ -154,8 +154,6 @@ USE_XORG+=	xi xorgproto
 CFLAGS+=	-Werror=uninitialized
 .    if ${_XLIBRE_BUILDSYS} == meson
 # Put special stuff for meson here
-#FIXME: This is a hack until the upstream fixes the default module folder!
-MESON_ARGS+= -Dxorg-module-dir='/${MODULEDIR}'
 .    else
 CONFIGURE_ENV+=	PKG_CONFIG_PATH=${PREFIX}/libdata/pkgconfig/ \
 		DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
