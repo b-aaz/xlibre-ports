@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-dummy
-PORTVERSION=	0.4.1.2
+PORTVERSION=	0.4.1.4
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me

@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-ati
-PORTVERSION=	22.0.0.3
+PORTVERSION=	22.0.0.4
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
