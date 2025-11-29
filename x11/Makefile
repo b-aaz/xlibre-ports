@@ -3,6 +3,7 @@
     THIS_OPSYS!=	uname -s
 
     SUBDIR += xlibre
+    SUBDIR += slim
 
 .if ${THIS_OPSYS}!=DragonFly
     SUBDIR += kde
