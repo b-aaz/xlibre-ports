@@ -55,7 +55,9 @@ This is to ease debugging in case of problems.
 Installing the video card drivers should be followed as instructed in the
  [FreeBSD handbook]( https://docs.freebsd.org/en/books/handbook/x11/#x-graphic-card-drivers ).
 
+## Help this project out!
 
+You can help this project by donating via:
 
-It is recommended that you have _some_ `ports` and `pkg` knowledge before
-installing these ports.  
+- BTC: `bc1qjax34x5277g5d4zfltxf59ddk7qrr90w4x0le3`
+- XMR: Coming soon!
