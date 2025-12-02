@@ -10,10 +10,13 @@ task:
     name: FreeBSD 15 binaries
     alias: bins
     only_if: $CIRRUS_BRANCH != "x11set"
-    freebsd_instance:
+    compute_engine_instance:
+      image_project: freebsd-org-cloud-dev
+      image: freebsd-15-0-release-amd64-ufs
+      platform: freebsd
       cpu: 4
       memory: 8G
-      image: freebsd-15-0-release-amd64-ufs
+      disk: 40 #GB
     <<: *COMMON
 
     portstree_cache:
@@ -34,10 +37,13 @@ task:
     name: FreeBSD 15 sets
     alias: sets
     only_if: $CIRRUS_BRANCH == "x11set"
-    freebsd_instance:
+    compute_engine_instance:
+      image_project: freebsd-org-cloud-dev
+      image: freebsd-15-0-release-amd64-ufs
+      platform: freebsd
       cpu: 4
       memory: 8G
-      image: freebsd-15-0-release-amd64-ufs
+      disk: 40 #GB
     <<: *COMMON
 
     portstree_cache:
@@ -61,10 +67,13 @@ task:
     name: FreeBSD binaries
     alias: bins
     only_if: $CIRRUS_BRANCH != "x11set"
-    freebsd_instance:
+    compute_engine_instance:
+      image_project: freebsd-org-cloud-dev
+      image: freebsd-14-3-release-amd64-ufs
+      platform: freebsd
       cpu: 4
       memory: 8G
-      image: freebsd-14-3-release-amd64-ufs
+      disk: 40 #GB
     <<: *COMMON
 
     portstree_cache:
@@ -85,10 +94,13 @@ task:
     name: FreeBSD sets
     alias: sets
     only_if: $CIRRUS_BRANCH == "x11set"
-    freebsd_instance:
+    compute_engine_instance:
+      image_project: freebsd-org-cloud-dev
+      image: freebsd-14-3-release-amd64-ufs
+      platform: freebsd
       cpu: 4
       memory: 8G
-      image: freebsd-14-3-release-amd64-ufs
+      disk: 40 #GB
     <<: *COMMON
 
     portstree_cache:
