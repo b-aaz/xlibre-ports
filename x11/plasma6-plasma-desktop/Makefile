@@ -23,16 +23,22 @@ FLAVORS=	xorg xlibre
 FLAVOR?=	${FLAVORS:[2]}
 
 .if ${FLAVOR} == xlibre
-PKGNAMEPREFIX=		xlibre-plasma${_KDE_VERSION}-
+PKGNAMEPREFIX=	xlibre-plasma${_KDE_VERSION}-
 BUILD_DEPENDS+=	xlibre-xf86-input-evdev>0:x11-drivers/xlibre-xf86-input-evdev \
 		xlibre-xf86-input-libinput>0:x11-drivers/xlibre-xf86-input-libinput
 RUN_DEPENDS+=	xlibre-xf86-input-evdev>0:x11-drivers/xlibre-xf86-input-evdev \
 		xlibre-xf86-input-libinput>0:x11-drivers/xlibre-xf86-input-libinput
+
+CONFLICTS=	xf86-input-evdev \
+		xf86-input-libinput
 .else
 BUILD_DEPENDS+=	xf86-input-evdev>0:x11-drivers/xf86-input-evdev \
 		xf86-input-libinput>0:x11-drivers/xf86-input-libinput
 RUN_DEPENDS+=	xf86-input-evdev>0:x11-drivers/xf86-input-evdev \
 		xf86-input-libinput>0:x11-drivers/xf86-input-libinput
+
+CONFLICTS=	xlibre-xf86-input-evdev \
+		xlibre-xf86-input-libinput
 .endif
 
 USES=		cmake gettext gl gnome kde:6 pkgconfig python qt:6 tar:xz xorg
