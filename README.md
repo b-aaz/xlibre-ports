@@ -133,16 +133,17 @@ You can take a look at the man page [ports(7)](https://man.freebsd.org/cgi/man.c
 
 On each commit to the master branch, the CI system starts builds on FreeBSD
 and DragonFlyBSD for all the packages in this overlay, and on a successful build
-two [pkg(7)](https://man.freebsd.org/cgi/man.cgi?query=pkg&sektion=7)
+multiple [pkg(7)](https://man.freebsd.org/cgi/man.cgi?query=pkg&sektion=7)
 repositories are generated containing binary packages of these ports.
 These repositories are then uploaded as artifacts, overwriting their previous
 versions.
 
 __Important note__: The packages are currently generated only for the following ABIs:
 
-| DragonflyBSD                | FreeBSD              |
+| DragonflyBSD             | FreeBSD              |
 |--------------------------|----------------------|
 | [`dragonfly:6.4:x86:64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/dragonfly:6.4:x86:64/index.html) | [`FreeBSD:14:amd64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/FreeBSD:14:amd64/index.html) |
+|                          | [`FreeBSD:15:amd64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/FreeBSD:15:amd64/index.html) |
 
 __Note__: HTML index files of the packages are also generated in each repository.
 View them by clicking on the table entires above.
