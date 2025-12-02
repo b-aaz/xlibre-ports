@@ -383,7 +383,8 @@ step_12(){
 	else
 		binorset="binaries"
 	fi
-	tree -h -D -C -H -./ --houtro=/dev/null -T "XLibre $binorset for $OS_NAME" ./ > ./index.html
+	title_msg="XLibre $binorset for $OS_NAME $(echo "$ABI" | cut -d: -f 2- | tr ':' ' ')"
+	tree -h -D -C -H -./ --houtro=/dev/null -T "$title_msg" ./ > ./index.html
 	section_end
 
 	debug_ci && {
