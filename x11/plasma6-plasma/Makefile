@@ -29,7 +29,7 @@ PKGNAMEPREFIX:=		xlibre-${PKGNAMEPREFIX}
 
 # Make the XLibre flavor of this port depend on the XLibre flavor of plasma-desktop
 RUN_DEPENDS:=${RUN_DEPENDS:S/plasma-desktop/plasma-desktop@xlibre/}
-RUN_DEPENDS:=${BUILD_DEPENDS:S/plasma-desktop/plasma-desktop@xlibre/}
+BUILD_DEPENDS:=${BUILD_DEPENDS:S/plasma-desktop/plasma-desktop@xlibre/}
 CONFLICTS=plasma6-plasma-desktop
 .else
 CONFLICTS=xlibre-plasma6-plasma-desktop
