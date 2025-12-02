@@ -7,6 +7,57 @@ common: &COMMON
     timeout_in: 90m
 
 task:
+    name: FreeBSD 15 binaries
+    alias: bins
+    only_if: $CIRRUS_BRANCH != "x11set"
+    freebsd_instance:
+      cpu: 4
+      memory: 8G
+      image: freebsd-15-0-release-amd64-ufs
+    <<: *COMMON
+
+    portstree_cache:
+      folder: /usr/ports/
+    ccache_cache:
+      folder: ${CCACHE_DIR}
+    pkg_cache:
+      folder: /var/cache/pkg/
+     
+    run_script:
+      - |
+       ./.ci/run.sh
+
+    bins_artifacts:
+      path: "./**/*"
+      
+task:
+    name: FreeBSD 15 sets
+    alias: sets
+    only_if: $CIRRUS_BRANCH == "x11set"
+    freebsd_instance:
+      cpu: 4
+      memory: 8G
+      image: freebsd-15-0-release-amd64-ufs
+    <<: *COMMON
+
+    portstree_cache:
+      folder: /usr/ports/
+    ccache_cache:
+      folder: ${CCACHE_DIR}
+    pkg_cache:
+      folder: /var/cache/pkg/
+      
+    env:
+      SET_PREFIX_PATH: '/usr/X11R7'
+    
+    run_script:
+      - |
+       ./.ci/run.sh
+
+    sets_artifacts:
+      path: "./**/*"
+
+task:
     name: FreeBSD binaries
     alias: bins
     only_if: $CIRRUS_BRANCH != "x11set"
