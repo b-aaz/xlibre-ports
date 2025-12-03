@@ -6,13 +6,16 @@
     SUBDIR += slim
 
 .if ${THIS_OPSYS}!=DragonFly
-    SUBDIR += kde
     SUBDIR += nvidia-driver
     SUBDIR += nvidia-driver-304
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
     SUBDIR += nvidia-driver-devel
+.endif
+
+.if ${CI}!=true
+    SUBDIR += kde
     SUBDIR += plasma6-plasma
     SUBDIR += plasma6-plasma-desktop
 .endif
