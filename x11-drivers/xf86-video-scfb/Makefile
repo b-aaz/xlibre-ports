@@ -8,10 +8,10 @@ COMMENT=	X.Org syscons display driver
 WWW=		https://github.com/rayddteam/xf86-video-scfb
 
 FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVOR?=	${FLAVORS:[1]}
 
+xlibre_PKGNAMEPREFIX=	xlibre-
 .if ${FLAVOR} == xlibre
-PKGNAMEPREFIX=	xlibre-
 USES=		xlibre-cat:driver
 .else
 USES=		xorg-cat:driver
