@@ -9,10 +9,10 @@ COMMENT=	eGalax touch screen input driver for X.Org
 LICENSE=	BSD2CLAUSE
 
 FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVOR?=	${FLAVORS:[1]}
 
+xlibre_PKGNAMEPREFIX=	xlibre-
 .if ${FLAVOR} == xlibre
-PKGNAMEPREFIX=	xlibre-
 USES=		xlibre-cat:driver
 .else
 USES=		xorg-cat:driver
