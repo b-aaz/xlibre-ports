@@ -16,8 +16,8 @@ WWW=		https://www.xrdp.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 
 BUILD_DEPENDS=	nasm:devel/nasm
 RUN_DEPENDS=	xauth:x11/xauth
