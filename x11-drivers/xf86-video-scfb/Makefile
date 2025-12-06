@@ -7,8 +7,8 @@ MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org syscons display driver
 WWW=		https://github.com/rayddteam/xf86-video-scfb
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 
 .if ${FLAVOR} == xlibre
 PKGNAMEPREFIX=	xlibre-
