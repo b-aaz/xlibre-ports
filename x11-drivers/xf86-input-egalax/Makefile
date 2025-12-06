@@ -11,8 +11,8 @@ LICENSE=	BSD2CLAUSE
 FLAVORS=	xlibre xorg
 FLAVOR?=	${FLAVORS:[1]}
 
-xlibre_PKGNAMEPREFIX=	xlibre-
 .if ${FLAVOR} == xlibre
+PKGNAMEPREFIX=	xlibre-
 USES=		xlibre-cat:driver
 .else
 USES=		xorg-cat:driver
