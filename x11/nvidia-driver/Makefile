@@ -28,8 +28,8 @@ LICENSE_FILE=	${WRKSRC}/doc/license.txt
 .include "${.CURDIR}/../nvidia-driver/Makefile.version"
 .include "${.CURDIR}/../nvidia-driver/Makefile.common"
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 # the package provides lib32 versions of the libraries, which then depends
 # themselves in non existing lib32 libraries, so we don't want the package
 # to end up depending on non existing libraries

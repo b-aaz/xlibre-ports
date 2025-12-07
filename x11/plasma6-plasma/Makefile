@@ -7,8 +7,8 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Plasma 6 (meta port)
 WWW=		https://www.kde.org/plasma-desktop
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 
 USES=		kde:6 metaport qt:6
 USE_KDE=	${_USE_PLASMA_ALL:Nplasma-pa}

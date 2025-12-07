@@ -11,8 +11,8 @@ WWW=		https://sourceforge.net/projects/slim.berlios/
 
 LICENSE=	GPLv2
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \

@@ -19,8 +19,8 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 RUN_DEPENDS=	noto-emoji>0:x11-fonts/noto-emoji \
 		xdg-user-dir:devel/xdg-user-dirs
 
-FLAVORS=	xorg xlibre
-FLAVOR?=	${FLAVORS:[2]}
+FLAVORS=	xlibre xorg
+FLAVOR?=	${FLAVORS:[1]}
 
 .if ${FLAVOR} == xlibre
 PKGNAMEPREFIX=	xlibre-plasma${_KDE_VERSION}-
