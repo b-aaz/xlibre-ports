@@ -180,9 +180,6 @@ this command:
 pkg rquery -r XLibre -a "%n %v"
 ```
 
-__Note__: The binary packages in the artifact repositories are built with
-debugging flags set and optimizations disabled.
-
 ## Setting up drivers:
 
 __This section is currently:__ `==>` ![Under construction](DOCS/assets/undercon_badge.gif)

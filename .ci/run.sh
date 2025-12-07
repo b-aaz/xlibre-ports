@@ -292,9 +292,7 @@ step_4(){
 step_5(){
 	section 'make.conf setup'
 	echo 'OVERLAYS=/'"$(pwd)"'/' >> /etc/make.conf
-	echo 'WITH_DEBUG=yes' >> /etc/make.conf
 	echo 'BATCH=yes' >> /etc/make.conf
-	echo 'DEBUG_FLAGS+= -O0' >> /etc/make.conf
 	echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
 	if [ -n "$SET_PREFIX_PATH" ]
 	then
