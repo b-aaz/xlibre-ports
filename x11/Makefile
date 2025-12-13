@@ -2,8 +2,9 @@
 
     THIS_OPSYS!=	uname -s
 
-    SUBDIR += xlibre
     SUBDIR += slim
+    SUBDIR += xlibre
+    SUBDIR += xlibre-minimal
 
 .if ${THIS_OPSYS}!=DragonFly
     SUBDIR += nvidia-driver
