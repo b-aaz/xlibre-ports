@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-input-wacom
-PORTVERSION=	1.2.3.2
+PORTVERSION=	25.0.0
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -10,18 +10,15 @@ WWW=		https://github.com/X11Libre/xf86-input-wacom/ \
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL
 
-BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+USES=		gmake pathfix xorg xlibre-cat:driver
+USE_XORG=	x11 xext xinerama xrandr
 
 THIS_OPSYS!=	uname -s
-
 .if ${THIS_OPSYS}!=DragonFly
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 .endif
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
-CONFLICTS_INSTALL=	xf86-input-wacom
-
-USES=		gmake pathfix xorg xlibre-cat:driver
-USE_XORG=	x11 xext xinerama xrandr
 LDFLAGS+=	-Wl,--as-needed # Xext
 USE_RC_SUBR=	wacom
 SUB_FILES=	pkg-message
@@ -37,12 +34,6 @@ DEBUG_CONFIGURE_ENABLE=debug
 
 TEST_CONFIGURE_ENABLE=unit-tests
 TEST_ALL_TARGET=check
-
-#post-patch:
-#	@${REINPLACE_CMD} \
-#		-e 's/dir=.*xorg-server/& \
-#			--define-variable prefix="$$prefix"/' \
-#		${WRKSRC}/configure
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d
