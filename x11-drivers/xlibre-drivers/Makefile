@@ -14,11 +14,8 @@ THIS_OPSYS!=	uname -s
 
 .include "../../x11-servers/xlibre-server/Makefile.version"
 MODULEDIR=	${PREFIX}/lib/xorg/modules/xlibre-${XLIBRE_MJR_VER}/
-XORG_MODULEDIR=	${PREFIX}/lib/xorg/modules/
 VIDEODIR=	${MODULEDIR}/drivers
 INPUTDIR=	${MODULEDIR}/input
-XORG_VIDEODIR=	${XORG_MODULEDIR}/drivers
-XORG_INPUTDIR=	${XORG_MODULEDIR}/input
 
 INPUT_DRIVERS=		elographics \
 			evdev \
@@ -70,7 +67,6 @@ VMWARE_DESC=		Install vmware video driver
 
 # these drivers have a different module name compared to the plugin they install
 QUIRKS=		keyboard:kbd
-NONXLIBRE=	scfb egalax #geode
 
 .include <bsd.port.options.mk>
 
@@ -89,8 +85,6 @@ VIDEO_DRIVERS+=	amdgpu ati intel vmware
 .  if ${PORT_OPTIONS:M${i:tu}} != ""
 .   if ${QUIRKS:M${i}\:*:C/.*://} != ""
 RUN_DEPENDS+=	${${type:tu}DIR}/${QUIRKS:M${i}\:*:C/.*://}_drv.so:x11-drivers/xlibre-xf86-${type}-${i}
-.   elif ${NONXLIBRE:M${i}}
-RUN_DEPENDS+=	${XORG_${type:tu}DIR}/${i}_drv.so:x11-drivers/xf86-${type}-${i}@xlibre
 .   else
 RUN_DEPENDS+=	${${type:tu}DIR}/${i}_drv.so:x11-drivers/xlibre-xf86-${type}-${i}
 .   endif
