@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-intel
-PORTVERSION=	3.0.0.5
+PORTVERSION=	25.0.0
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -9,16 +9,15 @@ WWW=		https://01.org/linuxgraphics/xf86-video-intel/
 LICENSE=	MIT	# various
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	only Intel integrated GPUs on x86 are supported
-
 LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm \
 		libxcb-util.so:x11/xcb-util libXvMC.so:x11/libXvMC
 
-CONFLICTS_INSTALL=	xf86-video-intel
-
-USES=		localbase xlibre xlibre-cat:driver,meson
+USES=		localbase xorg xlibre-cat:driver,meson
 USE_XORG=	pciaccess pixman x11 xcb xinerama xrandr xdamage xcursor xtst xfixes xrender xscrnsaver xext xv
+
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	only Intel integrated GPUs on x86 are supported
+
 CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no # XXX ports/242236
 TEST_TARGET=	check
 
