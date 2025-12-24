@@ -1,6 +1,7 @@
     COMMENT = Ports to support the X window system
 
     THIS_OPSYS!=	uname -s
+    CI?=		false
 
     SUBDIR += slim
     SUBDIR += xlibre
@@ -16,8 +17,6 @@
 .endif
 
 .if ${CI}!=true
-    SUBDIR += kde
-    SUBDIR += plasma6-plasma
     SUBDIR += plasma6-plasma-desktop
 .endif
 
