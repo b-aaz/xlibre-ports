@@ -7,6 +7,8 @@ COMMENT=	XLibre + X.Org complete distribution metaport
 WWW=		https://github.com/X11Libre/ \
 		https://www.x.org/
 
+LICENSE=	none
+
 USES=		metaport
 
 RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-dri
