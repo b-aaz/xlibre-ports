@@ -116,7 +116,7 @@ tmux send-keys Enter
 tmux send-keys -l 'chmod 600 /root/.ssh/authorized_keys'
 tmux send-keys Enter
 sleep 1
-tmux_sendkeys_slow -l 'echo "'"$(cat /root/.ssh/id_ed25519.pub | tr -d "\n")"'" >>  /root/.ssh/authorized_keys'
+tmux_sendkeys_slow 'echo "'"$(cat /root/.ssh/id_ed25519.pub | tr -d "\n")"'" >>  /root/.ssh/authorized_keys'
 sleep 1
 tmux send-keys Enter
 

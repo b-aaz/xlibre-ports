@@ -36,6 +36,9 @@ SEATD_DESC=		Build with seatd support. (For running X unprivileged)
 SEATD_MESON_TRUE=	seatd_libseat
 SEATD_LIB_DEPENDS=	libseat.so:sysutils/seatd
 
+# The seatd version on DragonFly is outdated.
+OPTIONS_EXCLUDE_DragonFly=SEATD
+
 LIB_DEPENDS+=	libxcvt.so:x11/libxcvt \
 		libdrm.so:graphics/libdrm \
 		libepoll-shim.so:devel/libepoll-shim \
