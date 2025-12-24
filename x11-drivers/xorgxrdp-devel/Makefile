@@ -27,14 +27,18 @@ USE_LDCONFIG=	yes
 USE_XORG=	xorgproto
 
 .if ${FLAVOR} == xlibre
+PORTREVISION=	2
 PKGNAMEPREFIX=		xlibre-
 USES+=			xlibre
 USE_XLIBRE+=		xlibre-server
 CONFIGURE_ARGS+=	--enable-strict-locations --sysconfdir=/etc
 EXTRA_PATCHES=		${PATCHDIR}/extra-patch-configure.ac \
+			${PATCHDIR}/extra-patch-module_rdpEgl.c \
+			${PATCHDIR}/extra-patch-module_rdpCapture.c \
 			${PATCHDIR}/extra-patch-module_rdpClientCon.c
 .else
 USE_XORG+=		xorg-server
+CONFLICTS+=		xlibre-server
 .endif
 
 USE_GITHUB=	yes

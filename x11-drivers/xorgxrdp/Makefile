@@ -29,14 +29,18 @@ USE_LDCONFIG=	yes
 USE_XORG=	xorgproto
 
 .if ${FLAVOR} == xlibre
+PORTREVISION=	3
 PKGNAMEPREFIX=		xlibre-
 USES+=			xlibre
 USE_XLIBRE+=		xlibre-server
 CONFIGURE_ARGS+=	--enable-strict-locations --sysconfdir=/etc
 EXTRA_PATCHES=		${PATCHDIR}/extra-patch-xrdpkeyb_rdpKeyboard.c \
+			${PATCHDIR}/extra-patch-module_rdpCapture.c \
+			${PATCHDIR}/extra-patch-module_rdpEgl.c \
 			${PATCHDIR}/extra-patch-configure.ac
 .else
 USE_XORG+=		xorg-server
+CONFLICTS+=		xlibre-server
 .endif
 
 XRDPVER=		0.10.4.1
