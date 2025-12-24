@@ -1,9 +1,9 @@
 --- config/udev.c.orig	2022-11-29 08:50:23.563278000 +0100
 +++ config/udev.c	2022-11-29 08:52:42.005561000 +0100
 @@ -68,6 +68,44 @@
- 
- static char itoa_buf[16];
- 
+                                unsigned int major, unsigned int minor,
+                                config_odev_probe_proc_ptr probe_callback);
+ #endif
 +// Taken from FreeBSD's lib/libc/gen/feature_present.c
 +
 +#include <sys/cdefs.h>
@@ -42,6 +42,6 @@
 +
 +// end of FreeBSD's lib/libc/gen/feature_present.c
 +
- static const char *itoa(int i)
- {
-     snprintf(itoa_buf, sizeof(itoa_buf), "%d", i);
+ 
+ static Bool
+ check_seat(struct udev_device *udev_device)
