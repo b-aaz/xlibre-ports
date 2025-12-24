@@ -120,127 +120,127 @@ task:
     sets_artifacts:
       path: "./**/*"
 
-#task:
-#    name: Dragonfly binaries
-#    alias: bins
-#    only_if: $CIRRUS_BRANCH != "x11set"
-#    compute_engine_instance:
-#      image_project: cirrus-images
-#      image: family/docker-kvm
-#      platform: linux
-#      cpu: 4
-#      memory: 8G
-#      nested_virtualization: true
-#
-#    <<: *COMMON
-#
-#    dfbsd_portstree_cache:
-#      folder: /tmp/caches/dports
-#    dfbsd_ccache_cache:
-#      folder: /tmp/caches/ccache
-#    vmpkg_cache:
-#      folder: /tmp/caches/pkg
-#
-#    init_vm_script:
-#      - |
-#       ./.ci/vm.sh
-#
-#    set_env_script:
-#      - |
-#       env | grep '^CI=\|^CI_.*=\|^CONTINUOUS_INTEGRATION=\|^CIRRUS_.*=\|^GITHUB.*=' | grep -v '^OS=\|^CIRRUS_OS=' > /mnt/vm/root/.ssh/environment
-#       cat /mnt/vm/root/.ssh/environment
-#
-#    send_caches_script:
-#      - |
-#       mkdir -p /tmp/caches/dports
-#       mkdir -p /tmp/caches/ccache 
-#       mkdir -p /tmp/caches/pkg
-#       rsync -ah --delete /tmp/caches/dports/  rsync://root@127.0.0.1:10873/vmshare/usr/dports
-#       rsync -ah --delete /tmp/caches/ccache/ rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache
-#       rsync -ah --delete /tmp/caches/pkg/    rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg
-#       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
-#
-#    run_script:
-#      - |
-#       mkdir /mnt/vm/tmp/run
-#       cp ./.ci/run.sh /mnt/vm/tmp/
-#       ssh vm "cd /tmp/run; ../run.sh"
-#
-#    recv_caches_script:
-#      - |
-#       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/usr/dports/ /tmp/caches/dports
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache/ /tmp/caches/ccache
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg/ /tmp/caches/pkg
-#
-#    recv_artifacts_script:
-#      - |
-#       rm -r ./*
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/run/ ./
-#
-#    bins_artifacts:
-#      path: "./**/*"
-#      
-#task:
-#    name: Dragonfly sets
-#    alias: sets
-#    only_if: $CIRRUS_BRANCH == "x11set"
-#    compute_engine_instance:
-#      image_project: cirrus-images
-#      image: family/docker-kvm
-#      platform: linux
-#      cpu: 4
-#      memory: 8G
-#      nested_virtualization: true
-#
-#    <<: *COMMON
-#
-#    dfbsd_portstree_cache:
-#      folder: /tmp/caches/dports
-#    dfbsd_ccache_cache:
-#      folder: /tmp/caches/ccache
-#    vmpkg_cache:
-#      folder: /tmp/caches/pkg
-#
-#    env:
-#      SET_PREFIX_PATH: '/usr/X11R7'
-#      
-#    init_vm_script:
-#      - |
-#       ./.ci/vm.sh
-#
-#    set_env_script:
-#      - |
-#       env | grep '^CI=\|^CI_.*=\|^CONTINUOUS_INTEGRATION=\|^CIRRUS_.*=\|^GITHUB.*=' | grep -v '^OS=\|^CIRRUS_OS=' > /mnt/vm/root/.ssh/environment
-#       cat /mnt/vm/root/.ssh/environment
-#
-#    send_caches_script:
-#      - |
-#       mkdir -p /tmp/caches/dports
-#       mkdir -p /tmp/caches/ccache 
-#       mkdir -p /tmp/caches/pkg
-#       rsync -ah --delete /tmp/caches/dports/  rsync://root@127.0.0.1:10873/vmshare/usr/dports
-#       rsync -ah --delete /tmp/caches/ccache/ rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache
-#       rsync -ah --delete /tmp/caches/pkg/    rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg
-#       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
-#
-#    run_script:
-#      - |
-#       mkdir /mnt/vm/tmp/run
-#       cp ./.ci/run.sh /mnt/vm/tmp/
-#       ssh vm "cd /tmp/run; ../run.sh"
-#
-#    recv_caches_script:
-#      - |
-#       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/usr/dports/ /tmp/caches/dports
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache/ /tmp/caches/ccache
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg/ /tmp/caches/pkg
-#
-#    recv_artifacts_script:
-#      - |
-#       rm -r ./*
-#       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/run/ ./
-#
-#    sets_artifacts:
-#      path: "./**/*"
+task:
+    name: Dragonfly binaries
+    alias: bins
+    only_if: $CIRRUS_BRANCH != "x11set"
+    compute_engine_instance:
+      image_project: cirrus-images
+      image: family/docker-kvm
+      platform: linux
+      cpu: 4
+      memory: 8G
+      nested_virtualization: true
+
+    <<: *COMMON
+
+    dfbsd_portstree_cache:
+      folder: /tmp/caches/dports
+    dfbsd_ccache_cache:
+      folder: /tmp/caches/ccache
+    vmpkg_cache:
+      folder: /tmp/caches/pkg
+
+    init_vm_script:
+      - |
+       ./.ci/vm.sh
+
+    set_env_script:
+      - |
+       env | grep '^CI=\|^CI_.*=\|^CONTINUOUS_INTEGRATION=\|^CIRRUS_.*=\|^GITHUB.*=' | grep -v '^OS=\|^CIRRUS_OS=' > /mnt/vm/root/.ssh/environment
+       cat /mnt/vm/root/.ssh/environment
+
+    send_caches_script:
+      - |
+       mkdir -p /tmp/caches/dports
+       mkdir -p /tmp/caches/ccache 
+       mkdir -p /tmp/caches/pkg
+       rsync -ah --delete /tmp/caches/dports/  rsync://root@127.0.0.1:10873/vmshare/usr/dports
+       rsync -ah --delete /tmp/caches/ccache/ rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache
+       rsync -ah --delete /tmp/caches/pkg/    rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg
+       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
+
+    run_script:
+      - |
+       mkdir /mnt/vm/tmp/run
+       cp ./.ci/run.sh /mnt/vm/tmp/
+       ssh vm "cd /tmp/run; ../run.sh"
+
+    recv_caches_script:
+      - |
+       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/usr/dports/ /tmp/caches/dports
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache/ /tmp/caches/ccache
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg/ /tmp/caches/pkg
+
+    recv_artifacts_script:
+      - |
+       rm -r ./*
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/run/ ./
+
+    bins_artifacts:
+      path: "./**/*"
+      
+task:
+    name: Dragonfly sets
+    alias: sets
+    only_if: $CIRRUS_BRANCH == "x11set"
+    compute_engine_instance:
+      image_project: cirrus-images
+      image: family/docker-kvm
+      platform: linux
+      cpu: 4
+      memory: 8G
+      nested_virtualization: true
+
+    <<: *COMMON
+
+    dfbsd_portstree_cache:
+      folder: /tmp/caches/dports
+    dfbsd_ccache_cache:
+      folder: /tmp/caches/ccache
+    vmpkg_cache:
+      folder: /tmp/caches/pkg
+
+    env:
+      SET_PREFIX_PATH: '/usr/X11R7'
+      
+    init_vm_script:
+      - |
+       ./.ci/vm.sh
+
+    set_env_script:
+      - |
+       env | grep '^CI=\|^CI_.*=\|^CONTINUOUS_INTEGRATION=\|^CIRRUS_.*=\|^GITHUB.*=' | grep -v '^OS=\|^CIRRUS_OS=' > /mnt/vm/root/.ssh/environment
+       cat /mnt/vm/root/.ssh/environment
+
+    send_caches_script:
+      - |
+       mkdir -p /tmp/caches/dports
+       mkdir -p /tmp/caches/ccache 
+       mkdir -p /tmp/caches/pkg
+       rsync -ah --delete /tmp/caches/dports/  rsync://root@127.0.0.1:10873/vmshare/usr/dports
+       rsync -ah --delete /tmp/caches/ccache/ rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache
+       rsync -ah --delete /tmp/caches/pkg/    rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg
+       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
+
+    run_script:
+      - |
+       mkdir /mnt/vm/tmp/run
+       cp ./.ci/run.sh /mnt/vm/tmp/
+       ssh vm "cd /tmp/run; ../run.sh"
+
+    recv_caches_script:
+      - |
+       ls -laG /mnt/vm/usr/dports /mnt/vm/tmp/.ccache /mnt/vm/var/cache/pkg || echo $?
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/usr/dports/ /tmp/caches/dports
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/.ccache/ /tmp/caches/ccache
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/var/cache/pkg/ /tmp/caches/pkg
+
+    recv_artifacts_script:
+      - |
+       rm -r ./*
+       rsync -ah --delete rsync://root@127.0.0.1:10873/vmshare/tmp/run/ ./
+
+    sets_artifacts:
+      path: "./**/*"
