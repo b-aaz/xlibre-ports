@@ -1,7 +1,7 @@
     COMMENT = X11 drivers
 
     SUBDIR += xf86-input-egalax
-    SUBDIR += xf86-video-scfb
+    SUBDIR += xlibre-xf86-video-scfb
     SUBDIR += xlibre-drivers
     SUBDIR += xlibre-xf86-input-elographics
     SUBDIR += xlibre-xf86-input-evdev
