@@ -405,7 +405,9 @@ step_12(){
 		do
 			eval "step_$i" 
 		done
-		exit 0
 	fi
 
+	exit 0
 }
+
+exit 0

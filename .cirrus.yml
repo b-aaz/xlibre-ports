@@ -164,7 +164,7 @@ task:
       - |
        mkdir /mnt/vm/tmp/run
        cp ./.ci/run.sh /mnt/vm/tmp/
-       ssh vm "cd /tmp/run; ../run.sh"
+       ssh vm "cd /tmp/run; . ../run.sh"
 
     recv_caches_script:
       - |
@@ -228,7 +228,7 @@ task:
       - |
        mkdir /mnt/vm/tmp/run
        cp ./.ci/run.sh /mnt/vm/tmp/
-       ssh vm "cd /tmp/run; ../run.sh"
+       ssh vm "cd /tmp/run; . ../run.sh"
 
     recv_caches_script:
       - |
