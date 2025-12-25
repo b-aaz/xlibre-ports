@@ -1,7 +1,6 @@
     COMMENT = Ports to support the X window system
 
     THIS_OPSYS!=	uname -s
-    CI?=		false
 
     SUBDIR += slim
     SUBDIR += xlibre
@@ -14,9 +13,6 @@
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-driver-470
     SUBDIR += nvidia-driver-devel
-.endif
-
-.if ${CI}!=true
     SUBDIR += plasma6-plasma-desktop
 .endif
 
