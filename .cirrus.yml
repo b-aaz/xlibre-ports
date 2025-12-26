@@ -170,6 +170,7 @@ task:
        echo Sourcing the main script
        . ../run.sh
        echo done
+       exit
        EOF
 
     recv_caches_script:
@@ -240,6 +241,7 @@ task:
        echo Sourcing the main script
        . ../run.sh
        echo done
+       exit
        EOF
 
     recv_caches_script:
