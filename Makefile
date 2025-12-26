@@ -1,6 +1,6 @@
+SUBDIR += x11
 SUBDIR += x11-drivers
 SUBDIR += x11-servers
-SUBDIR += x11
 
 PORTSTOP=	yes
 
