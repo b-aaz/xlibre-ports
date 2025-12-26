@@ -2,6 +2,7 @@
 
 PORTNAME=	xlibre-xf86-video-amdgpu
 PORTVERSION=	25.0.1
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
