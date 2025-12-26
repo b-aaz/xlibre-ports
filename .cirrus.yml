@@ -164,7 +164,7 @@ task:
       - |
        mkdir /mnt/vm/tmp/run
        cp ./.ci/run.sh /mnt/vm/tmp/
-       ssh -t vm <<EOF
+       ssh -t vm /bin/sh <<EOF
        pwd
        cd /tmp/run
        echo Sourcing the main script
@@ -234,7 +234,7 @@ task:
       - |
        mkdir /mnt/vm/tmp/run
        cp ./.ci/run.sh /mnt/vm/tmp/
-       ssh -t vm <<EOF
+       ssh -t vm /bin/sh <<EOF
        pwd
        cd /tmp/run
        echo Sourcing the main script
