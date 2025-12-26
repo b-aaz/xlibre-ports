@@ -290,7 +290,7 @@ step_4(){
  		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
  		for entry in $${conflicts_with}; do \
  			${ECHO_MSG} "      $${entry}"; \
-+			pkg remove -y "$${entry}"; \
++			pkg remove -y "$${entry}" || true ; \
  		done; \
  		${ECHO_MSG}; \
  		${ECHO_MSG} "      They will not build together."; \
@@ -303,7 +303,7 @@ step_4(){
  		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
  		for entry in $${conflicts_with}; do \
  			${ECHO_MSG} "      $${entry}"; \
-+			pkg remove -y "$${entry}"; \
++			pkg remove -y "$${entry}" || true ; \
  		done; \
  		${ECHO_MSG}; \
  		${ECHO_MSG} "      They install files into the same place."; \
@@ -316,7 +316,7 @@ step_4(){
  		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
  		for entry in $${conflicts_with}; do \
  			${ECHO_MSG} "      $${entry}"; \
-+			pkg remove -y "$${entry}"; \
++			pkg remove -y "$${entry}" || true ; \
  		done; \
  		${ECHO_MSG}; \
  		${ECHO_MSG} "      Please remove them first with pkg delete."; \
@@ -328,7 +328,7 @@ step_4(){
  		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
  		for entry in $${conflicts_with}; do \
  			${ECHO_MSG} "      $${entry}"; \
-+			pkg remove -y "$${entry}"; \
++			pkg remove -y "$${entry}" || true ; \
  		done; \
  		${ECHO_MSG}; \
  		${ECHO_MSG} "      They install files into the same place."; \
