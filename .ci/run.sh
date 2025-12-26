@@ -281,6 +281,65 @@ step_4(){
 		} || true
 	}
 
+	{
+		{
+			patch -N "${PORTS_DIR}/Mk/bsd.port.mk" <<-"EOF"
+--- /usr/ports/Mk/bsd.port.mk.orig	2025-12-26 00:20:21.054462000 +0000
++++ /usr/ports/Mk/bsd.port.mk	2025-12-26 00:31:03.778889000 +0000
+@@ -3343,11 +3343,11 @@
+ 		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
+ 		for entry in $${conflicts_with}; do \
+ 			${ECHO_MSG} "      $${entry}"; \
++			pkg remove -y "$${entry}"; \
+ 		done; \
+ 		${ECHO_MSG}; \
+ 		${ECHO_MSG} "      They will not build together."; \
+ 		${ECHO_MSG} "      Please remove them first with pkg delete."; \
+-		exit 1;\
+ 	fi
+ .      endif
+ .    endif
+@@ -3362,11 +3362,11 @@
+ 		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
+ 		for entry in $${conflicts_with}; do \
+ 			${ECHO_MSG} "      $${entry}"; \
++			pkg remove -y "$${entry}"; \
+ 		done; \
+ 		${ECHO_MSG}; \
+ 		${ECHO_MSG} "      They install files into the same place."; \
+ 		${ECHO_MSG} "      You may want to stop build with Ctrl + C."; \
+-		sleep ${CONFLICT_WARNING_WAIT}; \
+ 	fi
+ .      endif
+ .    endif
+@@ -3381,10 +3381,10 @@
+ 		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
+ 		for entry in $${conflicts_with}; do \
+ 			${ECHO_MSG} "      $${entry}"; \
++			pkg remove -y "$${entry}"; \
+ 		done; \
+ 		${ECHO_MSG}; \
+ 		${ECHO_MSG} "      Please remove them first with pkg delete."; \
+-		exit 1; \
+ 	fi
+ .        else
+ 	@conflicts_with=$$(${PKG_QUERY} -ge "%n != ${PKGBASE}" "%n-%v" ${CONFLICTS:C/.+/'&'/} ${CONFLICTS_INSTALL:C/.+/'&'/} 2>/dev/null || : ; ) ; \
+@@ -3393,11 +3393,11 @@
+ 		${ECHO_MSG} "===>  ${PKGNAME} conflicts with installed package(s): "; \
+ 		for entry in $${conflicts_with}; do \
+ 			${ECHO_MSG} "      $${entry}"; \
++			pkg remove -y "$${entry}"; \
+ 		done; \
+ 		${ECHO_MSG}; \
+ 		${ECHO_MSG} "      They install files into the same place."; \
+ 		${ECHO_MSG} "      Please remove them first with pkg delete."; \
+-		exit 1; \
+ 	fi
+ .        endif # defined(DEFER_CONFLICTS_CHECK)
+ .      endif
+			EOF
+		} || true
+	}
 	section_end
 	
 	debug_ci && {
@@ -411,3 +470,4 @@ step_12(){
 }
 
 exit 0
+
