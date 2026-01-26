@@ -1,0 +1,13 @@
+@@ -173,6 +173,11 @@
+ TARGETS+=	realinstall
+ TARGETS+=	reinstall
+ TARGETS+=	tags
++TARGETS+=	stage
++TARGETS+=	stage-qa
++TARGETS+=	check-plist
++TARGETS+=	run-depends-list
++TARGETS+=	build-depends-list
+
+ .for __target in ${TARGETS}
+ .  if !target(${__target})
+
