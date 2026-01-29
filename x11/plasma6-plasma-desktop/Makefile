@@ -6,7 +6,6 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Plasma Desktop
 
 BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols \
-		xf86-input-evdev>0:x11-drivers/xf86-input-evdev \
 		xf86-input-libinput>0:x11-drivers/xf86-input-libinput \
 		libinput>0:x11/libinput
 LIB_DEPENDS=	libcanberra.so:audio/libcanberra \

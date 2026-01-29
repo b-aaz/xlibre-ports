@@ -57,7 +57,7 @@ The TL;DR version of how this should be done is:
 
 ##### On FreeBSD:
 ```sh
-git clone --depth 1 https://git.FreeBSD.org/ports.git -b 2025Q4 /usr/ports
+git clone --depth 1 https://git.FreeBSD.org/ports.git -b 2026Q1 /usr/ports
 ```
 For more information see: [FreeBSD Handbook - Installing the Ports Collection](https://docs.freebsd.org/en/books/handbook/ports/#ports-using-installation-methods).
 
@@ -72,7 +72,7 @@ __Important note__: This repository includes modified versions of ports form the
 latest quarterly branch of the FreeBSD ports tree, and it should only be used
 on FreeBSD with this branch installed. To find out how to update your tree to
 an specific version please read the above sources. The current quarterly branch
-which is being followed is __2025Q4__. 
+which is being followed is __2026Q1__.
 
 After you made sure that your system's main ports tree is up-to-date, and you
 have enabled this repository as an overlay, you can use this tree just like the

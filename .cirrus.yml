@@ -1,6 +1,6 @@
 env:
   CCACHE_DIR: "/tmp/.ccache"
-  PORTS_BRANCH: "2025Q4"
+  PORTS_BRANCH: "2026Q1"
 
 common: &COMMON
 
