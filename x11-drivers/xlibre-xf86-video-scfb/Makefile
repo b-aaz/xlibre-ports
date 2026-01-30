@@ -1,5 +1,6 @@
 PORTNAME=	xlibre-xf86-video-scfb
 PORTVERSION=	25.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aaz@proton.me
@@ -12,7 +13,5 @@ USES=		xlibre-cat:driver
 
 PLIST_FILES=	${MODULEDIR}/drivers/scfb_drv.so \
 		share/man/man4/scfb.4x.gz
-
-GH_TAGNAME=	6489569
 
 .include <bsd.port.mk>
