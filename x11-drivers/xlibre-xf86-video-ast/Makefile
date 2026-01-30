@@ -15,7 +15,12 @@ INSTALL_TARGET=	install-strip
 PLIST_FILES=	${MODULEDIR}/drivers/ast_drv.so
 
 THIS_OPSYS!=	uname -s
+
 .if ${THIS_OPSYS}==DragonFly
 CFLAGS+=	-Wno-maybe-uninitialized
+ONLY_FOR_ARCHS=	i386 x86_64
+.else
+ONLY_FOR_ARCHS=	amd64 i386
 .endif
+
 .include <bsd.port.mk>
