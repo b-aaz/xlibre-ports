@@ -1,0 +1,8 @@
+This package contains the XLibre xf86-video-vbox driver.
+
+This driver is only for use in VirtualBox guests without the vboxvideo kernel
+modesetting driver in the guest kernel, and which are configured to use the
+VBoxVGA device instead of a VMWare-compatible video device emulation.
+
+Guests with the vboxvideo kernel modesetting driver should use the Xorg
+"modesetting" driver module instead of this one.
