@@ -1,3 +1,4 @@
+SUBDIR += emulators
 SUBDIR += x11
 SUBDIR += x11-drivers
 SUBDIR += x11-servers
