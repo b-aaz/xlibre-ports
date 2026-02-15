@@ -23,7 +23,7 @@ ONLY_FOR_ARCHS_REASON=	KMS is required and currently only available on x86/arm64
 
 CONFIGURE_ARGS+=--disable-udev
 
-PLIST_FILES=	${MODULEDIR}/drivers/amdgpu_drv.so \
+PLIST_FILES=	${MODULEDIR}/drivers/video/amdgpu_drv.so \
 		share/man/man4/amdgpu.4x.gz \
 		share/X11/xorg.conf.d/10-amdgpu.conf
 
