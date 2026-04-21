@@ -12,8 +12,6 @@
     SUBDIR += nvidia-driver-devel
 .endif
 
-
-    SUBDIR += slim
     SUBDIR += xlibre
     SUBDIR += xlibre-minimal
 
