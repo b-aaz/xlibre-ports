@@ -4,12 +4,6 @@
 
 .if ${THIS_OPSYS}!=DragonFly
     SUBDIR += plasma6-plasma-desktop
-    SUBDIR += nvidia-driver
-    SUBDIR += nvidia-driver-304
-    SUBDIR += nvidia-driver-340
-    SUBDIR += nvidia-driver-390
-    SUBDIR += nvidia-driver-470
-    SUBDIR += nvidia-driver-devel
 .endif
 
     SUBDIR += xlibre

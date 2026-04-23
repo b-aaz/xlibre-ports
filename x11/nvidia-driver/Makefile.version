@@ -1,4 +1,0 @@
-# NVIDIA Distversion
-#
-# This will be included from x11/nvidia-driver and the nvidia-drm port
-NVIDIA_DISTVERSION?= 580.119.02
