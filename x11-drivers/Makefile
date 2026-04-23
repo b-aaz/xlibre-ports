@@ -24,7 +24,13 @@
     SUBDIR += xlibre-xf86-video-vbox
     SUBDIR += xlibre-xf86-video-vesa
     SUBDIR += xlibre-xf86-video-vmware
+
+    THIS_OPSYS!=	uname -s
+
+.if ${THIS_OPSYS}==DragonFly
     SUBDIR += xorgxrdp
+.endif
+
     SUBDIR += xorgxrdp-devel
 
 .include <bsd.port.subdir.mk>
