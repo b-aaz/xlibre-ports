@@ -1,15 +1,13 @@
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.80.b20241215
+DISTVERSION=	0.10.80.b20260203
 # Be sure to bump PORTREVISION after xorg-server update to force rebuild
 PORTREVISION=	1
 CATEGORIES=	x11-drivers
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=	xrdp
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-
-MAINTAINER=	meta@FreeBSD.org
+MAINTAINER=	b-aazbsd@proton.me
 COMMENT=	X.Org driver enabling use through an RDP session with xrdp
 WWW=		https://www.xrdp.org/
 
@@ -24,28 +22,24 @@ RUN_DEPENDS=	xauth:x11/xauth
 
 USES=		autoreconf libtool:build localbase pkgconfig xorg
 USE_LDCONFIG=	yes
-USE_XORG=	xorgproto
 
 .if ${FLAVOR} == xlibre
-PORTREVISION=	2
-PKGNAMEPREFIX=		xlibre-
-USES+=			xlibre
-USE_XLIBRE+=		xlibre-server
-CONFIGURE_ARGS+=	--enable-strict-locations --sysconfdir=/etc
-EXTRA_PATCHES=		${PATCHDIR}/extra-patch-configure.ac \
-			${PATCHDIR}/extra-patch-module_rdpEgl.c \
-			${PATCHDIR}/extra-patch-module_rdpCapture.c \
-			${PATCHDIR}/extra-patch-module_rdpClientCon.c
+PKGNAMEPREFIX=	xlibre-
+USES+=		xlibre-cat:driver
+
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-module_rdpEgl.c \
+		${PATCHDIR}/extra-patch-module_rdpCapture.c
 .else
-USE_XORG+=		xorg-server
-CONFLICTS+=		xlibre-server
+USE_XORG=	xorg-server xorgproto
+MODULEDIR=	lib/xorg/modules
+PLIST_SUB+=	MODULEDIR=${MODULEDIR}
 .endif
 
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
-GH_TAGNAME=	9698ba0
-GH_TUPLE=	neutrinolabs:xrdp:4c8c773:xrdp
+GH_TAGNAME=	7abffbf
+GH_TUPLE=	neutrinolabs:xrdp:4d9dde8:xrdp
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKSRC_xrdp}/common
 INSTALL_TARGET=	install-strip

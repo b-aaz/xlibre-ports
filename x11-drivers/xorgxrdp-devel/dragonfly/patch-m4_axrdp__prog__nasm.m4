@@ -1,5 +1,5 @@
---- m4/nasm.m4.orig	2018-12-12 01:16:08 UTC
-+++ m4/nasm.m4
+--- m4/axrdp_prog_nasm.m4.orig	2026-04-23 22:48:39 UTC
++++ m4/axrdp_prog_nasm.m4
 @@ -40,7 +40,7 @@ case "$host_os" in
          ;;
      esac
