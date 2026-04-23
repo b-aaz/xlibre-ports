@@ -11,7 +11,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL
 
 USES=		gmake pathfix xorg xlibre-cat:driver
-USE_XORG=	x11 xext xinerama xrandr
+USE_XORG=	x11 xext xinerama xrandr xi
 
 THIS_OPSYS!=	uname -s
 .if ${THIS_OPSYS}!=DragonFly
