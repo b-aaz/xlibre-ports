@@ -172,7 +172,11 @@ debug_ci_end(){
 step_0(){
 	section 'Perquisites'
 	ASSUME_ALWAYS_YES=yes pkg bootstrap -f
-	pkg install -y git-lite pkg tree zstd
+	if [ "$OS_NAME" = "DragonFly" ]
+	then
+		pkg lock -y pkg
+	fi
+	pkg install -y git-lite tree zstd
 	section_end
 }
 
@@ -289,7 +293,7 @@ step_5(){
 	echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
 	if [ -n "$SET_PREFIX_PATH" ]
 	then
-	      echo "PREFIX=$PREFIXP" >> /etc/make.conf
+		echo "PREFIX=$PREFIXP" >> /etc/make.conf
 	fi
 	section_end
 
