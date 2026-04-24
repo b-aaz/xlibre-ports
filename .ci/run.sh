@@ -171,12 +171,13 @@ debug_ci_end(){
 
 step_0(){
 	section 'Perquisites'
-	ASSUME_ALWAYS_YES=yes pkg bootstrap -f
 	if [ "$OS_NAME" = "DragonFly" ]
 	then
 		pkg lock -y pkg
+		pkg install -y git-lite tree zstd
+	else
+		pkg install -y git-lite tree zstd pkg
 	fi
-	pkg install -y git-lite tree zstd
 	section_end
 }
 
@@ -305,15 +306,26 @@ step_5(){
 
 step_6(){
 	section 'Install run dependencies'
-	make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11-drivers/xf86-video-scfb\|x11/plasma6-plasma$\|x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
-	[ "$OS_NAME" != "DragonFly" ] &&  pkg install -y nvidia-kmod
+	if [ "$OS_NAME" = "DragonFly" ]
+	then
+		make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'ports-mgmt/pkg' | xargs pkg install -y || exit 1
+	else
+		make run-depends-list | sort | uniq | grep -v '^==\|xlibre' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11/plasma6-plasma$\|x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
+		pkg install -y nvidia-kmod
+	fi
 	
 	section_end
 }
 
 step_7(){
 	section 'Install build dependencies'
-	make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
+	section 'Install run dependencies'
+	if [ "$OS_NAME" = "DragonFly" ]
+	then
+		make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'ports-mgmt/pkg' | xargs pkg install -y || exit 1
+	else
+		make build-depends-list | sort | uniq | grep -v '^==\|xlibre\|xorg-macros' | awk -F "/" '{print $(NF-1) "/" $NF}' | grep -v 'x11/plasma6-plasma-desktop' | xargs pkg install -y || exit 1
+	fi
 	make -C "${PORTS_DIR}/devel/xorg-macros/" clean || exit 1
 	section_end
 }
