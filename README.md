@@ -1,4 +1,4 @@
-# Porting XLibre to FreeBSD and DragonFlyBSD! [![Build Status](https://api.cirrus-ci.com/github/b-aaz/xlibre-ports.svg)](https://cirrus-ci.com/github/b-aaz/xlibre-ports)
+# Porting XLibre to FreeBSD and DragonFlyBSD!
 
 ## An effort for porting [XLibre](https://github.com/X11Libre) to FreeBSD and DragonFlyBSD.
 
@@ -8,7 +8,6 @@
 ![Screenshot of XLibre running on FreeBSD](DOCS/assets/FreeBSD_screenshot.png)
 
 ### XLibre running on DragonFlyBSD:
-
 ![Screenshot of XLibre running on DragonFlyBSD](DOCS/assets/DragonFlyBSD_screenshot.png)
 
 
@@ -127,58 +126,21 @@ This will build only the ports in this overlay under the `x11-servers` category.
 
 You can take a look at the man page [ports(7)](https://man.freebsd.org/cgi/man.cgi?query=ports&sektion=7) and the top of [bsd.port.mk](https://cgit.freebsd.org/ports/tree/Mk/bsd.port.mk) for more information about available `make` targets.
 
+#### Doing a debug build:
+
+This is useful for debugging issues, bugs and getting better stack traces. All
+that is needed is to add the following line to your `make.conf` before building
+the ports:
+
+```sh
+echo "WITH_DEBUG=YES" >> /etc/make.conf
+```
+
 ---
 
 ### Installing the binary packages from CI artifacts:
 
-On each commit to the master branch, the CI system starts builds on FreeBSD
-and DragonFlyBSD for all the packages in this overlay, and on a successful build
-multiple [pkg(7)](https://man.freebsd.org/cgi/man.cgi?query=pkg&sektion=7)
-repositories are generated containing binary packages of these ports.
-These repositories are then uploaded as artifacts, overwriting their previous
-versions.
-
-__Important note__: The packages are currently generated only for the following ABIs:
-
-| DragonflyBSD             | FreeBSD              |
-|--------------------------|----------------------|
-| [`dragonfly:6.4:x86:64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/dragonfly:6.4:x86:64/index.html) | [`FreeBSD:14:amd64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/FreeBSD:14:amd64/index.html) |
-|                          | [`FreeBSD:15:amd64`](https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/FreeBSD:15:amd64/index.html) |
-
-__Note__: HTML index files of the packages are also generated in each repository.
-View them by clicking on the table entires above.
-
-To use these binaries add the artifacts repository to your [pkg(7)](https://man.freebsd.org/cgi/man.cgi?query=pkg&sektion=7) repositories:
-
-```sh
-su
-
-cat > /usr/local/etc/pkg/repos/XLibre.conf <<'EOF'
-XLibre: {
-        url: "https://api.cirrus-ci.com/v1/artifact/github/b-aaz/xlibre-ports/bins/bins/${ABI}",
-        mirror_type: "http",
-        enabled: yes
-}
-EOF
-```
-
-__Note__: The configuration is identical on both FreeBSD and DragonFlyBSD; The
-`${ABI}` variable expands and selects the correct repository based on your system.
-
-After adding the repository to your system, you can then install the XLibre
-ports like any other package:
-
-```sh
-su
-pkg install xlibre
-```
-
-__Tip__: You can list all of the available XLibre ports and their versions with
-this command:
-
-```sh
-pkg rquery -r XLibre -a "%n %v"
-```
+There are no CI builds as of now due to CirrusCI's shutdown.
 
 ## Setting up drivers:
 
