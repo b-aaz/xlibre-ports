@@ -1,0 +1,14 @@
+diff --git hw/xfree86/xlibre-server.h.meson.in.orig hw/xfree86/xlibre-server.h.meson.in
+index c33d0f7..96b48f4 100644
+--- hw/xfree86/xlibre-server.h.meson.in.orig
++++ hw/xfree86/xlibre-server.h.meson.in
+@@ -178,6 +178,9 @@
+ /* Use libpciaccess */
+ #mesondefine XSERVER_LIBPCIACCESS
+ 
++/* Have the pci_device_is_boot_display function */
++#mesondefine HAVE_PCI_DEVICE_IS_BOOT_DISPLAY
++
+ /* X Access Control Extension */
+ #mesondefine XACE
+ 
