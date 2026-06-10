@@ -1,5 +1,5 @@
 PORTNAME=	xlibre-xf86-video-intel
-PORTVERSION=	25.0.1
+PORTVERSION=	25.0.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
