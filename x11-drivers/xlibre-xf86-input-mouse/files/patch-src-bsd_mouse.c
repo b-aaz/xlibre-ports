@@ -193,9 +193,13 @@
 -                fclose(f);
 -                return TRUE;
 -            }
-+    if (dev)
++    if (dev) {
++        const char *p;
++        for (p = dev; *p; p++)
++            if (!isalnum((unsigned char)*p) && *p != '/' && *p != '-' && *p != '_' && *p != '.')
++                return FALSE;
 +        sprintf(cmd, "sh -c 'fstat %s | grep -c moused' 2>/dev/null", dev);
-+    else
++    } else
 +        sprintf(cmd, "sh -c 'pgrep -nx moused' 2>/dev/null");
 +    if ((f = popen(cmd, "r")) != NULL) {
 +        if (fscanf(f, "%u", &i) == 1 && i > 0) {
