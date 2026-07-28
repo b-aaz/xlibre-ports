@@ -1,8 +1,7 @@
 # this port is for future amdgpu kernel support testing.
 
 PORTNAME=	xlibre-xf86-video-amdgpu
-PORTVERSION=	25.1.1
-PORTREVISION=	2
+PORTVERSION=	25.1.2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -31,6 +30,5 @@ post-stage:
 	${MV} ${STAGEDIR}/${PREFIX}/${MODULEDIR}/drivers/video/amdgpu_drv.so\
 		${STAGEDIR}/${PREFIX}/${MODULEDIR}/drivers/amdgpu_drv.so
 	${RMDIR} ${STAGEDIR}/${PREFIX}/${MODULEDIR}/drivers/video/
-
 
 .include <bsd.port.mk>
