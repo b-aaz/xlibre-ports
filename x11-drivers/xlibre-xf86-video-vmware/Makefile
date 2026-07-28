@@ -1,5 +1,6 @@
 PORTNAME=	xlibre-xf86-video-vmware
 PORTVERSION=	25.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	b-aazbsd@proton.me
@@ -11,8 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		xlibre-cat:driver
 
-LIB_DEPENDS+=	libdrm.so:graphics/libdrm \
-		libxatracker.so:graphics/mesa-gallium-xa
+LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	vmware gfx protocol is only supported on x86-compatible architectures
