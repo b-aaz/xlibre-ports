@@ -53,9 +53,13 @@ USE_XORG+=	pciaccess
 
 USE_GL+=	gbm
 
-.include "../xlibre-server/Makefile.common"
+.include	"${.CURDIR}/../xlibre-server/Makefile.common"
 
 OLDMODULEDIR=	/lib/xorg/modules
+
+post-patch:
+	@${REINPLACE_CMD} -e '31,54d' ${WRKSRC}/config/meson.build
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d
 	@${MKDIR} ${STAGEDIR}${PREFIX}${OLDMODULEDIR}/extensions
