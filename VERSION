@@ -1,3 +1,10 @@
+#### First release of the new CI system.
+- Added the new GHA CI system to the repository.
+  - Automatic repository releases with new VERSION file records.
+  - Rebuild-less auto repackaging of the conflicting/broken KDE package.
+  - No dependency on any GitHub actions.
+  - Lot's of build information provide in build summaries and release notes.
+  - \+ More...
 
 2026.10.29
 

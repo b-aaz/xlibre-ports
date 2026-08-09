@@ -1,0 +1,43 @@
+#!/usr/bin/env expect
+set thisfile [file normalize [info script]]
+source [file join [file dirname $thisfile] funcs.exp]
+log_file "[file tail $thisfile].log"
+set timeout 999 ;#We need to wait for more than the 10 second default.
+set send_human {.15 .4 1 .15 4}
+set send_slow  {1 .001}
+
+# Command list for bootloader.
+set boot_cmd_list	[filter_cmts [filetolist [lindex $argv 0]]]
+# List of commands to send to the shell in single-user mode.
+set single_cmd_list	[filter_cmts [filetolist [lindex $argv 1]]]
+# List of commands to send to the shell after login.
+set cmd_list		[filter_cmts [filetolist [lindex $argv 2]]]
+ifnempty "cmd_list" { ;# Sending env variables before running the command list.
+	# Reading our public key to send to the guest, assumes the key exists.
+	set key [filetolist [file join $::env(HOME) ".ssh" "id_ed25519.pub"]]
+	lprepend cmd_list [envvar "HOST_KEY" [lindex $key 0]]
+	lprepend cmd_list [envvar "TERM" "ASCII"]
+	lprepend cmd_list "exec /bin/sh"
+}
+
+set username "root"
+#set password "1234"
+
+spawn -ignore HUP {*}[lrange $argv 3 end]
+ifnempty "boot_cmd_list" { ;# Wait and escape to loader prompt.
+	expect "to loader prompt" {send -h "\x1b"}
+	send_human_commands "(?n)^OK " $boot_cmd_list }
+ifnempty "single_cmd_list" { ;# Wait for single user shell prompt.
+	expect "RETURN" {send -s "/bin/sh\r"}
+	send_slow_commands "(?n)^.*# " $single_cmd_list }
+ifnempty "cmd_list" { 
+	# Waiting for login prompt.
+	expect ") (tty?0)"
+	ifdef "username" {expect -nocase "login:" {
+		sleep 1; send -h "${username}\r" } }
+	ifdef "password" {expect -nocase "password:" {
+		sleep 1; send -h "${password}\r"} }
+	# Sending the normal command list.
+	send_slow_commands "(?n)^.*# " $cmd_list }
+close
+exit
