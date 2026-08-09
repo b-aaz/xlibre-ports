@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - main
+      - ci-dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - run:
+        - echo $GITHUB_API_URL/$GITHUB_REPOSITORY/tarball/$GITHUB_REF
+        - curl -L $GITHUB_API_URL/$GITHUB_REPOSITORY/tarball/$GITHUB_REF | tar -x
+        - ls
