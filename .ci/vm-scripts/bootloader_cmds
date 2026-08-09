@@ -1,0 +1,9 @@
+# List of commands to send to the VM boot loader interactive prompt.
+# The commands are sent as a series of key presses at human speeds.
+# Additionally comments are all filtered out before the script sends the
+# command lines to the VM, so you don't need to worry about long comments
+# bugging down the interactive prompts.
+set console=comconsole
+set boot_serial
+set boot_single
+boot
