@@ -8,9 +8,10 @@ cd ./.ci/
 
 dep_install &
 image_fetch &
-ssh-keygen -t ed25519 -N '' &
 wait
+ssh-keygen -v -t ed25519 -N ''
 ls
+ls ~/.ssh/
 ./vm-exp/vm.exp \
 	./vm-scripts/bootloader_cmds \
 	./vm-scripts/singleuser_fbsd_cmds \
