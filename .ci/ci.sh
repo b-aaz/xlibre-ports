@@ -15,4 +15,4 @@ wait
 	./vm-runner.sh
 
 ssh-keyscan -p 10022 127.0.0.1
-ssh-keyscan -p 10022 root@127.0.0.1 uname -a
+ssh -p 10022 root@127.0.0.1 uname -a
