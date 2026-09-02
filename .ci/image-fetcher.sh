@@ -21,9 +21,8 @@ dfbsd_fetch() {
 	img_hash="$(md5sum --tag "${fn}")"
 	grep -qF "$img_hash" hashs.txt || (echo "$hash_error" && exit 1)
 	rm -f hashs.txt
-	export VM_RUNNER_IMG_FILE="${os}-${full_arch}-${ver}.img"
 	log "Starting image extraction"
-	bzip2 -dkc "${fn}" > "${VM_RUNNER_IMG_FILE}"
+	bzip2 -dkc "${fn}" > "vm-img"
 	rm -f "${fn}"
 	log "Image extracted"
 	set +e
@@ -44,9 +43,8 @@ fbsd_fetch() {
 	img_hash="$(sha512sum --tag "${fn}")"
 	grep -qF "$img_hash" hashs.txt || (echo "$hash_error" && exit 1)
 	rm -f hashs.txt
-	export VM_RUNNER_IMG_FILE="${os}-${full_arch}-${ver}.qcow2"
 	log "Starting image extraction"
-	xz -dkc "${fn}" > "${VM_RUNNER_IMG_FILE}"
+	xz -dkc "${fn}" > "vm-img"
 	rm -f "${fn}"
 	log "Image extracted"
 	set +e
