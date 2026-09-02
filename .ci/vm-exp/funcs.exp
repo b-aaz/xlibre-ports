@@ -1,0 +1,26 @@
+proc send_slow_commands {prompt cmds} {
+	foreach cmd $cmds {expect -re "$prompt" {send -s "${cmd}\r"}} }
+proc send_human_commands {prompt cmds} {
+	foreach cmd $cmds {expect -re "$prompt" {send -h "${cmd}\r"}} }
+proc ifdef {varname body} {
+        upvar 1 $varname var
+        if {[info exists var]} {uplevel 1 $body} }
+proc ifnempty {varname body} {
+        upvar 1 $varname var
+        ifdef "var" {
+                if {$var ne ""} {uplevel 1 $body} } }
+proc quote {unqouted} {
+	return [string map {' '\''} $unqouted] }
+proc envvar {key var} {
+	return "export '[quote $key]'='[quote $var]'" }
+proc lprepend {var args} {
+	upvar 1 $var l
+	lappend l
+	set l [concat $args $l[set l {}]] }
+proc filetolist {file} {
+	set fp [open $file r]
+	set list [split [string trim [read $fp]] "\n"]
+	close $fp
+	return [lmap v $list {set v [string trim $v]}] }
+proc filter_cmts {list} {
+	return [lsearch -all -inline -not -ascii -regexp $list "^\\s*#"] }
