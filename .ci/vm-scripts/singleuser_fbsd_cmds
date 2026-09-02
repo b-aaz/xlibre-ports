@@ -1,0 +1,9 @@
+#!/bin/sh
+# ^^ this dosn't do anything really, this file is a list of commands being sent
+# into the VM's interactive shell prompt as a series of key presses. The shebang
+# is kept for easy syntax reignition by editors and maybe testing.
+# Additionally comments are all filtered out before the script sends the
+# command lines to the VM, so you don't need to worry about long comments
+# bugging down the interactive shells.
+service growfs onestart
+exit
