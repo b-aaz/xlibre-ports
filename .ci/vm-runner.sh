@@ -2,7 +2,7 @@
 # This script takes a single optional argument as the VM image to run, if not
 # present it will default to a image named 'vm.img'.
 
-export TERM=ASCII # To maybe lessen the escape codes in the logs.
+export TERM=dumb # To maybe lessen the escape codes in the logs.
 nproc="${VM_RUNNER_CPUS:=$(getconf _NPROCESSORS_ONLN)}"
 mem="${VM_RUNNER_MEM:=7G}"
 img="${1:-${VM_RUNNER_IMG_FILE:=vm-img}}"
