@@ -4,7 +4,9 @@ ls
 cd ./.ci/
 . ./image-fetcher.sh
 
-image_fetch
+apt-get install expect &
+image_fetch &
+wait
 ls
 ./vm-exp/vm.exp \
 	./vm-scripts/bootloader_cmds \
