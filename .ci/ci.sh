@@ -3,8 +3,9 @@
 ls
 cd ./.ci/
 . ./image-fetcher.sh
+. ./dep-installer.sh
 
-apt-get install expect &
+dep_install &
 image_fetch &
 wait
 ls
