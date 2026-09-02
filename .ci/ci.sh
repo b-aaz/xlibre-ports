@@ -15,5 +15,5 @@ wait
 	./vm-scripts/normal_cmds \
 	./vm-runner.sh
 
-ssh-keyscan -p 10022 127.0.0.1 && echo KEY SCAN DONE
+ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 ssh -p 10022 root@127.0.0.1 uname -a
