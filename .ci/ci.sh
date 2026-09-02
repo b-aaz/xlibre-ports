@@ -6,10 +6,10 @@ cd ./.ci/
 . ./image-fetcher.sh
 . ./dep-installer.sh
 
+ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
 dep_install &
 image_fetch &
 wait
-ssh-keygen -v -t ed25519 -N ''
 ls
 ls ~/.ssh/
 ./vm-exp/vm.exp \
