@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cd /opt/ci-run/
 cd ./.ci/
 . ./image-fetcher.sh
 . ./dep-installer.sh
@@ -14,5 +15,5 @@ wait
 	./vm-scripts/normal_cmds \
 	./vm-runner.sh
 
-ssh-keyscan -p 10022 127.0.0.1
+ssh-keyscan -p 10022 127.0.0.1 && echo KEY SCAN DONE
 ssh -p 10022 root@127.0.0.1 uname -a
