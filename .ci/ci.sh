@@ -6,6 +6,23 @@ cd "$s_dir"
 . ./dep-installer.sh
 . ./print-utils.sh
 
+case $1 in
+	fbsd)
+		export VM_RUNNER_OS='fbsd'
+		export VM_RUNNER_OSVER='15.1'
+		export VM_RUNNER_ARCH='amd64'
+		;;
+	dfbsd)
+		export VM_RUNNER_OS='dfbsd'
+		export VM_RUNNER_OSVER='6.4.2'
+		export VM_RUNNER_ARCH='x86_64'
+		;;
+	*)
+		exit 1
+		;;
+esac
+
+
 section VM-PRERUN
 ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
 dep_install &
@@ -16,7 +33,7 @@ section_end
 section VM-SETUP
 ./vm-exp/vm.exp \
 	./vm-scripts/bootloader_cmds \
-	./vm-scripts/singleuser_fbsd_cmds \
+	./vm-scripts/singleuser_${VM_RUNNER_OS}_cmds \
 	./vm-scripts/normal_cmds \
 	./vm-runner.sh
 ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
