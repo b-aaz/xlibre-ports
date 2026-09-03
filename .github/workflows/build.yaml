@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
+        echo '::group::Clone'
         sudo mkdir -p /opt/ci-run/
         curl -L $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF | sudo tar -xz --strip-components=1 -C /opt/ci-run/
+        echo '::endgroup::'
         sudo -H -E /opt/ci-run/.ci/ci.sh
