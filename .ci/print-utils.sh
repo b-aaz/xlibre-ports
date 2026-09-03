@@ -1,7 +1,7 @@
 #!/bin/sh
 
 on_github() {
-[ "${GITHUB_ACTIONS}" = "true" ]
+	[ "${GITHUB_ACTIONS}" = "true" ]
 }
 set_fg_color(){
 	[ "$1" -le 9 ] && [ "$1" -gt 0 ] && printf "%s" "[0;3$1m"
@@ -30,6 +30,7 @@ center() {
 section() {
 	text_color=6
 	border_color=3
+	echo
 	on_github && echo "::group::$1"
 	set_fg_color "$border_color"
 	echo '/============================================================================\'
@@ -46,6 +47,7 @@ section() {
 section_end() {
 	text_color=6
 	border_color=3
+	echo
 	set_fg_color "$border_color"
 	printf '%s' '\================================+'
 	set_fg_color "$text_color"
