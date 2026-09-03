@@ -12,6 +12,7 @@ echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 echo 'KbdInteractiveAuthentication no' >>/etc/ssh/sshd_config
 echo 'PubKeyAuthentication yes' >> /etc/ssh/sshd_config
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+echo 'PermitUserEnvironment yes' >> /etc/ssh/sshd_config
 mkdir ~/.ssh
 echo "$HOST_KEY" > ~/.ssh/authorized_keys
 echo 'sshd_enable="YES"' >> /etc/rc.conf
