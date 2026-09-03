@@ -11,10 +11,10 @@ set_fg_color(){
 repeat_string() {
 	char="$1"
 	count="$2"
-	while [ "$count" -gt 0 ];
+	while [ "$count" -gt 0 ]
 	do
 		printf '%s' "$char"
-		count=$(( "$count" - 1 ))
+		count=$(( count - 1 ))
 	done
 }
 center() {
