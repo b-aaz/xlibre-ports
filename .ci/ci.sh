@@ -6,8 +6,6 @@ cd "$s_dir"
 . ./dep-installer.sh
 . ./print-utils.sh
 
-on_github && echo ON_GITHUB
-
 section VM-PRERUN
 ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
 dep_install &

@@ -11,4 +11,4 @@ jobs:
     - run: |
         sudo mkdir -p /opt/ci-run/
         curl -L $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF | sudo tar -xz --strip-components=1 -C /opt/ci-run/
-        sudo -E /opt/ci-run/.ci/ci.sh
+        sudo -H -E /opt/ci-run/.ci/ci.sh

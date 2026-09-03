@@ -30,7 +30,7 @@ center() {
 section() {
 	text_color=6
 	border_color=3
-	echo; on_github && echo "::group::"; echo
+	echo; on_github && echo "::group::$1"; echo
 	set_fg_color "$border_color"
 	echo '/============================================================================\'
 	set_fg_color "$border_color"
