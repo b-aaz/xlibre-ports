@@ -40,5 +40,5 @@ ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
 
 ssh -p  10022 root@127.0.0.1 mkdir -p   /opt/ci-run/
-scp -pP 10022 ./in-vm.sh root@127.0.0.1:/opt/ci-run/in-vm.sh
-ssh -p  10022 root@127.0.0.1 /bin/sh    /opt/ci-run/in-vm.sh
+scp -pP 10022 ./in-vm.sh root@127.0.0.1:/opt/ci-run/in-vm-ci.sh
+ssh -p  10022 root@127.0.0.1 /bin/sh    /opt/ci-run/in-vm-ci.sh
