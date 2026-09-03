@@ -1,11 +1,10 @@
 #!/bin/sh
 
-cd /opt/ci-run/
-cd ./.ci/
 s_dir=${0%/*}; [ "$s_dir" = "$0" ] && s_dir='.'
-. "$s_dir/image-fetcher.sh"
-. "$s_dir/dep-installer.sh"
-. "$s_dir/print-utils.sh"
+cd "$s_dir"
+. ./image-fetcher.sh
+. ./dep-installer.sh
+. ./print-utils.sh
 
 on_github && echo ON_GITHUB
 
