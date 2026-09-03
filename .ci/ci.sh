@@ -39,10 +39,9 @@ section VM-SETUP
 ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
 
-ssh -p  10022 root@127.0.0.1 env | cut -d= -f1 | sed 's/^/^/' > vm-env-keys
-printenv | grep -v -f vm-env-keys - > host-keys
+printenv | grep '^GITHUB.*=\|^CI.*=' > host-keys
 cat host-keys
-scp -pP 10022 vm-env-keys root@127.0.0.1:/root/.ssh/environment
+scp -P  10022 host-keys root@127.0.0.1:/root/.ssh/environment
 
 
 ssh -p  10022 root@127.0.0.1      mkdir -p /opt/ci-run/
