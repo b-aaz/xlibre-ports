@@ -8,18 +8,22 @@ jobs:
   build_fbsd:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo '::group::Clone'
-        sudo mkdir -p /opt/ci-run/
-        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | sudo tar -xvz --strip-components=1 -C /opt/ci-run/
-        echo '::endgroup::'
-        sudo -H -E /opt/ci-run/.ci/ci.sh fbsd
+    - run: >
+        echo '::group::CLONE'
+        && export CI_RUN_DIR="/opt/run/"
+        && sudo mkdir -p "${CI_RUN_DIR}" &&
+        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
+        | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
+        && echo '::endgroup::'
+        && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd
   build_dfbsd:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo '::group::Clone'
-        sudo mkdir -p /opt/ci-run/
-        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | sudo tar -xvz --strip-components=1 -C /opt/ci-run/
-        echo '::endgroup::'
-        sudo -H -E /opt/ci-run/.ci/ci.sh dfbsd
+    - run: >
+        echo '::group::CLONE'
+        && export CI_RUN_DIR="/opt/run/"
+        && sudo mkdir -p "${CI_RUN_DIR}" &&
+        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
+        | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
+        && echo '::endgroup::'
+        && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh dfbsd

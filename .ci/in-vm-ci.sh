@@ -1,12 +1,12 @@
 #!/bin/sh
 
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
-mkdir -p /opt/ci-run/
+mkdir -p "${CI_RUN_DIR:?}"
 fetch -o - "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | \
-       	tar -xvz --strip-components=1 -C /opt/ci-run/
+       	tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::endgroup::'
+cd "${CI_RUN_DIR}"
 
-cd /opt/ci-run/
 . ./.ci/print-utils.sh
 
 case "$(uname -s)" in
@@ -31,27 +31,31 @@ esac
 
 section CLONE-PORTS
 mkdir -p "$PORTS_DIR"
-rm -rf   "$PORTS_DIR/*"
+rm -rf   "${PORTS_DIR:?}/*"
 fetch -o - "$GITHUB_API_URL/repos/$PORTS_REPO/tarball/$PORTS_BRANCH" | \
 	tar -xz --strip-components=1 -C "$PORTS_DIR"
 section_end
 
 section PORTS-PATCH
-{ {
+{
+	{
 		patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk" <\
 		       	./.ci/bsd.port.subdir.mk.patch
-	} || true }
+	} || true
+}
 
-{ {
+{
+	{
 		patch -N "${PORTS_DIR}/Mk/bsd.port.mk" < ./.ci/bsd.port.mk.patch
-	} || true }
+	} || true
+}
 section_end
 
 section MAKE-CONFIG
 cat > /etc/make.conf << EOF
-OVERLAYS=/opt/ci-run/
+OVERLAYS="${CI_RUN_DIR}"
 BATCH=yes
-PACKAGES=/opt/pkgs/
+PACKAGES="${CI_RUN_DIR}/pkgs"
 EOF
 section_end
 
@@ -61,7 +65,7 @@ make run-depends-list |\
 	uniq |\
 	grep -v '^==\|xlibre' |\
 	awk -F "/" '{print $(NF-1) "/" $NF}' |\
-	grep -v "$NOT_TO_INSTALL_DEPS" |\
+	grep -v "$FLITTERED_DEPS" |\
 	xargs pkg-static install -y
 section_end
 
@@ -71,7 +75,7 @@ make build-depends-list |\
 	uniq |\
 	grep -v '^==\|xlibre' |\
 	awk -F "/" '{print $(NF-1) "/" $NF}' |\
-	grep -v "$NOT_TO_INSTALL_DEPS" |\
+	grep -v "$FLITTERED_DEPS" |\
 	xargs pkg-static install -y
 section_end
 
