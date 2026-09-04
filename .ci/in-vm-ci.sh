@@ -9,6 +9,7 @@ cd "${CI_RUN_DIR}"
 
 . ./.ci/print-utils.sh
 
+REPO_DIR="${CI_RUN_DIR}/pkgs"
 case "$(uname -s)" in
 	FreeBSD*)
 		PORTS_REPO="freebsd/freebsd-ports"
@@ -52,10 +53,10 @@ section PORTS-PATCH
 section_end
 
 section MAKE-CONFIG
-cat > /etc/make.conf << EOF
-OVERLAYS="${CI_RUN_DIR}"
+tee /etc/make.conf << EOF
+OVERLAYS=${CI_RUN_DIR}
 BATCH=yes
-PACKAGES="${CI_RUN_DIR}/pkgs"
+PACKAGES=${REPO_DIR}
 EOF
 section_end
 
@@ -92,6 +93,7 @@ make check-plist
 section_end
 
 section PACKAGES
+mkdir -p ${REPO_DIR}
 make packages
 section_end
 
