@@ -144,3 +144,4 @@ section REPO-CREATION
 section_end
 
 tree "${REPO_DIR}"
+exit 0
