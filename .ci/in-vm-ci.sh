@@ -72,7 +72,7 @@ section RUN-DEP-INSTALL
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
 		grep -v "$FLITTERED_DEPS" |\
-		xargs pkg-static install -y
+		xargs pkg install -y
 }
 section_end
 
@@ -84,9 +84,17 @@ section BUILD-DEP-INSTALL
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
 		grep -v "$FLITTERED_DEPS" |\
-		xargs pkg-static install -y
+		xargs pkg install -y
 }
 section_end
+
+#DEBUG
+if [ "$(uname -s)" = "FreeBSD" ]; then
+	echo "::group::DBG"
+	cat "/usr/local/libdata/pkgconfig/xbitmaps.pc"
+	echo "::endgroup::"
+fi
+
 
 section STAGE
 {
@@ -119,7 +127,15 @@ section REPO-CREATION
 	ABI="$(pkg config abi)"
 	mv "$REPO_DIR/All" "$REPO_DIR/$ABI"
 	cd "$REPO_DIR/$ABI" || exit 1
-	pkg repo . || exit 1
+	# Retry repo creation ad-infinitum with a timeout until it
+	# actually creates a repo.
+	# For some weird reason pkg-ng just randomly gets stuck when trying to
+	# create a repo on DFBSD, so we have to resort to this abomination.
+	# ( I hate pkg-ng :-). )
+	while ! timeout -k 15s 10s pkg -dddddd repo .
+	do
+		echo Retrying the repo creation
+	done
 	title_msg="XLibre repository for $OS_NAME "\
 		"$(echo "$ABI" | cut -d: -f 2- | tr ':' ' ')"
 
