@@ -6,7 +6,7 @@ fetch -o - $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF | tar -x
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::endgroup::'
 
 cd /opt/ci-run/
-. ./.ci/print-utils
+. ./.ci/print-utils.sh
 
 case "$(uname -s)" in
 	FreeBSD*)
