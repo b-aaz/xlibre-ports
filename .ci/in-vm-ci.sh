@@ -94,6 +94,7 @@ section_end
 
 section PACKAGES
 mkdir -p ${REPO_DIR}
-make packages
+make package
 section_end
 
+ls ${REPO_DIR}
