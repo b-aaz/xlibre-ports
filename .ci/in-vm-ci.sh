@@ -125,7 +125,7 @@ if [ "$(uname -s)" = "FreeBSD" ]
 then
 section KDE-FIX
 {
-	./.ci/xlibre-kde-fix.sh "${REPO_DIR}/All/" > /dev/null 2>&1
+	./.ci/xlibre-kde-fixer.sh "${REPO_DIR}/All/" || exit 1
 }
 section_end
 fi
