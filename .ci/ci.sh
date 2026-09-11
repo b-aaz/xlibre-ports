@@ -39,8 +39,10 @@ section VM-SETUP
 ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
 
-printenv | grep '^GITHUB.*=\|^CI.*=' > host-env
+printenv | grep '^GITHUB.*=\|^CI.*=' | grep -v 'TOKEN\|SECRET' > host-env
 scp -P  10022 host-env root@127.0.0.1:/root/.ssh/environment
 ssh -p  10022 root@127.0.0.1      mkdir -p /opt/ci-run/
 scp -pP 10022 ./in-vm-ci.sh root@127.0.0.1:/opt/ci-run/in-vm-ci.sh
 ssh -p  10022 root@127.0.0.1      /bin/sh  /opt/ci-run/in-vm-ci.sh
+
+
