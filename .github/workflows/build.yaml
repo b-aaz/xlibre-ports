@@ -4,8 +4,8 @@ on:
       - main
       - ci-dev
 
-permissions: contents: write
-
+permissions:
+  contents: write
 jobs:
   build_fbsd:
     runs-on: ubuntu-latest
