@@ -121,12 +121,20 @@ section PACKAGES
 }
 section_end
 
+if [ "$(uname -s)" = "FreeBSD" ]
+then
+section KDE-FIX
+{
+	./.ci/xlibre-kde-fix.sh "${REPO_DIR}/All/" > /dev/null 2>&1
+}
+section_end
+fi
+
 section REPO-CREATION
 {
 	pkg-static install -y tree
 	ABI="$(pkg config abi)"
-	mv "$REPO_DIR/All" "$REPO_DIR/$ABI"
-	cd "$REPO_DIR/$ABI" || exit 1
+	cd "$REPO_DIR/All" || exit 1
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
@@ -134,7 +142,7 @@ section REPO-CREATION
 	# ( I hate pkg-ng :-). )
 	while ! timeout -k 15s 10s pkg -dddddd repo .
 	do
-		echo Retrying the repo creation
+		echo Retrying the repo creation.
 	done
 	title_msg="XLibre repository for $OS_NAME "\
 		"$(echo "$ABI" | cut -d: -f 2- | tr ':' ' ')"
