@@ -1,31 +1,85 @@
 on:
   push:
     branches:
-      - main
+      - master
+      - beta
+      - dev
       - ci-dev
+
+name: CI on ${{ github.ref_name }}
 
 permissions:
   contents: write
+
+env:
+  CI_RUN_DIR: "/opt/run/"
+  CI_ART_DIR: "/opt/artifacts/"
+
+
 jobs:
   build_fbsd:
+    name: FreeBSD build.
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
+      name: FreeBSD build.
     - run: >
         echo '::group::CLONE'
-        && export CI_RUN_DIR="/opt/run/"
         && sudo mkdir -p "${CI_RUN_DIR}" &&
         curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd
-  build_dfbsd:
+      name: Release (If required).
+      env:
+        RUN_TOKEN: ghp_1234123412341234123412341234123412341234
+    - run: >
+        echo '::group::RELEASE'
+        && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
+        && unset -v RUN_TOKEN
+        && sh "${CI_RUN_DIR}".ci/release.sh
+        && echo '::endgroup::'
+  build_fbsd:
+    name: FreeBSD Legacy build.
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
+      name: FreeBSD Legacy build.
     - run: >
         echo '::group::CLONE'
-        && export CI_RUN_DIR="/opt/run/"
+        && sudo mkdir -p "${CI_RUN_DIR}" &&
+        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
+        | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
+        && echo '::endgroup::'
+        && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd-legacy
+      name: Release (If required).
+      env:
+        RUN_TOKEN: ghp_1234123412341234123412341234123412341234
+    - run: >
+        echo '::group::RELEASE'
+        && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
+        && unset -v RUN_TOKEN
+        && sh "${CI_RUN_DIR}".ci/release.sh
+        && echo '::endgroup::'
+  build_dfbsd:
+    name: DragonflyBSD build.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      name: DragonflyBSD build.
+    - run: >
+        echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
         curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh dfbsd
+      name: Release (If required).
+      env:
+        RUN_TOKEN: ghp_1234123412341234123412341234123412341234
+    - run: >
+        echo '::group::RELEASE'
+        && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
+        && unset -v RUN_TOKEN
+        && sh "${CI_RUN_DIR}".ci/release.sh
+        && echo '::endgroup::'
