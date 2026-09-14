@@ -1,16 +1,25 @@
 #!/bin/sh
+export -p #DEBUG
+set -e
 
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
 mkdir -p "${CI_RUN_DIR:?}"
 fetch -o - "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | \
        	tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::endgroup::'
+
+
 cd "${CI_RUN_DIR}"
 
 . ./.ci/print-utils.sh
 
-REPO_DIR="${CI_RUN_DIR}/pkgs"
-case "$(uname -s)" in
+mkdir -p "${CI_ART_DIR:?}"
+
+PKG_DBG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}_dbg"
+    PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
+
+OS_NAME="$(uname -s)"
+case "${OS_NAME}" in
 	FreeBSD*)
 		PORTS_REPO="freebsd/freebsd-ports"
 		PORTS_BRANCH="refs/heads/2026Q3"
@@ -56,11 +65,12 @@ section_end
 
 section MAKE-CONFIG
 {
-	tee /etc/make.conf << EOF
-OVERLAYS=${CI_RUN_DIR}
-BATCH=yes
-PACKAGES=${REPO_DIR}
-EOF
+	echo "OVERLAYS=${CI_RUN_DIR}" | tee    /etc/make.conf
+	echo "BATCH=yes"              | tee -a /etc/make.conf
+	echo "WITH_CCACHE_BUILD=yes"  | tee -a /etc/make.conf
+	echo "CCACHE_DIR=/tmp/ccache/"| tee -a /etc/make.conf
+	echo "PACKAGES=${PKG_DBG_DIR}"| tee -a /etc/make.conf
+	echo "WITH_DEBUG=yes"         | tee -a /etc/make.conf
 }
 section_end
 
@@ -76,7 +86,7 @@ section RUN-DEP-INSTALL
 }
 section_end
 
-section BUILD-DEP-INSTALL
+section BUILD-DEP-INSTALL-DBG
 {
 	make build-depends-list |\
 		sort |\
@@ -88,68 +98,125 @@ section BUILD-DEP-INSTALL
 }
 section_end
 
-#DEBUG
-if [ "$(uname -s)" = "FreeBSD" ]; then
-	echo "::group::DBG"
-	cat "/usr/local/libdata/pkgconfig/xbitmaps.pc"
-	echo "::endgroup::"
-fi
-
-
-section STAGE
+section STAGE-DBG
 {
-	make stage || exit 1
+	make clean stage || exit 1
 }
 section_end
 
-section STAGE-QA
+section STAGE-QA-DBG
 {
 	make stage-qa || exit 1
 }
 section_end
 
-section CHECK-PLIST
+section CHECK-PLIST-DBG
 {
 	make check-plist || exit 1
 }
 section_end
 
-section PACKAGES
+section PACKAGES-DBG
 {
-	mkdir -p "${REPO_DIR}"
+	mkdir -p "${PKG_DIR}"
 	make package || exit 1
 }
 section_end
 
-if [ "$(uname -s)" = "FreeBSD" ]
-then
-section KDE-FIX
+section REPO-CREATION-DBG
 {
-	./.ci/xlibre-kde-fixer.sh "${REPO_DIR}/All/" || exit 1
-}
-section_end
-fi
-
-section REPO-CREATION
-{
-	pkg-static install -y tree
 	ABI="$(pkg config abi)"
-	cd "$REPO_DIR/All" || exit 1
+	REPO_DIR="${PKG_DBG_DIR}/${ABI}"
+	mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
 	# create a repo on DFBSD, so we have to resort to this abomination.
 	# ( I hate pkg-ng :-). )
-	while ! timeout -k 15s 10s pkg -dddddd repo .
+	while ! timeout -k 15s 10s pkg -dddddd repo -o 
 	do
 		echo Retrying the repo creation.
 	done
-	title_msg="XLibre repository for $OS_NAME "\
-		"$(echo "$ABI" | cut -d: -f 2- | tr ':' ' ')"
-
-	tree -hDCH -./ --houtro=/dev/null -T "${title_msg}" ./ > ./index.html
 }
 section_end
 
-tree "${REPO_DIR}"
+section ARTIFACT-CREATION-DBG
+{
+	tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
+		"$(basename ${PKG_DBG_DIR})"
+	rm -rf "${PKG_DBG_DIR}"
+}
+section_end
+
+# Building stripped pkgs,
+if [ "${GITHUB_REF_NAME}" != "dev" ] # Only on branches that aren't dev.
+then
+	section MAKE-CONFIG
+	{
+		sed -i.bak '/^PACKAGES=.*/d'       /etc/make.conf
+		sed -i.bak '/^WITH_DEBUG=.*/d'     /etc/make.conf
+		echo "PACKAGES=${PKG_DIR}"| tee -a /etc/make.conf
+		cat /etc/make.conf
+	}
+	section STAGE
+	{
+		make clean stage || exit 1
+	}
+	section_end
+
+	section STAGE-QA
+	{
+		make stage-qa || exit 1
+	}
+	section_end
+
+	section CHECK-PLIST
+	{
+		make check-plist || exit 1
+	}
+	section_end
+
+	section PACKAGES
+	{
+		mkdir -p "${PKG_DIR}"
+		make package || exit 1
+	}
+	section_end
+
+	# Including a fixed version of KDE plasma in release builds.
+	if [ "${OS_NAME}" = "FreeBSD" ] 
+	then
+		section KDE-FIX
+		{
+			./.ci/xlibre-kde-fixer.sh "${PKG_DIR}/All/" || exit 1
+		}
+		section_end
+	fi
+
+	section REPO-CREATION
+	{
+		ABI="$(pkg config abi)"
+		REPO_DIR="${PKG_DBG_DIR}/${ABI}"
+		mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
+		while ! timeout -k 15s 10s pkg -dddddd repo -o 
+		do
+			echo Retrying the repo creation.
+		done
+	}
+	section_end
+
+	section ARTIFACT-CREATION
+	{
+		tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
+			"$(basename ${PKG_DBG_DIR})"
+
+		rm -rf "${PKG_DBG_DIR}"
+	}
+	section_end
+
+fi
+
+
+find "${CI_ART_DIR}"
+tar -tf "${CI_ART_DIR}/*"
 exit 0
