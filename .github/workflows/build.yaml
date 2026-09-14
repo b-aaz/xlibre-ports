@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: FreeBSD build.
-    - run: >
+      run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
         curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
@@ -33,7 +33,7 @@ jobs:
     - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
-    - run: >
+      run: >
         echo '::group::RELEASE'
         && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
         && unset -v RUN_TOKEN
@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: FreeBSD Legacy build.
-    - run: >
+      run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
         curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
@@ -55,7 +55,7 @@ jobs:
     - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
-    - run: >
+      run: >
         echo '::group::RELEASE'
         && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
         && unset -v RUN_TOKEN
@@ -67,7 +67,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: DragonflyBSD build.
-    - run: >
+      run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
         curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
@@ -77,7 +77,7 @@ jobs:
     - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
-    - run: >
+      run: >
         echo '::group::RELEASE'
         && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}'|gh auth login --with-token||true
         && unset -v RUN_TOKEN
