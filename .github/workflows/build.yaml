@@ -6,7 +6,7 @@ on:
       - dev
       - ci-dev
 
-name: CI on ${{ github.ref_name }}
+name: CI package builder.
 
 permissions:
   contents: write
