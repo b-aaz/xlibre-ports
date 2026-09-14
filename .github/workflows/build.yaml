@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      name: FreeBSD build.
+    - name: FreeBSD build.
     - run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
@@ -30,7 +30,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd
-      name: Release (If required).
+    - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
     - run: >
@@ -39,12 +39,12 @@ jobs:
         && unset -v RUN_TOKEN
         && sh "${CI_RUN_DIR}".ci/release.sh
         && echo '::endgroup::'
-  build_fbsd:
+  build_fbsd_legacy:
     name: FreeBSD Legacy build.
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      name: FreeBSD Legacy build.
+    - name: FreeBSD Legacy build.
     - run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
@@ -52,7 +52,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd-legacy
-      name: Release (If required).
+    - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
     - run: >
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      name: DragonflyBSD build.
+    - name: DragonflyBSD build.
     - run: >
         echo '::group::CLONE'
         && sudo mkdir -p "${CI_RUN_DIR}" &&
@@ -74,7 +74,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh dfbsd
-      name: Release (If required).
+    - name: Release (If required).
       env:
         RUN_TOKEN: ghp_1234123412341234123412341234123412341234
     - run: >
