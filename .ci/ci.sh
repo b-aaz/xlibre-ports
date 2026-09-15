@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -ex
 
 s_dir=${0%/*}; [ "$s_dir" = "$0" ] && s_dir='.'
 cd "$s_dir"
@@ -57,19 +57,16 @@ section_end
 		#  then we unset them in this sub shell,
 		unset -v "${key}"
 	done
-	#  and we use export -p to make a env file of what remains to send to
-	#  the VM.
-	export -p;echo "$0; $LINENO" #DEBUG
-	export -p > vm-env
+	#  and we use export -p to
+	export -p
 
-)
+) > vm-env # make a env file of what remains to send to the VM.
+cat vm-env | sort;echo "$0------------------------------------$LINENO" #DEBUG
 scp -P  10022 vm-env         root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh    root@127.0.0.1:/tmp/in-vm-ci.sh
 
-export -p | sort;echo "$0; $LINENO" #DEBUG
 ssh -p 10022 root@127.0.0.1  /bin/sh -c '. /tmp/vm-env;
 			exec /bin/sh /tmp/in-vm-ci.sh'
-
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
 find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
