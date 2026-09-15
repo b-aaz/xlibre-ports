@@ -1,5 +1,5 @@
 #!/bin/sh
-export -p #DEBUG
+export -p; echo "$0; $LINENO" #DEBUG
 set -e
 
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
@@ -16,7 +16,8 @@ cd "${CI_RUN_DIR}"
 mkdir -p "${CI_ART_DIR:?}"
 
 PKG_DBG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}_dbg"
-    PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
+PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
+PKG_ABI="$(pkg config abi)"
 
 OS_NAME="$(uname -s)"
 case "${OS_NAME}" in
@@ -118,33 +119,34 @@ section_end
 
 section PACKAGES-DBG
 {
-	mkdir -p "${PKG_DIR}"
+	mkdir -p "${PKG_DBG_DIR}"
 	make package || exit 1
 }
 section_end
 
 section REPO-CREATION-DBG
 {
-	ABI="$(pkg config abi)"
-	REPO_DIR="${PKG_DBG_DIR}/${ABI}"
+	REPO_DIR="${PKG_DBG_DIR}/${PKG_ABI}"
 	mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
 	# create a repo on DFBSD, so we have to resort to this abomination.
 	# ( I hate pkg-ng :-). )
-	while ! timeout -k 15s 10s pkg -dddddd repo -o 
+	while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
 	do
-		echo Retrying the repo creation.
+		echo Retrying repo creation.
 	done
 }
 section_end
 
 section ARTIFACT-CREATION-DBG
 {
+	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 	tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
-		"$(basename ${PKG_DBG_DIR})"
+		"$(basename "${PKG_DBG_DIR}")"
 	rm -rf "${PKG_DBG_DIR}"
+	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 }
 section_end
 
@@ -184,7 +186,7 @@ then
 	section_end
 
 	# Including a fixed version of KDE plasma in release builds.
-	if [ "${OS_NAME}" = "FreeBSD" ] 
+	if [ "${OS_NAME}" = "FreeBSD" ]
 	then
 		section KDE-FIX
 		{
@@ -195,22 +197,23 @@ then
 
 	section REPO-CREATION
 	{
-		ABI="$(pkg config abi)"
-		REPO_DIR="${PKG_DBG_DIR}/${ABI}"
-		mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
-		while ! timeout -k 15s 10s pkg -dddddd repo -o 
+		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
+		mv "${PKG_DIR}/All" "${REPO_DIR}"
+		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
-			echo Retrying the repo creation.
+			echo Retrying repo creation.
 		done
 	}
 	section_end
 
 	section ARTIFACT-CREATION
 	{
-		tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
-			"$(basename ${PKG_DBG_DIR})"
+		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
+		tar -C "${CI_ART_DIR}" -cf "${PKG_DIR}.tar"\
+			"$(basename "${PKG_DIR}")"
 
-		rm -rf "${PKG_DBG_DIR}"
+		rm -rf "${PKG_DIR}"
+		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 	}
 	section_end
 

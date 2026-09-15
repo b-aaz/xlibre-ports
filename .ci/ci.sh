@@ -48,11 +48,10 @@ section_end
 (
 	# Here we first create a list of env var keys that we want to remove
 	# based on two regex patterns (one negative and one positive).
-	awk 'BEGIN{for(name in ENVIRON){if(
-		!match(name,"^GITHUB\|^CI")
-		||
-		match(name,"TOKEN\|SECRET")
-		){print name}}}' | while read -r key
+	awk 'BEGIN{for(key in ENVIRON){
+		if( !match(key,"^GITHUB\|^CI") || match(key,"TOKEN\|SECRET") ){
+			print key
+		}}}' | while read -r key
 	do
 	#  then we unset them in this sub shell,
 		unset -v "${key}"
@@ -63,8 +62,8 @@ section_end
 
 )
 scp -P  10022 vm-env         root@127.0.0.1:/tmp/vm-env
-export -p #DEBUG
+export -p; echo "$0; $LINENO" #DEBUG
 cat in-vm-ci.sh | ssh -p 10022 root@127.0.0.1  '. /tmp/vm-env;exec /bin/sh -s'
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
-find "${CI_ART_DIR}" #DEBUG
+find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
