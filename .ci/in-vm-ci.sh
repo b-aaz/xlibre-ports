@@ -222,5 +222,5 @@ fi
 
 
 find "${CI_ART_DIR}"
-find "${CI_ART_DIR}/*" -type f -print -exec tar -tf {} \;
+find "${CI_ART_DIR}/" -type f -print -exec tar -tf {} \;
 exit 0
