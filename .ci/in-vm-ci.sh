@@ -17,7 +17,6 @@ mkdir -p "${CI_ART_DIR:?}"
 
 PKG_DBG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}_dbg"
 PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
-PKG_ABI="$(pkg config abi)"
 
 OS_NAME="$(uname -s)"
 case "${OS_NAME}" in
@@ -126,6 +125,7 @@ section_end
 
 section REPO-CREATION-DBG
 {
+	PKG_ABI="$(pkg config abi)"
 	REPO_DIR="${PKG_DBG_DIR}/${PKG_ABI}"
 	mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
 	# Retry repo creation ad-infinitum with a timeout until it
@@ -197,6 +197,7 @@ then
 
 	section REPO-CREATION
 	{
+		PKG_ABI="$(pkg config abi)"
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
 		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
