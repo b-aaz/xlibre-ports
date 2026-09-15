@@ -58,20 +58,15 @@ section_end
 		unset -v "${key}"
 	done
 	#  and we use export -p to
-	export -p
+	export -p > vm-env # make a env file of what remains to send to the VM.
 
-) > vm-env # make a env file of what remains to send to the VM.
+)
 scp -P  10022 vm-env        root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh   root@127.0.0.1:/tmp/in-vm-ci.sh
 
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "echo /tmp/vm-env"' || echo $?
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "ls -l /tmp/vm-env"' || echo $?
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "file /tmp/vm-env"' || echo $?
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "ls -l /tmp/"' || echo $?
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "mount"' || echo $?
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c "test -r /tmp/vm-env"' || echo $?
+ssh -p 10022 root@127.0.0.1\
+	'/bin/sh -c ". /tmp/vm-env;exec /bin/sh /tmp/in-vm-ci.sh"'
 
-ssh -p 10022 root@127.0.0.1 '/bin/sh -c ". /tmp/vm-env;env;exec /bin/sh /tmp/in-vm-ci.sh"'
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
 find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
