@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export -p #DEBUG
+export -p; echo "$0; $LINENO" #DEBUG
 curl -s "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA" |
        	jq -e '
 if (.files[] | select(.filename=="VERSION" and .status=="modified")) then
