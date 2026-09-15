@@ -50,7 +50,7 @@ section_end
 	# Here we first create a list of env var keys that we want to remove
 	# based on two regex patterns (one negative and one positive).
 	for key in $(awk 'BEGIN{for(key in ENVIRON){
-		if( !match(key,"^GITHUB\|^CI") || match(key,"TOKEN\|SECRET") ){
+		if( !match(key,/^GITHUB|^CI/) || match(key,/TOKEN|SECRET/) ){
 			print key
 		}}}')
 	do
@@ -59,14 +59,14 @@ section_end
 	done
 	#  and we use export -p to make a env file of what remains to send to
 	#  the VM.
+	export -p | sort;echo "$0; $LINENO" #DEBUG
 	export -p > vm-env
 
 )
 scp -P  10022 vm-env         root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh    root@127.0.0.1:/tmp/in-vm-ci.sh
 
-export -p;  echo "$0; $LINENO" #DEBUG
-cat vm-env; echo "$0; $LINENO" #DEBUG
+export -p | sort;echo "$0; $LINENO" #DEBUG
 ssh -p 10022 root@127.0.0.1  /bin/sh -c '. /tmp/vm-env;
 			exec /bin/sh /tmp/in-vm-ci.sh'
 
