@@ -59,7 +59,7 @@ section_end
 	done
 	#  and we use export -p to make a env file of what remains to send to
 	#  the VM.
-	export -p | sort;echo "$0; $LINENO" #DEBUG
+	export -p;echo "$0; $LINENO" #DEBUG
 	export -p > vm-env
 
 )
