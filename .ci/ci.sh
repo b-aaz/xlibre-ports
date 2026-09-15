@@ -64,6 +64,12 @@ section_end
 scp -P  10022 vm-env        root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh   root@127.0.0.1:/tmp/in-vm-ci.sh
 
+ssh -p 10022 root@127.0.0.1 /bin/sh -c 'ls -l /tmp/vm-env'
+ssh -p 10022 root@127.0.0.1 /bin/sh -c 'file /tmp/vm-env'
+ssh -p 10022 root@127.0.0.1 /bin/sh -c 'ls -l /tmp/'
+ssh -p 10022 root@127.0.0.1 /bin/sh -c 'mount'
+ssh -p 10022 root@127.0.0.1 /bin/sh -c 'test -r /tmp/vm-env'
+
 ssh -p 10022 root@127.0.0.1 /bin/sh -c '. /tmp/vm-env;env;exec /bin/sh /tmp/in-vm-ci.sh'
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
