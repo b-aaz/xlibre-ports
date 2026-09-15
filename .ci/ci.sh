@@ -61,12 +61,10 @@ section_end
 	export -p
 
 ) > vm-env # make a env file of what remains to send to the VM.
-cat vm-env | sort;echo "$0------------------------------------$LINENO" #DEBUG
-scp -P  10022 vm-env         root@127.0.0.1:/tmp/vm-env
-scp -P  10022 in-vm-ci.sh    root@127.0.0.1:/tmp/in-vm-ci.sh
+scp -P  10022 vm-env        root@127.0.0.1:/tmp/vm-env
+scp -P  10022 in-vm-ci.sh   root@127.0.0.1:/tmp/in-vm-ci.sh
 
-ssh -p 10022 root@127.0.0.1  /bin/sh -c '. /tmp/vm-env;
-			exec /bin/sh /tmp/in-vm-ci.sh'
+ssh -p 10022 root@127.0.0.1 /bin/sh -c '. /tmp/vm-env;env;exec /bin/sh /tmp/in-vm-ci.sh'
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
 find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
