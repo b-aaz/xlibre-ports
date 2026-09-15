@@ -46,14 +46,15 @@ ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
 
 (
+	set -f
 	# Here we first create a list of env var keys that we want to remove
 	# based on two regex patterns (one negative and one positive).
-	awk 'BEGIN{for(key in ENVIRON){
+	for key in $(awk 'BEGIN{for(key in ENVIRON){
 		if( !match(key,"^GITHUB\|^CI") || match(key,"TOKEN\|SECRET") ){
 			print key
-		}}}' | while read -r key
+		}}}')
 	do
-	#  then we unset them in this sub shell,
+		#  then we unset them in this sub shell,
 		unset -v "${key}"
 	done
 	#  and we use export -p to make a env file of what remains to send to
@@ -63,8 +64,12 @@ section_end
 )
 scp -P  10022 vm-env         root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh    root@127.0.0.1:/tmp/in-vm-ci.sh
-export -p; echo "$0; $LINENO" #DEBUG
-ssh -p 10022 root@127.0.0.1  '. /tmp/vm-env;exec /bin/sh /tmp/in-vm-ci.sh'
+
+export -p;  echo "$0; $LINENO" #DEBUG
+cat vm-env; echo "$0; $LINENO" #DEBUG
+ssh -p 10022 root@127.0.0.1  /bin/sh -c '. /tmp/vm-env;
+			exec /bin/sh /tmp/in-vm-ci.sh'
+
 mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
 find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
