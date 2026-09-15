@@ -86,7 +86,7 @@ section RUN-DEP-INSTALL
 }
 section_end
 
-section BUILD-DEP-INSTALL-DBG
+section BUILD-DEP-INSTALL
 {
 	make build-depends-list |\
 		sort |\
@@ -222,5 +222,5 @@ fi
 
 
 find "${CI_ART_DIR}"
-tar -tf "${CI_ART_DIR}/*"
+find "${CI_ART_DIR}/*" -type f -print -exec tar -tf {} \;
 exit 0
