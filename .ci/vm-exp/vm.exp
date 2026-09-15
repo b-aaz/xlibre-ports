@@ -4,7 +4,7 @@ source [file join [file dirname $thisfile] funcs.exp]
 log_file "[file tail $thisfile].log"
 set timeout 999 ;#We need to wait for more than the 10 second default.
 set send_human {.15 .4 1 .15 4}
-set send_slow  {15 .003}
+set send_slow  {1 .001}
 
 # Command list for bootloader.
 set boot_cmd_list	[filter_cmts [filetolist [lindex $argv 0]]]
