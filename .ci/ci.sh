@@ -68,5 +68,5 @@ ssh -p 10022 root@127.0.0.1\
 	'/bin/sh -c ". /tmp/vm-env;exec /bin/sh /tmp/in-vm-ci.sh"'
 
 mkdir -p "${CI_ART_DIR:?}"
-scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}" "${CI_ART_DIR}" 
+scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}/*" "${CI_ART_DIR}/" 
 find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
