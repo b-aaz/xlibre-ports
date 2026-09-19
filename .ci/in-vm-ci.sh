@@ -18,6 +18,7 @@ mkdir -p "${CI_ART_DIR:?}"
 PKG_DBG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}_dbg"
 PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 
+BUILD_START_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 OS_NAME="$(uname -s)"
 case "${OS_NAME}" in
 	FreeBSD*)
@@ -38,7 +39,10 @@ case "${OS_NAME}" in
 		;;
 esac
 
-
+# Get ports tree commit for BUILD-INFO.
+BUILD_PORTS_COMMIT_SHA="
+$(git ls-remote -b "${GITHUB_SERVER_URL}/${PORTS_REPO}" "${PORTS_BRANCH}" |
+	cut -f 1 )"
 
 section CLONE-PORTS
 {
@@ -145,7 +149,9 @@ section ARTIFACT-CREATION-DBG
 	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 	tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
 		"$(basename "${PKG_DBG_DIR}")"
+
 	rm -rf "${PKG_DBG_DIR}"
+	sha512sum "${PKG_DBG_DIR}.tar" > "${PKG_DBG_DIR}.tar.sha512"
 	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 }
 section_end
@@ -214,13 +220,35 @@ then
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
+		sha512sum "${PKG_DIR}.tar" > "${PKG_DIR}.tar.sha512"
 		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 	}
 	section_end
 
 fi
 
+section BUILD_INFO
+{
+	printf '+ Operating system: %s'		"$(uname -s)" | \
+		tee "${CI_ART_DIR}/build_info.md"
+	printf '+ Kernel version: %s'		"$(uname -K)" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '+ Base version: %s'		"$(uname -U)" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '+ Raw build time: %ss'\
+		"$((BUILD_START_TIME -
+	$(awk 'BEGIN{srand(); print srand()}')))" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '+ Ports tree repository: %s'\
+		"https://github.com/${PORTS_REPO}" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '+ Ports tree branch: %s'	"${PORTS_BRANCH}" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '+ Ports tree commit: %s'	"${BUILD_START_TIME}" | \
+		tee -a "${CI_ART_DIR}/build_info.md"
+}
+section_end
 
 find "${CI_ART_DIR}"
-find "${CI_ART_DIR}/" -type f -print -exec tar -tf {} \;
+find "${CI_ART_DIR}/" -type f -name '*.tar' -print -exec tar -tf {} \;
 exit 0
