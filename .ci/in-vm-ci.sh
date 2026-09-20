@@ -151,7 +151,7 @@ section ARTIFACT-CREATION-DBG
 		"$(basename "${PKG_DBG_DIR}")"
 
 	rm -rf "${PKG_DBG_DIR}"
-	sha512sum "${PKG_DBG_DIR}.tar" > "${PKG_DBG_DIR}.tar.sha512"
+	sha256 "${PKG_DBG_DIR}.tar" > "${PKG_DBG_DIR}.tar.sha256"
 	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 }
 section_end
@@ -220,7 +220,7 @@ then
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
-		sha512sum "${PKG_DIR}.tar" > "${PKG_DIR}.tar.sha512"
+		sha256 "${PKG_DIR}.tar" > "${PKG_DIR}.tar.sha256"
 		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
 	}
 	section_end
@@ -229,22 +229,28 @@ fi
 
 section BUILD_INFO
 {
-	printf '+ Operating system: %s'		"$(uname -s)" | \
+	printf '+ Operating system: %s\n'	"$(uname -s)" | \
 		tee "${CI_ART_DIR}/build_info.md"
-	printf '+ Kernel version: %s'		"$(uname -K)" | \
+
+	printf '+ Kernel version: %s\n'		"$(uname -K)" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '+ Base version: %s'		"$(uname -U)" | \
+
+	printf '+ Base version: %s\n'		"$(uname -U)" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '+ Raw build time: %ss'\
+
+	printf '+ Raw build time: %ss\n'\
 		"$((BUILD_START_TIME -
 	$(awk 'BEGIN{srand(); print srand()}')))" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '+ Ports tree repository: %s'\
+
+	printf '+ Ports tree repository: %s\n'\
 		"https://github.com/${PORTS_REPO}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '+ Ports tree branch: %s'	"${PORTS_BRANCH}" | \
+
+	printf '+ Ports tree branch: %s\n'	"${PORTS_BRANCH}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '+ Ports tree commit: %s'	"${BUILD_START_TIME}" | \
+
+	printf '+ Ports tree commit: %s\n'	"${BUILD_START_TIME}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end

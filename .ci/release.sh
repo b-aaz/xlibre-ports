@@ -8,5 +8,6 @@ end' && {
 	find "${CI_ART_DIR}"
 } || {
 	echo "Version hasn't changed, doing nothing."
-	cat "${CI_ART_DIR}/build_info.md" > "$GITHUB_STEP_SUMMARY"
+	cat "${CI_ART_DIR}/build_info.md"
+	cat "${CI_ART_DIR}/build_info.md" > "${GITHUB_STEP_SUMMARY}"
 }
