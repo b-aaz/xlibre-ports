@@ -40,11 +40,10 @@ esac
 
 section CLONE-PORTS
 {
-	set -x
 	# Get ports tree's latest commit hash based on branch.
 	PORTS_COMMIT_SHA="$(fetch -o - \
 	"${GITHUB_SERVER_URL}/${PORTS_REPO}/info/refs?service=git-upload-pack"|\
-		grep "${PORTS_BRANCH}$" |\
+		grep -a "${PORTS_BRANCH}$" |\
 		cut -c 5- |\
 		cut -d' ' -f1 )"
 
@@ -53,7 +52,6 @@ section CLONE-PORTS
 	fetch -o - \
 	"${GITHUB_API_URL}/repos/${PORTS_REPO}/tarball/${PORTS_COMMIT_SHA}"|\
 		tar -xz --strip-components=1 -C "${PORTS_DIR}"
-	set +x
 }
 section_end
 
