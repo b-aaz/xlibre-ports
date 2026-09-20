@@ -14,10 +14,9 @@ cd "${CI_RUN_DIR}"
 
 mkdir -p "${CI_ART_DIR:?}"
 
-PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
-
 BUILD_START_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 OS_NAME="$(uname -s)"
+PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 case "${OS_NAME}" in
 	FreeBSD*)
 		PORTS_REPO="freebsd/freebsd-ports"
@@ -37,17 +36,21 @@ case "${OS_NAME}" in
 		;;
 esac
 
-# Get ports tree's latest commit hash for BUILD-INFO.
-BUILD_PORTS_COMMIT_SHA="
-$(git ls-remote -b "${GITHUB_SERVER_URL}/${PORTS_REPO}" "${PORTS_BRANCH}" |
-	cut -f 1 )"
 
 section CLONE-PORTS
 {
+	# Get ports tree's latest commit hash based on branch.
+	PORTS_COMMIT_SHA="$(fetch -o -\
+	"${GITHUB_SERVER_URL}/${PORTS_REPO}/info/refs?service=git-upload-pack"|\
+		grep "${PORTS_BRANCH}$" |\
+		cut -c 5- |\
+		cut -d' ' -f1 )"
+
 	mkdir -p "$PORTS_DIR"
 	rm -rf   "${PORTS_DIR:?}/*"
-	fetch -o - "$GITHUB_API_URL/repos/$PORTS_REPO/tarball/$PORTS_BRANCH" | \
-		tar -xz --strip-components=1 -C "$PORTS_DIR"
+	fetch -o - \
+	"${GITHUB_API_URL}/repos/${PORTS_REPO}/tarball/${PORTS_COMMIT_SHA}"|\
+		tar -xz --strip-components=1 -C "${PORTS_DIR}"
 }
 section_end
 
@@ -144,11 +147,11 @@ section_end
 
 section ARTIFACT-CREATION-DBG
 {
-	tar -C "${CI_ART_DIR}" -cf "${GITHUB_REF_NAME}.dbg.tar"\
+	tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.dbg.tar"\
 		"$(basename "${PKG_DIR}")"
 
 	rm -rf "${PKG_DIR}"
-	sha256 "${GITHUB_REF_NAME}.dbg.tar" >"${GITHUB_REF_NAME}.dbg.tar.sha256"
+	sha256 "${PKG_DIR%%/}.dbg.tar" >"${PKG_DIR%%/}.dbg.tar.sha256"
 }
 section_end
 
@@ -209,11 +212,11 @@ then
 
 	section ARTIFACT-CREATION
 	{
-		tar -C "${CI_ART_DIR}" -cf "${GITHUB_REF_NAME}.tar"\
+		tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.tar"\
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
-		sha256 "${GITHUB_REF_NAME}.tar" >"${GITHUB_REF_NAME}.tar.sha256"
+		sha256 "${PKG_DIR%%/}.dbg.tar" >"${PKG_DIR%%/}.tar.sha256"
 	}
 	section_end
 
@@ -243,7 +246,7 @@ section BUILD_INFO
 	printf '+ Ports tree branch: %s\n'	"${PORTS_BRANCH}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Ports tree commit: %s\n'	"${BUILD_PORTS_COMMIT_SHA}" | \
+	printf '+ Ports tree commit: %s\n'	"${PORTS_COMMIT_SHA}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end
