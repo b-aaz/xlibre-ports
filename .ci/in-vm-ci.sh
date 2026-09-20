@@ -1,5 +1,4 @@
 #!/bin/sh
-export -p; echo "$0; $LINENO" #DEBUG
 set -e
 
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
@@ -15,7 +14,6 @@ cd "${CI_RUN_DIR}"
 
 mkdir -p "${CI_ART_DIR:?}"
 
-PKG_DBG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}_dbg"
 PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 
 BUILD_START_TIME="$(awk 'BEGIN{srand(); print srand()}')"
@@ -39,7 +37,7 @@ case "${OS_NAME}" in
 		;;
 esac
 
-# Get ports tree commit for BUILD-INFO.
+# Get ports tree's latest commit hash for BUILD-INFO.
 BUILD_PORTS_COMMIT_SHA="
 $(git ls-remote -b "${GITHUB_SERVER_URL}/${PORTS_REPO}" "${PORTS_BRANCH}" |
 	cut -f 1 )"
@@ -73,7 +71,7 @@ section MAKE-CONFIG
 	echo "BATCH=yes"              | tee -a /etc/make.conf
 	echo "WITH_CCACHE_BUILD=yes"  | tee -a /etc/make.conf
 	echo "CCACHE_DIR=/tmp/ccache/"| tee -a /etc/make.conf
-	echo "PACKAGES=${PKG_DBG_DIR}"| tee -a /etc/make.conf
+	echo "PACKAGES=${PKG_DIR}"    | tee -a /etc/make.conf
 	echo "WITH_DEBUG=yes"         | tee -a /etc/make.conf
 }
 section_end
@@ -122,7 +120,7 @@ section_end
 
 section PACKAGES-DBG
 {
-	mkdir -p "${PKG_DBG_DIR}"
+	mkdir -p "${PKG_DIR}"
 	make package || exit 1
 }
 section_end
@@ -130,8 +128,8 @@ section_end
 section REPO-CREATION-DBG
 {
 	PKG_ABI="$(pkg config abi)"
-	REPO_DIR="${PKG_DBG_DIR}/${PKG_ABI}"
-	mv "${PKG_DBG_DIR}/All" "${REPO_DIR}"
+	REPO_DIR="${PKG_DIR}/${PKG_ABI}"
+	mv "${PKG_DIR}/All" "${REPO_DIR}"
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
@@ -146,24 +144,20 @@ section_end
 
 section ARTIFACT-CREATION-DBG
 {
-	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
-	tar -C "${CI_ART_DIR}" -cf "${PKG_DBG_DIR}.tar"\
-		"$(basename "${PKG_DBG_DIR}")"
+	tar -C "${CI_ART_DIR}" -cf "${GITHUB_REF_NAME}.dbg.tar"\
+		"$(basename "${PKG_DIR}")"
 
-	rm -rf "${PKG_DBG_DIR}"
-	sha256 "${PKG_DBG_DIR}.tar" > "${PKG_DBG_DIR}.tar.sha256"
-	find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
+	rm -rf "${PKG_DIR}"
+	sha256 "${GITHUB_REF_NAME}.dbg.tar" >"${GITHUB_REF_NAME}.dbg.tar.sha256"
 }
 section_end
 
 # Building stripped pkgs,
 if [ "${GITHUB_REF_NAME}" != "dev" ] # Only on branches that aren't dev.
 then
-	section MAKE-CONFIG
+	section MAKE-RECONFIG
 	{
-		sed -i.bak '/^PACKAGES=.*/d'       /etc/make.conf
 		sed -i.bak '/^WITH_DEBUG=.*/d'     /etc/make.conf
-		echo "PACKAGES=${PKG_DIR}"| tee -a /etc/make.conf
 		cat /etc/make.conf
 	}
 	section STAGE
@@ -215,13 +209,11 @@ then
 
 	section ARTIFACT-CREATION
 	{
-		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
-		tar -C "${CI_ART_DIR}" -cf "${PKG_DIR}.tar"\
+		tar -C "${CI_ART_DIR}" -cf "${GITHUB_REF_NAME}.tar"\
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
-		sha256 "${PKG_DIR}.tar" > "${PKG_DIR}.tar.sha256"
-		find "${CI_ART_DIR}"; echo "$0; $LINENO" #DEBUG
+		sha256 "${GITHUB_REF_NAME}.tar" >"${GITHUB_REF_NAME}.tar.sha256"
 	}
 	section_end
 
@@ -239,8 +231,9 @@ section BUILD_INFO
 		tee -a "${CI_ART_DIR}/build_info.md"
 
 	printf '+ Raw build time: %ss\n'\
-		"$((BUILD_START_TIME -
-	$(awk 'BEGIN{srand(); print srand()}')))" | \
+		"$((
+			$(awk 'BEGIN{srand(); print srand()}')-BUILD_START_TIME
+			))" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 
 	printf '+ Ports tree repository: %s\n'\
@@ -250,11 +243,10 @@ section BUILD_INFO
 	printf '+ Ports tree branch: %s\n'	"${PORTS_BRANCH}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Ports tree commit: %s\n'	"${BUILD_START_TIME}" | \
+	printf '+ Ports tree commit: %s\n'	"${BUILD_PORTS_COMMIT_SHA}" | \
 		tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end
 
-find "${CI_ART_DIR}"
 find "${CI_ART_DIR}/" -type f -name '*.tar' -print -exec tar -tf {} \;
 exit 0
