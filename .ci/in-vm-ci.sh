@@ -61,7 +61,7 @@ esac
 section CLONE-PORTS
 {
 	# Get ports tree's latest commit hash based on branch.
-	PORTS_COMMIT_SHA="$(fetch -o - \
+	PORTS_SHA="$(fetch -o - \
 	"${GITHUB_SERVER_URL}/${PORTS_REPO}/info/refs?service=git-upload-pack"|\
 		grep -a "${PORTS_BRANCH}$" |\
 		cut -c 5- |\
@@ -70,7 +70,7 @@ section CLONE-PORTS
 	mkdir -p "$PORTS_DIR"
 	rm -rf   "${PORTS_DIR:?}/*"
 	fetch -o - \
-	"${GITHUB_API_URL}/repos/${PORTS_REPO}/tarball/${PORTS_COMMIT_SHA}"|\
+	"${GITHUB_API_URL}/repos/${PORTS_REPO}/tarball/${PORTS_SHA}"|\
 		tar -xz --strip-components=1 -C "${PORTS_DIR}"
 }
 section_end
@@ -246,47 +246,36 @@ fi
 
 section BUILD_INFO
 {
+	BUILD_END_TIME="$(awk 'BEGIN{srand(); print srand()}')"
+	# shellcheck disable=SC2016
 	printf '# Release %s (`%s`) for %s' \
 		"$(cat VERSION | head -n 1)" \
 		"$(branch_to_name "${GITHUB_REF_NAME}")" \
 		"${OS_NAME}" |\
 		tee -a "${CI_ART_DIR}/header.md"
 
-	printf '| **Operating system** | %s |\n'	"${OS_NAME}" |\
-		tee "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Kernel version** | `%s` |\n'	"$(uname -K)" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Base version** | `%s` |\n'		"$(uname -U)" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '| **OS release** | `%s` |\n'		"$(uname -r)" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Raw build time** | %ss |\n'\
-		"$((
-			$(awk 'BEGIN{srand(); print srand()}')-BUILD_START_TIME
-			))" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Ports tree repository** | %s |\n'\
-		"https://github.com/${PORTS_REPO}" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Ports tree branch** | `%s` |\n'	"${PORTS_BRANCH}" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-
-	printf '| **Ports tree commit** | `%s` |\n'	"${PORTS_COMMIT_SHA}" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
-	printf '| **`pkg` configuration** | 
-	<details>
-		<summary>
-			Click to expand
-		</summary>
-		<pre>%s</pre>
-	</details> |\n' \
-	"$(pkg -vv | html_encode | html_newlines )" |\
-		tee -a "${CI_ART_DIR}/build_info.md"
+	# shellcheck disable=SC2016
+	{
+		printf '| | |\n'
+		printf '|-|-|\n'
+		printf '|**Operating system** | %s |\n' "${OS_NAME}"
+		printf '|**Kernel version**   |`%s`|\n' "$(uname -K)"
+		printf '|**Base version**     |`%s`|\n' "$(uname -U)"
+		printf '|**OS release**       |`%s`|\n' "$(uname -r)"
+		printf '|**Raw build time**   | %ss|\n'\
+			"$((BUILD_END_TIME-BUILD_START_TIME))"
+		printf '|**Ports tree repository**| %s |\n'\
+			"https://github.com/${PORTS_REPO}"
+		printf '|**Ports tree branch**    |`%s`|\n' "${PORTS_BRANCH}"
+		printf '|**Ports tree commit**    |`%s`|\n' "${PORTS_SHA}"
+		printf '|**`pkg` configuration**  |
+		<details>
+			<summary>
+				Click to expand
+			</summary>
+			<pre>%s</pre>
+		</details> |\n' "$(pkg -vv | html_encode | html_newlines )"
+	} | tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end
 
