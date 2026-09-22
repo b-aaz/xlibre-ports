@@ -8,9 +8,11 @@ end' && {
 	find "${CI_ART_DIR}"
 } || {
 	echo "Version hasn't changed, doing nothing."
-	cat "${CI_ART_DIR}/build_info.md"
+	cat "${CI_ART_DIR}/header.md" >> "${GITHUB_STEP_SUMMARY}"
+	echo '<details>
+	<summary>Build information</summary>' >> "${GITHUB_STEP_SUMMARY}"
 	cat "${CI_ART_DIR}/build_info.md" >> "${GITHUB_STEP_SUMMARY}"
-	cat "${GITHUB_STEP_SUMMARY}"
-	echo "${GITHUB_STEP_SUMMARY}"
-	ls -al "${GITHUB_STEP_SUMMARY}"
+	cat "${CI_ART_DIR}/host_info.md" >> "${GITHUB_STEP_SUMMARY}"
+	echo '</details>' >> "${GITHUB_STEP_SUMMARY}"
+	rm  "${CI_ART_DIR}/*.md" 
 }

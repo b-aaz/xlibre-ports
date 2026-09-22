@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+mkdir -p "${CI_ART_DIR:?}"
+
 s_dir=${0%/*}; [ "$s_dir" = "$0" ] && s_dir='.'
 cd "$s_dir"
 . ./image-fetcher.sh
@@ -32,7 +34,7 @@ esac
 section VM-PRERUN
 ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
 dep_install &
-image_fetch &
+image_fetch "${CI_ART_DIR}/host_info.md"  &
 wait
 section_end
 
@@ -44,6 +46,8 @@ section VM-SETUP
 	./vm-runner.sh
 ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
+printf '| **Time to boot** | %ss |\n'	"${SECTION_TIME}" \
+	>> "${CI_ART_DIR}/host_info.md" 
 
 (
 	set -f
@@ -67,6 +71,5 @@ scp -P  10022 in-vm-ci.sh   root@127.0.0.1:/tmp/in-vm-ci.sh
 ssh -p 10022 root@127.0.0.1\
 	'/bin/sh -c ". /tmp/vm-env;exec /bin/sh /tmp/in-vm-ci.sh"'
 
-mkdir -p "${CI_ART_DIR:?}"
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}/*" "${CI_ART_DIR}/"
 find "${CI_ART_DIR}"
