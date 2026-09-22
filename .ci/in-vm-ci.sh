@@ -2,6 +2,26 @@
 set -o pipefail
 set -o errexit
 
+branch_to_name() {
+	case "$1" in
+		master)	echo "stable";;
+		beta)	echo "beta";;
+		dev)	echo "testing";;
+		*)	exit 1;;
+	esac
+}
+html_encode(){
+	sed	-e 's/&/\&amp;/g' \
+		-e 's/</\&lt;/g' \
+		-e 's/>/\&gt;/g' \
+		-e 's/"/\&quot;/g' \
+		-e 's/'\''/\&#39;/g'
+}
+html_newlines(){
+	sed -e 's#$#</br>#g' |\
+	tr -d '\n'
+}
+
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
 mkdir -p "${CI_RUN_DIR:?}"
 fetch -o - "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | \
@@ -226,29 +246,46 @@ fi
 
 section BUILD_INFO
 {
-	printf '+ Operating system: %s\n'	"$(uname -s)" | \
+	printf '# Release %s (`%s`) for %s' \
+		"$(cat VERSION | head -n 1)" \
+		"$(branch_to_name "${GITHUB_REF_NAME}")" \
+		"${OS_NAME}" |\
+		tee -a "${CI_ART_DIR}/header.md"
+
+	printf '| **Operating system** | %s |\n'	"${OS_NAME}" |\
 		tee "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Kernel version: %s\n'		"$(uname -K)" | \
+	printf '| **Kernel version** | `%s` |\n'	"$(uname -K)" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Base version: %s\n'		"$(uname -U)" | \
+	printf '| **Base version** | `%s` |\n'		"$(uname -U)" |\
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '| **OS release** | `%s` |\n'		"$(uname -r)" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Raw build time: %ss\n'\
+	printf '| **Raw build time** | %ss |\n'\
 		"$((
 			$(awk 'BEGIN{srand(); print srand()}')-BUILD_START_TIME
-			))" | \
+			))" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Ports tree repository: %s\n'\
-		"https://github.com/${PORTS_REPO}" | \
+	printf '| **Ports tree repository** | %s |\n'\
+		"https://github.com/${PORTS_REPO}" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Ports tree branch: %s\n'	"${PORTS_BRANCH}" | \
+	printf '| **Ports tree branch** | `%s` |\n'	"${PORTS_BRANCH}" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 
-	printf '+ Ports tree commit: %s\n'	"${PORTS_COMMIT_SHA}" | \
+	printf '| **Ports tree commit** | `%s` |\n'	"${PORTS_COMMIT_SHA}" |\
+		tee -a "${CI_ART_DIR}/build_info.md"
+	printf '| **`pkg` configuration** | 
+	<details>
+		<summary>
+			Click to expand
+		</summary>
+		<pre>%s</pre>
+	</details> |\n' \
+	"$(pkg -vv | html_encode | html_newlines )" |\
 		tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end
