@@ -23,17 +23,22 @@ center() {
 	pad_len="$2"
 	pad_r_len=$(( (pad_len - string_len)/2 + (pad_len - string_len)%2 ))
 	pad_l_len=$(( (pad_len - string_len)/2 ))
-	repeat_string "$3" "$pad_r_len"
+	[ -n "${4:-}" ] && set_fg_color "$4"
+	repeat_string "${3:-' '}" "$pad_r_len"
+	[ -n "${5:-}" ] && set_fg_color "$5"
 	printf '%s' "$string"
-	repeat_string "$3" "$pad_l_len"
+	[ -n "${4:-}" ] && set_fg_color "$4"
+	repeat_string "${3:-' '}" "$pad_l_len"
 }
 section() {
 	text_color=6
 	border_color=3
-	export SECTION_NAME="$1"
-	export SECTION_START="$(awk 'BEGIN{srand(); print srand()}')"
+	SECTION_NAME="$1"
+	SECTION_START="$(awk 'BEGIN{srand(); print srand()}')"
+	export SECTION_NAME SECTION_START
 	echo; on_github && echo "::group::${SECTION_NAME}"; echo
 	set_fg_color "$border_color"
+	# shellcheck disable=1003
 	echo '/============================================================================\'
 	set_fg_color "$border_color"
 	printf '%s' "|"
@@ -52,9 +57,11 @@ section_end() {
 	border_color=3
 	echo
 	set_fg_color "$border_color"
+	# shellcheck disable=1003
 	printf '%s' '\'
 	set_fg_color "$text_color"
-	center "+END ${SECTION_NAME:-${1:-SECTION}} (${SECTION_TIME}s)+" 74 '='
+	end_string="+END ${SECTION_NAME:-${1:-SECTION}} (${SECTION_TIME}s)+" 
+	center "$end_string" 74 '=' "$border_color" "$text_color"
 	set_fg_color "$border_color"
 	printf '%s\n' '/'
 	set_fg_color 9

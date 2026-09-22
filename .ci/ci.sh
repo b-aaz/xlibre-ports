@@ -32,10 +32,17 @@ esac
 
 
 section VM-PRERUN
-ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
-dep_install &
-image_fetch "${CI_ART_DIR}/host_info.md"  &
-wait
+(
+	ssh-keygen -f ~/.ssh/id_ed25519 -t ed25519 -N '' &
+	keygen_pid="$!"
+	dep_install &
+	dep_pid="$!"
+	image_fetch "${CI_ART_DIR}/host_info.md"  &
+	fetch_pid="$!"
+	wait "$keygen_pid"
+	wait "$dep_pid"
+	wait "$fetch_pid"
+)
 section_end
 
 section VM-SETUP
@@ -48,6 +55,7 @@ ssh-keyscan -p 10022 127.0.0.1 >> ~/.ssh/known_hosts
 section_end
 printf '| **Time to boot** | %ss |\n'	"${SECTION_TIME}" \
 	>> "${CI_ART_DIR}/host_info.md" 
+
 
 (
 	set -f
