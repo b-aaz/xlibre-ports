@@ -24,5 +24,5 @@ else
 		echo '</details>'
 	} >> "${GITHUB_STEP_SUMMARY}"
 
-	rm  "${CI_ART_DIR}/*.md" 
+	rm  "${CI_ART_DIR}"/*.md 
 fi

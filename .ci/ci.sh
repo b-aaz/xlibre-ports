@@ -76,7 +76,7 @@ printf '| **Time to boot** | %ss |\n'	"${SECTION_TIME}" \
 scp -P  10022 vm-env        root@127.0.0.1:/tmp/vm-env
 scp -P  10022 in-vm-ci.sh   root@127.0.0.1:/tmp/in-vm-ci.sh
 
-ssh -p 10022 root@127.0.0.1\
+ssh -np 10022 root@127.0.0.1\
 	'/bin/sh -c ". /tmp/vm-env;exec /bin/sh /tmp/in-vm-ci.sh"'
 
 scp -rpP 10022 "root@127.0.0.1:${CI_ART_DIR}/*" "${CI_ART_DIR}/"
