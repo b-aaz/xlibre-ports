@@ -1,5 +1,5 @@
 #!/bin/sh
-set -o pipefail
+(set -o pipefail 2>/dev/null)&&set -o pipefail
 set -o errexit
 
 version_changed(){
