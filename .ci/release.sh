@@ -1,7 +1,13 @@
 #!/bin/sh
+set -o pipefail
+set -o errexit
+
 version_changed(){
-	curl -s "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA" |
-		jq -e '
+	json="$(
+	curl -s "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA"
+	)"
+
+	printf '%s\n' "$json" | jq -e '
 	if (.files[] | select(.filename=="VERSION" and .status=="modified"))
 	then
 		halt
@@ -17,10 +23,13 @@ else
 
 	{
 		cat "${CI_ART_DIR}/header.md"
-		echo '<details>
-		<summary>Build information</summary>'
+		echo '<details><summary>Build information</summary>'
+		echo
+		echo '| | |' # Headerless markdown table.
+		echo '|-|-|'
 		cat "${CI_ART_DIR}/build_info.md"
 		cat "${CI_ART_DIR}/host_info.md"
+		echo
 		echo '</details>'
 	} >> "${GITHUB_STEP_SUMMARY}"
 

@@ -7,6 +7,7 @@ branch_to_name() {
 		master)	echo "stable";;
 		beta)	echo "beta";;
 		dev)	echo "testing";;
+		ci-dev)	echo "CI TESTING";;
 		*)	exit 1;;
 	esac
 }
@@ -25,7 +26,7 @@ html_newlines(){
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
 mkdir -p "${CI_RUN_DIR:?}"
 fetch -o - "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | \
-       	tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
+	tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::endgroup::'
 
 
@@ -79,7 +80,7 @@ section PORTS-PATCH
 {
 	{
 		patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk" <\
-		       	./.ci/bsd.port.subdir.mk.patch
+			./.ci/bsd.port.subdir.mk.patch
 	} || true
 }
 {
@@ -248,7 +249,7 @@ section BUILD_INFO
 {
 	BUILD_END_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 	# shellcheck disable=SC2016
-	printf '# Release %s (`%s`) for %s' \
+	printf '# Release %s (`%s`) for %s\n\n' \
 		"$(cat VERSION | head -n 1)" \
 		"$(branch_to_name "${GITHUB_REF_NAME}")" \
 		"${OS_NAME}" |\
@@ -256,8 +257,6 @@ section BUILD_INFO
 
 	# shellcheck disable=SC2016
 	{
-		printf '| | |\n'
-		printf '|-|-|\n'
 		printf '|**Operating system** | %s |\n' "${OS_NAME}"
 		printf '|**Kernel version**   |`%s`|\n' "$(uname -K)"
 		printf '|**Base version**     |`%s`|\n' "$(uname -U)"
@@ -268,13 +267,8 @@ section BUILD_INFO
 			"https://github.com/${PORTS_REPO}"
 		printf '|**Ports tree branch**    |`%s`|\n' "${PORTS_BRANCH}"
 		printf '|**Ports tree commit**    |`%s`|\n' "${PORTS_SHA}"
-		printf '|**`pkg` configuration**  |
-		<details>
-			<summary>
-				Click to expand
-			</summary>
-			<pre>%s</pre>
-		</details> |\n' "$(pkg -vv | html_encode | html_newlines )"
+		printf '|**`pkg` configuration**  | <details><summary>Click to expand</summary><pre>%s</pre></details> |\n' \
+			"$(pkg -vv | html_encode | html_newlines )"
 	} | tee -a "${CI_ART_DIR}/build_info.md"
 }
 section_end

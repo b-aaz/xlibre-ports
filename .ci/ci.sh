@@ -1,5 +1,6 @@
 #!/bin/sh
-set -e
+set -o pipefail
+set -o errexit
 
 mkdir -p "${CI_ART_DIR:?}"
 
