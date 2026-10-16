@@ -154,6 +154,7 @@ section REPO-CREATION-DBG
 {
 	PKG_ABI="$(pkg config abi)"
 	REPO_DIR="${PKG_DIR}/${PKG_ABI}"
+	DBG_PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 	mv "${PKG_DIR}/All" "${REPO_DIR}"
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
@@ -225,6 +226,7 @@ then
 	{
 		PKG_ABI="$(pkg config abi)"
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
+		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
 		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
@@ -267,6 +269,8 @@ section BUILD_INFO
 			"https://github.com/${PORTS_REPO}"
 		printf '|**Ports tree branch**    |`%s`|\n' "${PORTS_BRANCH}"
 		printf '|**Ports tree commit**    |`%s`|\n' "${PORTS_SHA}"
+		printf '|**Debug package count**    |`%s`|\n' "${DBG_PKG_NUM}"
+		printf '|**Release package count**    |`%s`|\n' "${PKG_NUM}"
 		printf '|**`pkg` configuration**  | <details><summary>Click to expand</summary><pre>%s</pre></details> |\n' \
 			"$(pkg -vv | html_encode | html_newlines )"
 	} | tee -a "${CI_ART_DIR}/build_info.md"
@@ -275,3 +279,5 @@ section_end
 
 find "${CI_ART_DIR}/" -type f -name '*.tar' -print -exec tar -tf {} \;
 exit 0
+
+# vi: ts=4 sw=4 tw=80 cc=80
