@@ -32,8 +32,11 @@ ifnempty "single_cmd_list" { ;# Wait for single user shell prompt.
 	send_slow_commands "(?n)^.*# " $single_cmd_list }
 ifnempty "cmd_list" { 
 	# Waiting for login prompt.
-	ifdef "username" {expect -nocase "login:" {send -s "${username}\r"} }
-	ifdef "password" {expect -nocase "password:" {send -s "${password}\r"} }
+	expect ") (tty?0)"
+	ifdef "username" {expect -nocase "login:" {
+		sleep 1; send -h "${username}\r" } }
+	ifdef "password" {expect -nocase "password:" {
+		sleep 1; send -h "${password}\r"} }
 	# Sending the normal command list.
 	send_slow_commands "(?n)^.*# " $cmd_list }
 close

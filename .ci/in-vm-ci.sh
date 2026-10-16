@@ -1,4 +1,5 @@
 #!/bin/sh
+ps -A -o pid,ppid,args,flags,tty,xstat,sig,sigcatch
 (set -o pipefail 2>/dev/null)&&set -o pipefail
 set -o errexit
 
@@ -278,6 +279,7 @@ section BUILD_INFO
 section_end
 
 find "${CI_ART_DIR}/" -type f -name '*.tar' -print -exec tar -tf {} \;
+ps -A -o pid,ppid,args,f,tty,xstat,sig,sigcatch
 exit 0
 
 # vi: ts=4 sw=4 tw=80 cc=80
