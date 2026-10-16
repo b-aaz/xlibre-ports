@@ -14,15 +14,17 @@
 set -eu
 sdir="$(dirname "${0}"||{ echo 'Script dir not found.'>&2;exit 1; };echo x)"
 # shellcheck disable=SC1007
-sdir="$(CDPATH= cd -- "${sdir%??}"||{ echo "Can't cd.";exit 1;}&&pwd -P;echo x)"
-sdir="${sdir%??}"
+CDPATH= cd -- "${sdir%??}/shlib"||{ echo 'Can not cd to shlib dir.'>&2;exit 1; }
+
+. basic_io.sh # out puts err ...
+. autotemp.sh # mktemp_autoclean ...
+. cmdcheck.sh # cmd_exe_exists, cmd_exe_exists_die ...
+. compress.sh # decompress_pipe, decompress_file_auto ...
+. paxfuncs.sh # pax_at_dir ...
 
 
-. "${sdir}/shlib/basic_io.sh" # out puts err ...
-. "${sdir}/shlib/autotemp.sh" # mktemp_autoclean ...
-. "${sdir}/shlib/cmdcheck.sh" # cmd_exe_exists, cmd_exe_exists_die ...
-. "${sdir}/shlib/compress.sh" # decompress_pipe, decompress_file_auto ...
-. "${sdir}/shlib/paxfuncs.sh" # pax_at_dir ...
+
+cd -- "${OLDPWD?}" ||{ echo 'Could not restore $PWD'>&2;exit 1; }
 
 
 latest_repo_conf (){
@@ -36,6 +38,7 @@ FBSD_LATEST: {
 }
 EOF
 }
+
 sanity_check() {
 	cmd_exe_exists_die 'pkg'
 	cmd_exe_exists_die 'pax'
@@ -103,6 +106,8 @@ main(){
 	[ -w "${1}" ] || { err "'${1}' can not be written ot."; usage_exit; }
 	outdir="${1}"
 	set --
+
+	sanity_check
 
 	mktemp_autoclean 'tmpdir' -d
 	retry_with_latest="true"
