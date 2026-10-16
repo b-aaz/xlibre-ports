@@ -269,8 +269,8 @@ section BUILD_INFO
 			"https://github.com/${PORTS_REPO}"
 		printf '|**Ports tree branch**    |`%s`|\n' "${PORTS_BRANCH}"
 		printf '|**Ports tree commit**    |`%s`|\n' "${PORTS_SHA}"
-		printf '|**Debug package count**    |`%s`|\n' "${DBG_PKG_NUM}"
-		printf '|**Release package count**    |`%s`|\n' "${PKG_NUM}"
+		printf '|**Debug package count**  | %s |\n' "${DBG_PKG_NUM}"
+		printf '|**Release package count**| %s |\n' "${PKG_NUM}"
 		printf '|**`pkg` configuration**  | <details><summary>Click to expand</summary><pre>%s</pre></details> |\n' \
 			"$(pkg -vv | html_encode | html_newlines )"
 	} | tee -a "${CI_ART_DIR}/build_info.md"
