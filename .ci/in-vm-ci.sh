@@ -154,8 +154,8 @@ section REPO-CREATION-DBG
 {
 	PKG_ABI="$(pkg config abi)"
 	REPO_DIR="${PKG_DIR}/${PKG_ABI}"
-	DBG_PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 	mv "${PKG_DIR}/All" "${REPO_DIR}"
+	DBG_PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 	# Retry repo creation ad-infinitum with a timeout until it
 	# actually creates a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
@@ -226,8 +226,8 @@ then
 	{
 		PKG_ABI="$(pkg config abi)"
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
-		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
+		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
 		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
 			echo Retrying repo creation.
