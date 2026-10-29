@@ -1,0 +1,20 @@
+
+2026.11.02
+
+First anchor version for the upcoming new CI system.
+
+This file is planned to be used as follows:
+
+This file is supposed to hold a reverse chronological list of "Version Record"s
+separated by ASCII group separator (GS).
+
+"Version Record" is a string of text in this format:
+["White-space"] "Version" ["\n" ["Version Description (Markdown)"]]
+
+"Version" is the actual calender based version of the release in the following
+format (Can be generated with date "+%Y.%m.%d"):
+YYYY.MM.DD[.same-day-patch]  
+
+Every time the top version record in this file gets terminated with a GS char,
+a new release should be automatically built, tagged and drafted by the CI for
+that version.
