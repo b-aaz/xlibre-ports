@@ -1,3 +1,6 @@
+
+2026.11.01
+
 #### First release of the new CI system.
 * Moved to a new xserver release: 25.1.11
   - 25.1.10 has been skipped due to few bugs found in early release.
