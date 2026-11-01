@@ -1,4 +1,8 @@
 #### First release of the new CI system.
+* Moved to a new xserver release: 25.1.11
+  - 25.1.10 has been skipped due to few bugs found in early release.
+  - [Release link.](https://github.com/X11Libre/xserver/releases/tag/xlibre-xserver-25.1.11)
+
 - Added the new GHA CI system to the repository.
   - Automatic repository releases with new VERSION file records.
   - Rebuild-less auto repackaging of the conflicting/broken KDE package.
