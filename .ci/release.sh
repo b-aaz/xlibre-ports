@@ -31,7 +31,7 @@ gh_sane_api(){
 	awk 'BEGIN{
 		c="gh auth token"
 		c|getline tok
-		close c
+		close(c)
 		print "header=\"Authorization: token " tok "\""}' |
 			curl -s -K - "${GITHUB_API_URL}/${1}"
 }
