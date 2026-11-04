@@ -17,6 +17,7 @@ cd -- "${OLDPWD?}" ||{ echo 'Could not restore $PWD'>&2;exit 1; }
 
 sanity_check(){
 	: "${GITHUB_API_URL?}"
+	: "${GITHUB_SERVER_URL?}"
 	: "${GITHUB_REPOSITORY?}"
 	: "${GITHUB_SHA?}"
 	: "${GITHUB_STEP_SUMMARY?}"
@@ -25,6 +26,14 @@ sanity_check(){
 	cmd_exe_exists_die 'gh'
 	cmd_exe_exists_die 'jq'
 	cmd_exe_exists_die 'patch'
+	cmd_exe_exists_die 'curl'
+	cmd_exe_exists_die 'git'
+}
+
+ref_exists(){
+	git ls-remote --exit-code \
+		"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" "${1}" \
+		2> /dev/null > /dev/null
 }
 
 gh_sane_api(){
@@ -79,10 +88,12 @@ version_parse_check(){ leep;
 	upvar "${jsonvar}" 'json'
 
 	mktemp_autoclean 'to_dot';
+	: "${to_dot:?}"
 
 	if is_version_modified 'json'; then
 		private 'oldver_path';
 		mktemp_autoclean 'oldver_path';
+		: "${oldver_path:?}"
 		make_old_version "${jsonvar}" "${ver_path}" "${oldver_path}";
 		./.ci/version.awk "${oldver_path}" "${ver_path}" "${message_var}" \
 			"${ver_cmp_var}" "${old_ver_var}" "${new_ver_var}" \
@@ -97,12 +108,17 @@ version_parse_check(){ leep;
 	fi
 peel _ret; }
 
-generate_commit_log(){ leep;
+generate_commit_log(){ leep;while :;do
 	private 'htmlvar';	htmlvar="${1}"
 	private 'from';		from="${2}"
 	private 'to';		to="${3}"
 
 	upvar "${htmlvar}" 'html'
+
+	ref_exists "${from}" ||{
+		_ret=$?;err "Remote starting ref '${from}' not found"; break; }
+	ref_exists "${to}" ||{
+		_ret=$?;err "Remote ending ref '${to}' not found"; break; }
 
 	html="$(gh_sane_api "repos/${GITHUB_REPOSITORY}/compare/${from}...${to}"|
 		jq -r '
@@ -126,7 +142,7 @@ generate_commit_log(){ leep;
 		'
 	)" ||_ret="${?}"
 
-peel _ret; }
+break;done;peel _ret; }
 
 branch_to_name() {
 	case "$1" in
