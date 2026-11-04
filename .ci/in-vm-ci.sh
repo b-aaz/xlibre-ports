@@ -30,6 +30,7 @@ mkdir -p "${CI_ART_DIR:?}"
 
 BUILD_START_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 OS_NAME="$(uname -s)"
+OS_RELEASE="$(uname -r)"
 PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 case "${OS_NAME}" in
 	FreeBSD*)
@@ -239,14 +240,14 @@ section BUILD_INFO
 {
 	BUILD_END_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 	# shellcheck disable=SC2016
-	printf '%s' "${OS_NAME}" |  tee -a "${CI_ART_DIR}/OS.md"
+	printf '%s' "${OS_NAME} ${OS_RELEASE%%-*}" | tee -a "${CI_ART_DIR}/OS.md"
 
 	# shellcheck disable=SC2016
 	{
 		printf '|**Operating system** | %s |\n' "${OS_NAME}"
 		printf '|**Kernel version**   |`%s`|\n' "$(uname -K)"
 		printf '|**Base version**     |`%s`|\n' "$(uname -U)"
-		printf '|**OS release**       |`%s`|\n' "$(uname -r)"
+		printf '|**OS release**       |`%s`|\n' "${OS_RELEASE}"
 		printf '|**Raw build time**   | %ss|\n'\
 			"$((BUILD_END_TIME-BUILD_START_TIME))"
 		printf '|**Ports tree repository**| %s |\n'\
