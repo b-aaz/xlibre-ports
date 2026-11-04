@@ -46,20 +46,20 @@ is_version_modified(){ leep;
 	private 'jsonvar';	jsonvar="${1}"
 	upvar "${jsonvar}" 'json'
 	out 1 "${json}" | jq -e '
-	if ( .files[] | select(.filename=="VERSION" and .status=="modified") )
+	if ( .files[] | select(.filename=="VERSION.md" and .status=="modified") )
 	then
 		halt
 	end'
 peel "${?}"; }
 
-# Reverse applies this commits patch of the VERSION file and stores it in a file
-# pointed to by oldver_path.
+# Reverse applies this commits patch of the VERSION.md file and stores it in a
+# file pointed to by oldver_path.
 make_old_version(){ leep;
 	private 'jsonvar';		jsonvar="${1}"
 	private 'ver_path';		ver_path="${2}"
 	private 'oldver_path';	oldver_path="${3}"
 	upvar "${jsonvar}" 'json'
-	out 1 "${json}" | jq -r '(.files[] | select(.filename=="VERSION")).patch' |
+	out 1 "${json}" | jq -r '(.files[]|select(.filename=="VERSION.md")).patch'|
 		patch -R -u -o "${oldver_path}" "${ver_path}"
 peel "${?}"; }
 
@@ -160,7 +160,7 @@ branch_to_name() {
 
 sanity_check
 latest_commit_json 'commit_json'
-version_parse_check 'commit_json' ./VERSION 'VER_MSG' 'VER_CMP' 'VER_OLD'\
+version_parse_check 'commit_json' ./VERSION.md 'VER_MSG' 'VER_CMP' 'VER_OLD'\
    	'VER_NEW'
 
 section DBG
