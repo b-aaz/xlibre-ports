@@ -143,15 +143,27 @@ section REPO-CREATION-DBG
 	REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 	mv "${PKG_DIR}/All" "${REPO_DIR}"
 	DBG_PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
-	# Retry repo creation ad-infinitum with a timeout until it
-	# actually creates a repo.
+	# Retry repo creation ad-infinitum with a timeout until it actually creates
+	# a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
 	# create a repo on DFBSD, so we have to resort to this abomination.
 	# ( I hate pkg-ng :-). )
-	while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
+	# Update: 
+	# It turns out, that this cursed step has also had caused another
+	# "long-running" headache:
+	# When a `pkg repo` step randomly hangs, times out, and gets
+	# killed it leaves an orphaned, unresponsive, run-on `zstd` process behind.
+	# This process then hangs around till the end of this script and when the
+	# script finally exits, the ssh caller keeps waiting for these broken `zstd`
+	# processes to finish (which never happens) and we get a run-on VM step.
+	# So I had to add these pkill clauses at the end of this absolute hack to
+	# make sure no pesky `zstd` process remains at script exit.
+	while ! timeout -k 15s 10s pkg repo -o "${REPO_DIR}" "${REPO_DIR}"
 	do
 		echo Retrying repo creation.
 	done
+	pkill -SIGTERM zstd || true
+	pkill -SIGKILL zstd || true
 }
 section_end
 
@@ -216,10 +228,12 @@ then
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
 		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
-		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
+		while ! timeout -k 15s 10s pkg repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
 			echo Retrying repo creation.
 		done
+		pkill -SIGTERM zstd || true
+		pkill -SIGKILL zstd || true
 	}
 	section_end
 
