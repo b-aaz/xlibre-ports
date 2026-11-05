@@ -148,10 +148,18 @@ section REPO-CREATION-DBG
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
 	# create a repo on DFBSD, so we have to resort to this abomination.
 	# ( I hate pkg-ng :-). )
-	while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
-	do
-		echo Retrying repo creation.
-	done
+	(
+		ps -A -o pid,ppid,args,f,tty,xstat,sig,sigcatch
+		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
+		do
+			echo Retrying repo creation.
+			pkill -SIGTERM zstd || true
+			pkill -SIGKILL zstd || true
+		done
+		pkill -SIGTERM zstd || true
+		pkill -SIGKILL zstd || true
+		ps -A -o pid,ppid,args,f,tty,xstat,sig,sigcatch
+	)
 }
 section_end
 
@@ -216,10 +224,18 @@ then
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
 		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
+		(
+		ps -A -o pid,ppid,args,f,tty,xstat,sig,sigcatch
 		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
 			echo Retrying repo creation.
+			pkill -SIGTERM zstd || true
+			pkill -SIGKILL zstd || true
 		done
+		pkill -SIGTERM zstd || true
+		pkill -SIGKILL zstd || true
+		ps -A -o pid,ppid,args,f,tty,xstat,sig,sigcatch
+		)
 	}
 	section_end
 
