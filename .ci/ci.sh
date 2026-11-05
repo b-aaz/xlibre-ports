@@ -16,7 +16,7 @@ run_ci()
 	cd "${CI_RUN_DIR}/.ci/" rm -rf -- "${CI_ART_DIR:?}"
 	mkdir -p "${CI_ART_DIR}"
 
-	case $1 in
+	case "${1}" in
 		fbsd)
 			export VM_RUNNER_OS='fbsd'
 			export VM_RUNNER_OSVER='15.1'
@@ -33,7 +33,7 @@ run_ci()
 			export VM_RUNNER_ARCH='x86_64'
 			;;
 		*)
-			exit 1
+			false;exit
 			;;
 	esac
 

@@ -4,7 +4,7 @@ function exit_err(msg){
 	exit system("cat 1>&2 <<EOF\n" msg "\n" "EOF\n" "false")
 }
 function err(msg){
-	exit system("cat 1>&2 <<EOF\n" msg "\n" "EOF\n")
+	system("cat 1>&2 <<EOF\n" msg "\n" "EOF\n")
 }
 function shell_quote(text){
 	gsub(/'/,"'\\''",text)
