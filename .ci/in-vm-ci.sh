@@ -47,7 +47,7 @@ case "${OS_NAME}" in
 		pkg lock -qy pkg # HACK, cause DFBSD's updated 'pkg' is broken.
 		;;
 	*)
-		exit 1
+		false;exit
 		;;
 esac
 
@@ -114,26 +114,26 @@ section_end
 
 section STAGE-DBG
 {
-	make clean stage || exit 1
+	make clean stage || exit
 }
 section_end
 
 section STAGE-QA-DBG
 {
-	make stage-qa || exit 1
+	make stage-qa || exit
 }
 section_end
 
 section CHECK-PLIST-DBG
 {
-	make check-plist || exit 1
+	make check-plist || exit
 }
 section_end
 
 section PACKAGES-DBG
 {
 	mkdir -p "${PKG_DIR}"
-	make package || exit 1
+	make package || exit
 }
 section_end
 
@@ -157,12 +157,12 @@ section_end
 
 section ARTIFACT-CREATION-DBG
 {
-	tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.dbg.tar"\
+	tar -C "${CI_ART_DIR}" -cf "${CI_ART_DIR}/${PKG_ABI}.dbg.tar" \
 		"$(basename "${PKG_DIR}")"
 
 	rm -rf "${PKG_DIR}"
-	sha256 -q "${PKG_DIR%%/}.dbg.tar" >"${PKG_DIR%%/}.dbg.tar.sha256"
-	DBG_REPO_SHA="$(cat "${PKG_DIR%%/}.dbg.tar.sha256")"
+	sha256 -q "${CI_ART_DIR}/${PKG_ABI}.dbg.tar" >"${CI_ART_DIR}/${PKG_ABI}.dbg.tar.sha256"
+	DBG_REPO_SHA="$(cat "${CI_ART_DIR}/${PKG_ABI}.dbg.tar.sha256")"
 }
 section_end
 
@@ -177,26 +177,26 @@ then
 
 	section STAGE
 	{
-		make clean stage || exit 1
+		make clean stage || exit
 	}
 	section_end
 
 	section STAGE-QA
 	{
-		make stage-qa || exit 1
+		make stage-qa || exit
 	}
 	section_end
 
 	section CHECK-PLIST
 	{
-		make check-plist || exit 1
+		make check-plist || exit
 	}
 	section_end
 
 	section PACKAGES
 	{
 		mkdir -p "${PKG_DIR}"
-		make package || exit 1
+		make package || exit
 	}
 	section_end
 
@@ -205,7 +205,7 @@ then
 	then
 		section KDE-FIX
 		{
-			./.ci/xlibre-kde-fixer.sh "${PKG_DIR}/All/" || exit 1
+			./.ci/xlibre-kde-fixer.sh "${PKG_DIR}/All/" || exit
 		}
 		section_end
 	fi
@@ -225,12 +225,12 @@ then
 
 	section ARTIFACT-CREATION
 	{
-		tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.tar"\
+		tar -C "${CI_ART_DIR}" -cf "${CI_ART_DIR}/${PKG_ABI}.tar" \
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
-		sha256 -q "${PKG_DIR%%/}.tar" >"${PKG_DIR%%/}.tar.sha256"
-		REPO_SHA="$(cat "${PKG_DIR%%/}.tar.sha256")"
+		sha256 -q "${CI_ART_DIR}/${PKG_ABI}.tar" >"${CI_ART_DIR}/${PKG_ABI}.tar.sha256"
+		REPO_SHA="$(cat "${CI_ART_DIR}/${PKG_ABI}.tar.sha256")"
 	}
 	section_end
 
