@@ -30,11 +30,12 @@ mkdir -p "${CI_ART_DIR:?}"
 
 BUILD_START_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 OS_NAME="$(uname -s)"
+OS_RELEASE="$(uname -r)"
 PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 case "${OS_NAME}" in
 	FreeBSD*)
 		PORTS_REPO="freebsd/freebsd-ports"
-		PORTS_BRANCH="refs/heads/2026Q3"
+		PORTS_BRANCH="refs/heads/2026Q4"
 		PORTS_DIR="/usr/ports"
 		FLITTERED_DEPS='x11/plasma6-plasma\|x11/plasma6-plasma-desktop'
 		;;
@@ -46,7 +47,7 @@ case "${OS_NAME}" in
 		pkg lock -qy pkg # HACK, cause DFBSD's updated 'pkg' is broken.
 		;;
 	*)
-		exit 1
+		false;exit
 		;;
 esac
 
@@ -113,26 +114,26 @@ section_end
 
 section STAGE-DBG
 {
-	make clean stage || exit 1
+	make clean stage || exit
 }
 section_end
 
 section STAGE-QA-DBG
 {
-	make stage-qa || exit 1
+	make stage-qa || exit
 }
 section_end
 
 section CHECK-PLIST-DBG
 {
-	make check-plist || exit 1
+	make check-plist || exit
 }
 section_end
 
 section PACKAGES-DBG
 {
 	mkdir -p "${PKG_DIR}"
-	make package || exit 1
+	make package || exit
 }
 section_end
 
@@ -142,26 +143,38 @@ section REPO-CREATION-DBG
 	REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 	mv "${PKG_DIR}/All" "${REPO_DIR}"
 	DBG_PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
-	# Retry repo creation ad-infinitum with a timeout until it
-	# actually creates a repo.
+	# Retry repo creation ad-infinitum with a timeout until it actually creates
+	# a repo.
 	# For some weird reason pkg-ng just randomly gets stuck when trying to
 	# create a repo on DFBSD, so we have to resort to this abomination.
 	# ( I hate pkg-ng :-). )
-	while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
+	# Update: 
+	# It turns out, that this cursed step has also had caused another
+	# "long-running" headache:
+	# When a `pkg repo` step randomly hangs, times out, and gets
+	# killed it leaves an orphaned, unresponsive, run-on `zstd` process behind.
+	# This process then hangs around till the end of this script and when the
+	# script finally exits, the ssh caller keeps waiting for these broken `zstd`
+	# processes to finish (which never happens) and we get a run-on VM step.
+	# So I had to add these pkill clauses at the end of this absolute hack to
+	# make sure no pesky `zstd` process remains at script exit.
+	while ! timeout -k 15s 10s pkg repo -o "${REPO_DIR}" "${REPO_DIR}"
 	do
 		echo Retrying repo creation.
 	done
+	pkill -SIGTERM zstd || true
+	pkill -SIGKILL zstd || true
 }
 section_end
 
 section ARTIFACT-CREATION-DBG
 {
-	tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.dbg.tar"\
+	tar -C "${CI_ART_DIR}" -cf "${CI_ART_DIR}/${PKG_ABI}.dbg.tar" \
 		"$(basename "${PKG_DIR}")"
 
 	rm -rf "${PKG_DIR}"
-	sha256 -q "${PKG_DIR%%/}.dbg.tar" >"${PKG_DIR%%/}.dbg.tar.sha256"
-	DBG_REPO_SHA="$(cat "${PKG_DIR%%/}.dbg.tar.sha256")"
+	sha256 -q "${CI_ART_DIR}/${PKG_ABI}.dbg.tar" >"${CI_ART_DIR}/${PKG_ABI}.dbg.tar.sha256"
+	DBG_REPO_SHA="$(cat "${CI_ART_DIR}/${PKG_ABI}.dbg.tar.sha256")"
 }
 section_end
 
@@ -176,26 +189,26 @@ then
 
 	section STAGE
 	{
-		make clean stage || exit 1
+		make clean stage || exit
 	}
 	section_end
 
 	section STAGE-QA
 	{
-		make stage-qa || exit 1
+		make stage-qa || exit
 	}
 	section_end
 
 	section CHECK-PLIST
 	{
-		make check-plist || exit 1
+		make check-plist || exit
 	}
 	section_end
 
 	section PACKAGES
 	{
 		mkdir -p "${PKG_DIR}"
-		make package || exit 1
+		make package || exit
 	}
 	section_end
 
@@ -204,7 +217,7 @@ then
 	then
 		section KDE-FIX
 		{
-			./.ci/xlibre-kde-fixer.sh "${PKG_DIR}/All/" || exit 1
+			./.ci/xlibre-kde-fixer.sh "${PKG_DIR}/All/" || exit
 		}
 		section_end
 	fi
@@ -215,21 +228,23 @@ then
 		REPO_DIR="${PKG_DIR}/${PKG_ABI}"
 		mv "${PKG_DIR}/All" "${REPO_DIR}"
 		PKG_NUM="$(find "${REPO_DIR}" -type f -exec printf '.' \;|wc -c)"
-		while ! timeout -k 15s 10s pkg -dddd repo -o "${REPO_DIR}" "${REPO_DIR}"
+		while ! timeout -k 15s 10s pkg repo -o "${REPO_DIR}" "${REPO_DIR}"
 		do
 			echo Retrying repo creation.
 		done
+		pkill -SIGTERM zstd || true
+		pkill -SIGKILL zstd || true
 	}
 	section_end
 
 	section ARTIFACT-CREATION
 	{
-		tar -C "${CI_ART_DIR}" -cf "${PKG_DIR%%/}.tar"\
+		tar -C "${CI_ART_DIR}" -cf "${CI_ART_DIR}/${PKG_ABI}.tar" \
 			"$(basename "${PKG_DIR}")"
 
 		rm -rf "${PKG_DIR}"
-		sha256 -q "${PKG_DIR%%/}.tar" >"${PKG_DIR%%/}.tar.sha256"
-		REPO_SHA="$(cat "${PKG_DIR%%/}.tar.sha256")"
+		sha256 -q "${CI_ART_DIR}/${PKG_ABI}.tar" >"${CI_ART_DIR}/${PKG_ABI}.tar.sha256"
+		REPO_SHA="$(cat "${CI_ART_DIR}/${PKG_ABI}.tar.sha256")"
 	}
 	section_end
 
@@ -239,14 +254,14 @@ section BUILD_INFO
 {
 	BUILD_END_TIME="$(awk 'BEGIN{srand(); print srand()}')"
 	# shellcheck disable=SC2016
-	printf '%s' "${OS_NAME}" |  tee -a "${CI_ART_DIR}/OS.md"
+	printf '%s' "${OS_NAME} ${OS_RELEASE%%-*}" | tee -a "${CI_ART_DIR}/OS.md"
 
 	# shellcheck disable=SC2016
 	{
 		printf '|**Operating system** | %s |\n' "${OS_NAME}"
 		printf '|**Kernel version**   |`%s`|\n' "$(uname -K)"
 		printf '|**Base version**     |`%s`|\n' "$(uname -U)"
-		printf '|**OS release**       |`%s`|\n' "$(uname -r)"
+		printf '|**OS release**       |`%s`|\n' "${OS_RELEASE}"
 		printf '|**Raw build time**   | %ss|\n'\
 			"$((BUILD_END_TIME-BUILD_START_TIME))"
 		printf '|**Ports tree repository**| %s |\n'\

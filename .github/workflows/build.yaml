@@ -30,7 +30,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd
-    - name: Release (If required).
+    - name: Upload release files (If required).
       env:
         RUN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
@@ -52,7 +52,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh fbsd-legacy
-    - name: Release (If required).
+    - name: Upload release files (If required).
       env:
         RUN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
@@ -74,7 +74,7 @@ jobs:
         | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
         && echo '::endgroup::'
         && sudo -H -E "${CI_RUN_DIR}".ci/ci.sh dfbsd
-    - name: Release (If required).
+    - name: Upload release files (If required).
       env:
         RUN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
@@ -82,6 +82,35 @@ jobs:
         && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}' | gh auth login --with-token
         && unset -v RUN_TOKEN
         && sh "${CI_RUN_DIR}".ci/release.sh
+        && echo '::endgroup::'
+  build_release:
+    if: ${{ always() }}
+    needs: [build_fbsd,build_fbsd_legacy,build_dfbsd]
+    name: Final concatenated release.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+    - name: Did anything fail?
+      if: |
+        always() &&
+        needs.build_fbsd.result == 'success' &&
+        needs.build_fbsd_legacy.result == 'success' &&
+        needs.build_dfbsd.result == 'success'
+      run: echo "ALL_DONE=true" | tee /dev/stderr >> "$GITHUB_ENV"
+    - name: Release/cleanup step.
+      env:
+        RUN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: >
+        echo '::group::CLONE'
+        && sudo mkdir -p "${CI_RUN_DIR}" &&
+        curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF"
+        | sudo tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
+        && echo '::endgroup::'
+        && echo '::group::RELEASE'
+        && awk 'BEGIN{print ENVIRON["RUN_TOKEN"]}' | gh auth login --with-token
+        && unset -v RUN_TOKEN
+        && [ "${ALL_DONE}" != "true" ] && arg="cleanup" || arg="final";
+        sh "${CI_RUN_DIR}".ci/release.sh "${arg}"
         && echo '::endgroup::'
 
 # vi: ts=2 sw=2 tw=80 cc=80
