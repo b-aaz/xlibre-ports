@@ -17,7 +17,7 @@ html_newlines(){
 
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::group::INNER-CLONE'
 mkdir -p "${CI_RUN_DIR:?}"
-fetch -o - "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" | \
+fetch -o - "https://codeload.github.com/$GITHUB_REPOSITORY/tar.gz/$GITHUB_REF" |
 	tar -xvz --strip-components=1 -C "${CI_RUN_DIR}"
 [ "${GITHUB_ACTIONS}" = "true" ] && echo '::endgroup::'
 
@@ -64,8 +64,8 @@ section CLONE-PORTS
 	mkdir -p "$PORTS_DIR"
 	rm -rf   "${PORTS_DIR:?}/*"
 	fetch -o - \
-	"${GITHUB_API_URL}/repos/${PORTS_REPO}/tarball/${PORTS_SHA}"|\
-		tar -xz --strip-components=1 -C "${PORTS_DIR}"
+		"https://codeload.github.com/${PORTS_REPO}/tar.gz/${PORTS_SHA}" |
+			tar -xz --strip-components=1 -C "${PORTS_DIR}"
 }
 section_end
 
