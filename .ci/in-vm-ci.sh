@@ -35,7 +35,7 @@ PKG_DIR="${CI_ART_DIR}/${GITHUB_REF_NAME}"
 case "${OS_NAME}" in
 	FreeBSD*)
 		PORTS_REPO="freebsd/freebsd-ports"
-		PORTS_BRANCH="refs/heads/2026Q3"
+		PORTS_BRANCH="refs/heads/2026Q4"
 		PORTS_DIR="/usr/ports"
 		FLITTERED_DEPS='x11/plasma6-plasma\|x11/plasma6-plasma-desktop'
 		;;
