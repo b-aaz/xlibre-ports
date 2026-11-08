@@ -122,8 +122,9 @@ wipe_ci(){
 
 	section RECLONE
 	ls "${CI_RUN_DIR}"
-	curl -L "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/tarball/$GITHUB_REF" |\
-		tar -xz --strip-components=1 -C "${CI_RUN_DIR}"
+	curl -fsSL --retry 4 --retry-delay 60 \
+		"https://codeload.github.com/$GITHUB_REPOSITORY/tar.gz/$GITHUB_REF" |
+			tar -xz --strip-components=1 -C "${CI_RUN_DIR}"
 	ls "${CI_RUN_DIR}"
 	section_end
 }
