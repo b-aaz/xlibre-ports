@@ -1,3 +1,11 @@
+
+- Excluded this file from git mergers.
+- Fixed DFBSD run-on VMs.
+- Unified the three, per OS, releases produced by CI into one.
+- Appended the OS release to its name in notes.
+- Added a check for existence of version refs.
+- Moved VERSION to VERSION.md
+
 
 2026.11.03
 
