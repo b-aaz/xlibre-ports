@@ -14,9 +14,9 @@
   acquire_vt:
              if (!xf86Info.ShareVTs) {
 +                struct termios nTty;
+                 int result;
                  /*
                   * now get the VT
-                  */
 @@ -287,6 +290,26 @@ xf86OpenConsole()
                  if (ioctl(xf86Info.consoleFd, KDSETMODE, KD_GRAPHICS) < 0) {
                      FatalError("xf86OpenConsole: KDSETMODE KD_GRAPHICS failed");

@@ -3,7 +3,6 @@ bin/Xorg
 bin/gtf
 include/xorg/Xprintf.h
 include/xorg/callback.h
-include/xorg/closure.h
 include/xorg/colormap.h
 include/xorg/colormapst.h
 include/xorg/compiler.h
@@ -110,7 +109,6 @@ include/xorg/xf86Optionstr.h
 include/xorg/xf86Optrec.h
 include/xorg/xf86Parser.h
 include/xorg/xf86Pci.h
-include/xorg/xf86PciInfo.h
 include/xorg/xf86Priv.h
 include/xorg/xf86Privstr.h
 include/xorg/xf86RandR12.h
@@ -130,8 +128,9 @@ include/xorg/xisb.h
 include/xorg/xkbrules.h
 include/xorg/xkbsrv.h
 include/xorg/xkbstr.h
-include/xorg/xorg-server.h
 include/xorg/xlibre-server.h
+include/xorg/xlibre_ptrtypes.h
+include/xorg/xorg-server.h
 include/xorg/xorgVersion.h
 include/xorg/xserver-properties.h
 include/xorg/xvdix.h

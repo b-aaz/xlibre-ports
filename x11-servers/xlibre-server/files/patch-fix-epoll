@@ -23,9 +23,9 @@
  
  have_eventfd = cc.has_header('sys/eventfd.h', dependencies: epoll_dep)
 @@ -614,7 +612,6 @@ inc = include_directories(
-     'randr',
-     'render',
-     'xfixes',
+     'miext/sync',
+     'dix',
+     'include',
 -    epoll_inc,
  )
  

@@ -1,0 +1,15 @@
+--- hw/kdrive/meson.build.orig	2026-11-12 18:08:02 UTC
++++ hw/kdrive/meson.build
+@@ -25,12 +25,3 @@ endif
+     subdir('linux')
+     subdir('fbdev')
+ endif
+-
+-if build_kdrive
+-    xkdrive_man = configure_file(
+-        input: 'Xkdrive.man',
+-        output: 'Xkdrive.1',
+-        configuration: manpage_config,
+-    )
+-    install_man(xkdrive_man)
+-endif
