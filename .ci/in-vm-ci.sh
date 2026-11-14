@@ -95,7 +95,7 @@ section RUN-DEP-INSTALL
 		uniq |\
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
-		grep -v "$FLITTERED_DEPS" |\
+		grep -v "${FLITTERED_DEPS:-.^}" |\
 		xargs pkg install -y
 }
 section_end
@@ -107,7 +107,7 @@ section BUILD-DEP-INSTALL
 		uniq |\
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
-		grep -v "$FLITTERED_DEPS" |\
+		grep -v "${FLITTERED_DEPS:-.^}" |\
 		xargs pkg install -y
 }
 section_end
