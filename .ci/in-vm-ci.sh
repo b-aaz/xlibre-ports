@@ -71,9 +71,13 @@ section_end
 
 section PORTS-PATCH
 {
+	if [ "${OS_NAME}" = "DragonFly" ]; then
+		patch -N "${PORTS_DIR}/Mk/bsd.port.mk" < ./.ci/bsd.port.mk.patch.dfbsd
+	fi
 	patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk"<\
 		./.ci/bsd.port.subdir.mk.patch
 	patch -N "${PORTS_DIR}/Mk/bsd.port.mk" < ./.ci/bsd.port.mk.patch
+
 }
 section_end
 
