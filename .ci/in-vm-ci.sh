@@ -41,7 +41,7 @@ case "${OS_NAME}" in
 		;;
 	DragonFly*)
 		PORTS_REPO="DragonFlyBSD/dports"
-		PORTS_BRANCH="refs/heads/master"
+		PORTS_BRANCH="refs/heads/2026Q4"
 		PORTS_DIR="/usr/dports"
 		FLITTERED_DEPS='ports-mgmt/pkg'
 		pkg lock -qy pkg # HACK, cause DFBSD's updated 'pkg' is broken.
