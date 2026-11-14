@@ -41,7 +41,7 @@ case "${OS_NAME}" in
 		;;
 	DragonFly*)
 		PORTS_REPO="DragonFlyBSD/dports"
-		PORTS_BRANCH="refs/heads/master"
+		PORTS_BRANCH="refs/heads/2026Q4"
 		PORTS_DIR="/usr/dports"
 		FLITTERED_DEPS='ports-mgmt/pkg'
 		pkg lock -qy pkg # HACK, cause DFBSD's updated 'pkg' is broken.
@@ -71,9 +71,13 @@ section_end
 
 section PORTS-PATCH
 {
+	if [ "${OS_NAME}" = "DragonFly" ]; then
+		patch -N "${PORTS_DIR}/Mk/bsd.port.mk" < ./.ci/bsd.port.mk.patch.dfbsd
+	fi
 	patch -N "${PORTS_DIR}/Mk/bsd.port.subdir.mk"<\
 		./.ci/bsd.port.subdir.mk.patch
 	patch -N "${PORTS_DIR}/Mk/bsd.port.mk" < ./.ci/bsd.port.mk.patch
+
 }
 section_end
 
@@ -95,7 +99,7 @@ section RUN-DEP-INSTALL
 		uniq |\
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
-		grep -v "$FLITTERED_DEPS" |\
+		grep -v "${FLITTERED_DEPS:-.^}" |\
 		xargs pkg install -y
 }
 section_end
@@ -107,7 +111,7 @@ section BUILD-DEP-INSTALL
 		uniq |\
 		grep -v '^==\|xlibre' |\
 		awk -F "/" '{print $(NF-1) "/" $NF}' |\
-		grep -v "$FLITTERED_DEPS" |\
+		grep -v "${FLITTERED_DEPS:-.^}" |\
 		xargs pkg install -y
 }
 section_end

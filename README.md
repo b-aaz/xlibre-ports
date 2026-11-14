@@ -67,11 +67,16 @@ make dports-create-shallow
 ```
 For more information see: [DragonFlyBSD Documentation - DPortsUsage](https://www.dragonflybsd.org/docs/howtos/DPortsUsage/#index14h2).
 
-__Important note__: This repository includes modified versions of ports form the
-latest quarterly branch of the FreeBSD ports tree, and it should only be used
-on FreeBSD with this branch installed. To find out how to update your tree to
-an specific version please read the above sources. The current quarterly branch
-which is being followed is __2026Q4__.
+__Important note__: This repository includes ports compatible with the latest
+quarterly branch of the FreeBSD and DragonFlyBSD ports trees, and it should
+only be used with these branches installed. To find out how to update your tree
+to an specific version please read the above sources. The current quarterly
+branches being followed are:
+
+| FreeBSD  | DragonFlyBSD |
+|----------|--------------|
+| `2026Q4` | `2026Q4`     |
+
 
 After you made sure that your system's main ports tree is up-to-date, and you
 have enabled this repository as an overlay, you can use this tree just like the
