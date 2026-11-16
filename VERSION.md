@@ -1,7 +1,21 @@
+
+2026.11.16.1
 
+- Forced pushed and fixed some mistakes I made in git history, unified branch
+  histories.
+- Fixed a tiny bug with dependency filters in the inner CI script.
+- Added a patch for fixing a memory bug in Xserver setup.
+- Moved from the api.github.com to codeload.github.com for cloning.
+  (helps avoid API rate limits.)
+- Moved to DragonFlyBSD ports tree branch 2026Q4.
+  (New branch added to upstream dports, merged from FBSD ports tree, and so
+  we have all the new ports and their new versions and paths.)
+  (Some patches/fixes were needed for new ports tree, because we are using an
+  older pkg-ng version)
+- Moved to FreeBSD ports tree branch 2026Q4.
 - Excluded this file from git mergers.
 - Fixed DFBSD run-on VMs.
-- Unified the three, per OS, releases produced by CI into one.
+- __Unified the three, per OS, releases produced by CI into a single release.__
 - Appended the OS release to its name in notes.
 - Added a check for existence of version refs.
 - Moved VERSION to VERSION.md
