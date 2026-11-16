@@ -145,7 +145,10 @@ echo "WITH_DEBUG=YES" >> /etc/make.conf
 
 ### Installing the binary packages from CI artifacts:
 
-There are no CI builds as of now due to CirrusCI's shutdown.
+CI builds have been re-worked and are now available as GitHub releases
+consisting of tarballs of functioning pkg repositories built by the new CI
+system on GitHub Actions.
+A HTTP end-point for a dedicated remote (signed!) repository is planned.
 
 ## Setting up drivers:
 
