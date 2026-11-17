@@ -30,7 +30,7 @@
 #
 # 		builsystem is one of:
 # 		* autotools (default)
-# 		* meson (experimental)
+# 		* meson
 #
 #
 #
@@ -81,8 +81,11 @@ _XLIBRE_BUILDSYS=		autotools
 .  endif
 
 # Default variables, common to all new modular xorg ports.
+
 .  if empty(USES:Mtar)
-EXTRACT_SUFX?=		.tar.bz2
+# We don't really need this variable; XLibre ports fetch all their distfiles
+# form GH, but it is kept around for compatibality with xorg-cat.mk .
+EXTRACT_SUFX?=		.tar.xz
 .  endif
 
 DIST_SUBDIR?=	xlibre/${_XLIBRE_CAT}

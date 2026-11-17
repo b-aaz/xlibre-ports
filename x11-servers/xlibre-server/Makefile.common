@@ -6,7 +6,7 @@ DISTINFO_FILE?=	${XMASTERDIR}/distinfo
 .include "${XMASTERDIR}/Makefile.version"
 
 
-USES+=		gl compiler:c11 meson pkgconfig tar:xz xorg
+USES+=		gl compiler:c11 meson pkgconfig xorg
 USE_GL+=	gl
 USE_XORG+=	pixman xau xdmcp xfont2 xkbfile xorgproto xshmfence xtrans
 
