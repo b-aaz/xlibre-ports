@@ -1,13 +1,3 @@
---- hw/xfree86/meson.build
-+++ hw/xfree86/meson.build
-@@ -58,7 +58,6 @@ srcs_xorg = [
- xorg_link = [
-     libxserver,
-     libglxvnd,
--    libxserver_glx,
-     xorg_common,
-     xorg_compat,
-     xorg_loader,
 --- hw/xfree86/meson.build.orig	2022-06-29 14:37:28.042085000 +0000
 +++ hw/xfree86/meson.build	2022-06-29 14:37:36.259147000 +0000
 @@ -152,7 +152,7 @@ if get_option('suid_wrapper')
