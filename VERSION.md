@@ -1,4 +1,22 @@
 
+2026.11.19.1
+
+- Removed the bellow-mentioned servers' hotfixes not intended for this beta
+  branch.
+- Fixed the capitalization of XLibre in server package's comments.
+- Moved libinput to latest commit to include fixes from upstream.
+- The plasma6-plasma-desktop port/directory is gone, replaced in functionality
+  with `.ci/xlibre-kde-fixer.sh`
+- Moved scfb to latest minor release (candidate) 25.0.1-rc1, for new DFBSD
+  feature additions and man-page fixes.
+- Added upstream hotfixes for fixing an ABI breakage and a segfault scenario to
+  servers.
+- Updated xlibre-cat.mk with some new changes from xorg-cat.mk and removed the
+  USEless USE of tar:xz from our ports.
+- Moved intel to latest minor release 25.0.3.
+- Moved ast to latest minor release 25.0.1.
+
+
 2026.11.16
 
 - Moved to (beta) Xserver release 25.2.3.
@@ -50,7 +68,7 @@ separated by ASCII group separator (GS).
 
 "Version" is the actual calender based version of the release in the following
 format (Can be generated with date "+%Y.%m.%d"):
-YYYY.MM.DD[.same-day-patch]  
+YYYY.MM.DD[.same-day-patch]
 
 Every time the top version record in this file gets terminated with a GS char,
 a new release should be automatically built, tagged and drafted by the CI for
