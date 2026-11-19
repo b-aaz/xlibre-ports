@@ -11,7 +11,7 @@ WWW=		https://github.com/X11Libre/xf86-video-amdgpu/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gl tar:xz xlibre-cat:driver
+USES=		gl xlibre-cat:driver
 USE_GL=		gbm
 
 LIB_DEPENDS=	libdrm_amdgpu.so:graphics/libdrm

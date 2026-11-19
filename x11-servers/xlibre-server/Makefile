@@ -1,9 +1,10 @@
 PORTNAME=	xlibre-server
 PORTVERSION=	${XLIBRE_VER}
+PORTREVISION=	1
 CATEGORIES=	x11-servers
 
 MAINTAINER=	b-aazbsd@proton.me
-COMMENT=	Xlibre X server
+COMMENT=	XLibre X server
 WWW=		https://github.com/X11Libre/xserver/
 
 LICENSE=	MIT

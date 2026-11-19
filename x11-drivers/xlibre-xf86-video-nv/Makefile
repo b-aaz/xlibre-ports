@@ -9,7 +9,7 @@ WWW=		https://github.com/X11Libre/xf86-video-nv/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:xz xlibre-cat:driver
+USES=		xlibre-cat:driver
 
 THIS_OPSYS!=	uname -s
 .if ${THIS_OPSYS}==DragonFly

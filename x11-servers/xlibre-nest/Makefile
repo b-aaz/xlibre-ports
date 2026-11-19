@@ -3,7 +3,7 @@ PORTVERSION=	${XLIBRE_VER}
 CATEGORIES=	x11-servers
 
 MAINTAINER=	b-aazbsd@proton.me
-COMMENT=	Xlibre Xnest server
+COMMENT=	XLibre Xnest server
 WWW=		https://github.com/X11Libre/xserver/
 
 LICENSE=	MIT
